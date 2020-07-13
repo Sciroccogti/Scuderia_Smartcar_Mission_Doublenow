@@ -1,16 +1,16 @@
 /*********************************************************************************************************************
  * COPYRIGHT NOTICE
- * Copyright (c) 2019,Öğ·É¿Æ¼¼
+ * Copyright (c) 2019,é€é£ç§‘æŠ€
  * All rights reserved.
- * ¼¼ÊõÌÖÂÛQQÈº£ºÒ»Èº£º179029047(ÒÑÂú)  ¶şÈº£º244861897
+ * æŠ€æœ¯è®¨è®ºQQç¾¤ï¼šä¸€ç¾¤ï¼š179029047(å·²æ»¡)  äºŒç¾¤ï¼š244861897
  *
- * ÒÔÏÂËùÓĞÄÚÈİ°æÈ¨¾ùÊôÖğ·É¿Æ¼¼ËùÓĞ£¬Î´¾­ÔÊĞí²»µÃÓÃÓÚÉÌÒµÓÃÍ¾£¬
- * »¶Ó­¸÷Î»Ê¹ÓÃ²¢´«²¥±¾³ÌĞò£¬ĞŞ¸ÄÄÚÈİÊ±±ØĞë±£ÁôÖğ·É¿Æ¼¼µÄ°æÈ¨ÉùÃ÷¡£
+ * ä»¥ä¸‹æ‰€æœ‰å†…å®¹ç‰ˆæƒå‡å±é€é£ç§‘æŠ€æ‰€æœ‰ï¼Œæœªç»å…è®¸ä¸å¾—ç”¨äºå•†ä¸šç”¨é€”ï¼Œ
+ * æ¬¢è¿å„ä½ä½¿ç”¨å¹¶ä¼ æ’­æœ¬ç¨‹åºï¼Œä¿®æ”¹å†…å®¹æ—¶å¿…é¡»ä¿ç•™é€é£ç§‘æŠ€çš„ç‰ˆæƒå£°æ˜ã€‚
  *
  * @file       		isr
- * @company	   		³É¶¼Öğ·É¿Æ¼¼ÓĞÏŞ¹«Ë¾
- * @author     		Öğ·É¿Æ¼¼(QQ3184284598)
- * @version    		²é¿´docÄÚversionÎÄ¼ş °æ±¾ËµÃ÷
+ * @company	   		æˆéƒ½é€é£ç§‘æŠ€æœ‰é™å…¬å¸
+ * @author     		é€é£ç§‘æŠ€(QQ3184284598)
+ * @version    		æŸ¥çœ‹docå†…versionæ–‡ä»¶ ç‰ˆæœ¬è¯´æ˜
  * @Software 		IAR 8.3 or MDK 5.28
  * @Target core		NXP RT1064DVL6A
  * @Taobao   		https://seekfree.taobao.com/
@@ -19,16 +19,17 @@
 
 #include "headfile.h"
 #include "isr.h"
+#include "myheader.h"
 
-/****************È«¾Ö±äÁ¿¶¨Òå******************/
-uint8 Flag_Stop = OFF;			//=OFFÍ£³µ
-uint8 Flag_Debuge = OFF;		//=ON½øÈëµ÷²Î½çÃæ
+/****************å…¨å±€å˜é‡å®šä¹‰******************/
+uint8 Flag_Stop = OFF;			//=OFFåœè½¦
+uint8 Flag_Debuge = OFF;		//=ONè¿›å…¥è°ƒå‚ç•Œé¢
 
 
 void CSI_IRQHandler(void)
 {
-    CSI_DriverIRQHandler();     //µ÷ÓÃSDK×Ô´øµÄÖĞ¶Ïº¯Êı Õâ¸öº¯Êı×îºó»áµ÷ÓÃÎÒÃÇÉèÖÃµÄ»Øµ÷º¯Êı
-    __DSB();                    //Êı¾İÍ¬²½¸ôÀë
+    CSI_DriverIRQHandler();     //è°ƒç”¨SDKè‡ªå¸¦çš„ä¸­æ–­å‡½æ•° è¿™ä¸ªå‡½æ•°æœ€åä¼šè°ƒç”¨æˆ‘ä»¬è®¾ç½®çš„å›è°ƒå‡½æ•°
+    __DSB();                    //æ•°æ®åŒæ­¥éš”ç¦»
 }
 
 void PIT_IRQHandler(void)
@@ -62,7 +63,7 @@ void GPIO2_Combined_16_31_IRQHandler(void)
 {
     if(GET_GPIO_FLAG(C16))
     {
-        CLEAR_GPIO_FLAG(C16);//Çå³ıÖĞ¶Ï±êÖ¾Î»
+        CLEAR_GPIO_FLAG(C16);//æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
     }
     
     
@@ -74,12 +75,12 @@ void GPIO2_Combined_0_15_IRQHandler(void)
 {
     if(GET_GPIO_FLAG(MT9V03X_VSYNC_PIN))
     {
-        //²»ÓÃÇå³ı±êÖ¾Î»£¬±êÖ¾Î»ÔÚmt9v03x_vsyncº¯ÊıÄÚ²¿»áÇå³ı
+        //ä¸ç”¨æ¸…é™¤æ ‡å¿—ä½ï¼Œæ ‡å¿—ä½åœ¨mt9v03x_vsyncå‡½æ•°å†…éƒ¨ä¼šæ¸…é™¤
         if(1 == flexio_camera_type)mt9v03x_vsync();
     }
     if(GET_GPIO_FLAG(SCC8660_VSYNC_PIN))
     {
-        //²»ÓÃÇå³ı±êÖ¾Î»£¬±êÖ¾Î»ÔÚscc8660_vsyncº¯ÊıÄÚ²¿»áÇå³ı
+        //ä¸ç”¨æ¸…é™¤æ ‡å¿—ä½ï¼Œæ ‡å¿—ä½åœ¨scc8660_vsyncå‡½æ•°å†…éƒ¨ä¼šæ¸…é™¤
         if(2 == flexio_camera_type)scc8660_vsync();
     }
 }
@@ -88,8 +89,8 @@ void GPIO2_Combined_0_15_IRQHandler(void)
 
 /*
 GPIO3_Combined_0_15_IRQHandler
-´ËÖĞ¶Ïº¯ÊıÄ¬ÈÏ±»SD¿¨¼ì²â²åÈë¹¦ÄÜÕ¼ÓÃ£¬Èç¹ûĞèÒªgpioÖĞ¶Ï½¨ÒéÊ¹ÓÃÆäËûIO
-»òÕß²»Ê¹ÓÃSDµÄ¿¨¿ÉÒÔ½«fsl_sdmmc_host.cÖĞµÄ SDMMCHOST_CARD_DETECT_GPIO_INTERRUPT_HANDLERº¯Êı×¢ÊÍµô¼´¿É
+æ­¤ä¸­æ–­å‡½æ•°é»˜è®¤è¢«SDå¡æ£€æµ‹æ’å…¥åŠŸèƒ½å ç”¨ï¼Œå¦‚æœéœ€è¦gpioä¸­æ–­å»ºè®®ä½¿ç”¨å…¶ä»–IO
+æˆ–è€…ä¸ä½¿ç”¨SDçš„å¡å¯ä»¥å°†fsl_sdmmc_host.cä¸­çš„ SDMMCHOST_CARD_DETECT_GPIO_INTERRUPT_HANDLERå‡½æ•°æ³¨é‡Šæ‰å³å¯
 
 */
 
@@ -98,13 +99,13 @@ GPIO3_Combined_0_15_IRQHandler
 
 
 /*
-ÖĞ¶Ïº¯ÊıÃû³Æ£¬ÓÃÓÚÉèÖÃ¶ÔÓ¦¹¦ÄÜµÄÖĞ¶Ïº¯Êı
-Sample usage:µ±Ç°ÆôÓÃÁËÖÜÆÚ¶¨Ê±Æ÷ÖĞ¶Ï
+ä¸­æ–­å‡½æ•°åç§°ï¼Œç”¨äºè®¾ç½®å¯¹åº”åŠŸèƒ½çš„ä¸­æ–­å‡½æ•°
+Sample usage:å½“å‰å¯ç”¨äº†å‘¨æœŸå®šæ—¶å™¨ä¸­æ–­
 */
 void PIT_IRQHandler(uint8 h)
 {
     
-	//±êÖ¾±äÁ¿¶¨Òå
+	//æ ‡å¿—å˜é‡å®šä¹‰
 	
 	static uint16 j = 0;
         //GPIO_Init(LED_G,GPO,0);
@@ -118,7 +119,7 @@ void PIT_IRQHandler(uint8 h)
           STOPi--;
         
         
-        //20msÒ»´ÎËÙ¶È¿ØÖÆ
+        //20msä¸€æ¬¡é€Ÿåº¦æ§åˆ¶
 	j++;
 	if(j >= 4)  
         {    
@@ -126,16 +127,16 @@ void PIT_IRQHandler(uint8 h)
           SpeedControl();
 	}
         
-	DirectionControl();	//·½Ïò¿ØÖÆ
+	DirectionControl();	//æ–¹å‘æ§åˆ¶
 	
         PWMOut();
-			//×îÖÕPWMÊä³ö
+			//æœ€ç»ˆPWMè¾“å‡º
 
-    //Îñ±ØÇå³ı±êÖ¾Î»
+    //åŠ¡å¿…æ¸…é™¤æ ‡å¿—ä½
     __DSB();
 }
 /*
-¼ÇµÃ½øÈëÖĞ¶ÏºóÇå³ı±êÖ¾Î»
+è®°å¾—è¿›å…¥ä¸­æ–­åæ¸…é™¤æ ‡å¿—ä½
 CTI0_ERROR_IRQHandler
 CTI1_ERROR_IRQHandler
 CORE_IRQHandler
@@ -243,4 +244,4 @@ PWM4_FAULT_IRQHandler
 Reserved171_IRQHandler
 GPIO6_7_8_9_IRQHandler*/
 
-//ÀîµÄ³ÌĞòÖĞtest²¿·ÖÈÓÁË
+//æçš„ç¨‹åºä¸­testéƒ¨åˆ†æ‰”äº†

@@ -1,7 +1,7 @@
 /*********************************************************************************************************************
  * 
  * @file       		flash_param.h
- *  				flash²ÎÊı´æÈ¡
+ *  				flashå‚æ•°å­˜å–
  * @core			S9KEA128
  * @date       		2018
  ********************************************************************************************************************/
@@ -9,13 +9,13 @@
 #define _flash_param_
 
 
-#include "bsp_global_var.h"
+#include "global_var.h"
 
-#define PARAM_INIT_FLAG     (159)   //ÖØÔØ±êÖ¾Î»
+#define PARAM_INIT_FLAG     (159)   //é‡è½½æ ‡å¿—ä½
 
-extern void param_in(void);   //´ÓflashÖĞ¶Á²ÎÊıÉèÖÃµ½±äÁ¿ÖĞ
+extern void param_in(void);   //ä»flashä¸­è¯»å‚æ•°è®¾ç½®åˆ°å˜é‡ä¸­
 extern void param_load(struct PARAM * p_param);
-extern void set_param(struct PARAM *p_param);   //½á¹¹Ìå¸ø±äÁ¿
-extern void param_save(struct PARAM * p_param); //½á¹¹Ìå±£´æ²ÎÊı¸øflash
+extern void set_param(struct PARAM *p_param);   //ç»“æ„ä½“ç»™å˜é‡
+extern void param_save(struct PARAM * p_param); //ç»“æ„ä½“ä¿å­˜å‚æ•°ç»™flash
 
 #endif  /*_flash_param_*/

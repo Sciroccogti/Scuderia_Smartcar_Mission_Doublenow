@@ -1,20 +1,21 @@
 /*********************************************************************************************************************
  * 
  * @file       		flash_param.c
- *  				flash²ÎÊı´æÈ¡
+ *  				flashå‚æ•°å­˜å–
  * @core			S9KEA128
  * @date       		2018
  ********************************************************************************************************************/
 #include "common.h"
 #include "zf_flash.h"
+#include "myheader.h"
 
 void param_in(void)
 {
-  param_load(&parameter);  //´ÓflashÀï¶ÁÊı¾İ´æµ½½á¹¹ÌåÀïÃæÈ¥
-  set_param(&parameter);   //ÔÙ´Ó½á¹¹ÌåÖĞ¶Á³öÊı¾İ
+  param_load(&parameter);  //ä»flashé‡Œè¯»æ•°æ®å­˜åˆ°ç»“æ„ä½“é‡Œé¢å»
+  set_param(&parameter);   //å†ä»ç»“æ„ä½“ä¸­è¯»å‡ºæ•°æ®
 }
 
-void param_load(struct PARAM * p_param)    //°ÑflashÊı¾İ´æµ½½á¹¹ÌåÀïÃæÈ¥
+void param_load(struct PARAM * p_param)    //æŠŠflashæ•°æ®å­˜åˆ°ç»“æ„ä½“é‡Œé¢å»
 {
     p_param->int01  = flash_read(255, 0,uint32);
     p_param->int02  = flash_read(255, 4,uint32);
@@ -46,7 +47,7 @@ void param_load(struct PARAM * p_param)    //°ÑflashÊı¾İ´æµ½½á¹¹ÌåÀïÃæÈ¥
     
 }
 
-void set_param(struct PARAM *p_param)   //´Ó½á¹¹ÌåÖĞ¶ÁÊı¾İ´æµ½ÏàÓ¦µÄ±äÁ¿ÖĞ
+void set_param(struct PARAM *p_param)   //ä»ç»“æ„ä½“ä¸­è¯»æ•°æ®å­˜åˆ°ç›¸åº”çš„å˜é‡ä¸­
 {
     int01=(p_param->int01);
     int02=(p_param->int02);
@@ -77,9 +78,9 @@ void set_param(struct PARAM *p_param)   //´Ó½á¹¹ÌåÖĞ¶ÁÊı¾İ´æµ½ÏàÓ¦µÄ±äÁ¿ÖĞ
 }
 
 
-void param_save(struct PARAM *p_param)    //°Ñ½á¹¹ÌåÖĞµÄÊı¾İ´æµ½flashÀïÃæÈ¥
+void param_save(struct PARAM *p_param)    //æŠŠç»“æ„ä½“ä¸­çš„æ•°æ®å­˜åˆ°flashé‡Œé¢å»
 {
-    flash_erase_sector(255); //²Á³ıµÚ255Ò³Êı¾İ
+    flash_erase_sector(255); //æ“¦é™¤ç¬¬255é¡µæ•°æ®
     flash_erase_sector(253);
  
 	flash_page_program(uint32 sector_num, uint32 page_num, const uint32 *buf, uint8 len)
@@ -111,6 +112,6 @@ void param_save(struct PARAM *p_param)    //°Ñ½á¹¹ÌåÖĞµÄÊı¾İ´æµ½flashÀïÃæÈ¥
     flash_page_program( 255,23,(const uint8*)&(p_param->float12),4);
     
     flash_page_program( 253,0,(const uint8*)&(p_param->param_flag),4);
-    //Ô´´úÂëµÄoffsetºÍÖğ·É¿âÀïÃæµÄpageÊÇÒ»¸ö¶«Î÷Âğ£¿´Ë´¦¼Ù¶¨page=offset/4
+    //æºä»£ç çš„offsetå’Œé€é£åº“é‡Œé¢çš„pageæ˜¯ä¸€ä¸ªä¸œè¥¿å—ï¼Ÿæ­¤å¤„å‡å®špage=offset/4
 
 }
