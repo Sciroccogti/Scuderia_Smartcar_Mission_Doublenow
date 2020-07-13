@@ -206,10 +206,10 @@ void Read_ADC(void) {
     int16 ValueOfADOld[4], ValueOfADNew[4];
 
     for (i = 0; i < 5; i++) {
-        ad_valu[0][i] = ad_ave(AD3, 5) * 11046 / 10000;  // 水平左
-        ad_valu[1][i] = ad_ave(AD5, 5) * 13624 / 10000;  // 水平右
-        ad_valu[2][i] = ad_ave(AD4, 5);                  // 垂直左
-        ad_valu[3][i] = ad_ave(AD2, 5);                  //垂直右
+        ad_valu[0][i] = adc_mean_filter(AD3, AD3, 5) * 11046 / 10000;  // 水平左
+        ad_valu[1][i] = adc_mean_filter(AD5, AD5, 5) * 13624 / 10000;  // 水平右
+        ad_valu[2][i] = adc_mean_filter(AD4, AD4, 5);                  // 垂直左
+        ad_valu[3][i] = adc_mean_filter(AD2, AD2, 5);                  //垂直右
     }
     /*=========================冒泡排序升序==========================*/  //舍弃最大值和最小值
     for (i = 0; i < 4; i++) {
