@@ -1,7 +1,7 @@
 /*********************************************************************************************************************
  * 
  * @file       		main.c
- *  				Ö÷º¯Êı
+ *  				ä¸»å‡½æ•°
  * @core			S9KEA128
  * @date       		2018
  ********************************************************************************************************************/
@@ -12,14 +12,14 @@
 //KEA VERSION
 //#include "headerfile.h"
 //RT1064 VERSION
-#include "headfile.h"
+#include "myheader.h"
 uint8 page = 0;
 uint8 SW1, SW2, SW3, SW4;
 uint8 UpFlag = 1, DownFlag = 1, LeftFlag = 1, RightFlag = 1, MidFlag = 1;
 
 void myoled()
 {
-    //need adc_init(ADC_1,ADC1_CH3_B14,ADC_8BIT); //³õÊ¼»¯B14ÎªADC¹¦ÄÜ ·Ö±æÂÊÎª8Î»
+    //need adc_init(ADC_1,ADC1_CH3_B14,ADC_8BIT); //åˆå§‹åŒ–B14ä¸ºADCåŠŸèƒ½ åˆ†è¾¨ç‡ä¸º8ä½
     //and adc_init(ADC_1,ADC1_CH4_B15,ADC_8BIT);
     uint16 ad5 = adc_convert(ADC_1, ADC1_CH3_B14);
     // uint16 ad4=ADC_Read(ADC0_SE9);
@@ -33,14 +33,14 @@ void myoled()
     //char LeftPwm[8];
     //char RightPwm[8];
 
-    sprintf(Left, "L:%d", g_ValueOfAD[0]);         //Ë®Æ½×óµç¸Ğ
-    sprintf(Right, "R:%d", g_ValueOfAD[1]);        //Ë®Æ½ÓÒµç¸Ğ
-    sprintf(LeftMiddle, "LM:%d", g_ValueOfAD[2]);  //Ë®Æ½×óµç¸Ğ
-    sprintf(RightMiddle, "RM:%d", g_ValueOfAD[3]); //Ë®Æ½ÓÒµç¸Ğ
+    sprintf(Left, "L:%d", g_ValueOfAD[0]);         //æ°´å¹³å·¦ç”µæ„Ÿ
+    sprintf(Right, "R:%d", g_ValueOfAD[1]);        //æ°´å¹³å³ç”µæ„Ÿ
+    sprintf(LeftMiddle, "LM:%d", g_ValueOfAD[2]);  //æ°´å¹³å·¦ç”µæ„Ÿ
+    sprintf(RightMiddle, "RM:%d", g_ValueOfAD[3]); //æ°´å¹³å³ç”µæ„Ÿ
                                                   //sprintf(LeftPwm,"LP:%d",LeftP);
                                                   //sprintf(LeftPwm,"RP:%d",RightP);
-                                                  //sprintf(LeftPwm,"LP:%d",(int16)g_fLeftRealSpeed);//×óÂÖÂö³å
-                                                  //sprintf(RightPwm,"RP:%d",(int16)g_fRighRealSpeed);//ÓÒÂÖÂö³å
+                                                  //sprintf(LeftPwm,"LP:%d",(int16)g_fLeftRealSpeed);//å·¦è½®è„‰å†²
+                                                  //sprintf(RightPwm,"RP:%d",(int16)g_fRighRealSpeed);//å³è½®è„‰å†²
                                                   /*//KEA version
     OLED_Display_Config(1);
     OLED_Clear(0x00);
@@ -66,7 +66,7 @@ void myoled()
 
 void oled()
 {
-    //need adc_init(ADC_1,ADC1_CH3_B14,ADC_8BIT); //³õÊ¼»¯B14ÎªADC¹¦ÄÜ ·Ö±æÂÊÎª8Î»
+    //need adc_init(ADC_1,ADC1_CH3_B14,ADC_8BIT); //åˆå§‹åŒ–B14ä¸ºADCåŠŸèƒ½ åˆ†è¾¨ç‡ä¸º8ä½
     //and adc_init(ADC_1,ADC1_CH4_B15,ADC_8BIT);
     uint16 ad5 = adc_convert(ADC_1, ADC1_CH3_B14);
     // uint16 ad4=ADC_Read(ADC0_SE9);
@@ -80,14 +80,14 @@ void oled()
     //char LeftPwm[8];
     //char RightPwm[8];
 
-    sprintf(Left, "L:%d", g_ValueOfAD[0]);         //Ë®Æ½×óµç¸Ğ
-    sprintf(Right, "R:%d", g_ValueOfAD[1]);        //Ë®Æ½ÓÒµç¸Ğ
-    sprintf(LeftMiddle, "LM:%d", g_ValueOfAD[2]);  //Ë®Æ½×óµç¸Ğ
-    sprintf(RightMiddle, "RM:%d", g_ValueOfAD[3]); //Ë®Æ½ÓÒµç¸Ğ
+    sprintf(Left, "L:%d", g_ValueOfAD[0]);         //æ°´å¹³å·¦ç”µæ„Ÿ
+    sprintf(Right, "R:%d", g_ValueOfAD[1]);        //æ°´å¹³å³ç”µæ„Ÿ
+    sprintf(LeftMiddle, "LM:%d", g_ValueOfAD[2]);  //æ°´å¹³å·¦ç”µæ„Ÿ
+    sprintf(RightMiddle, "RM:%d", g_ValueOfAD[3]); //æ°´å¹³å³ç”µæ„Ÿ
                                                   //sprintf(LeftPwm,"LP:%d",LeftP);
                                                   //sprintf(LeftPwm,"RP:%d",RightP);
-                                                  //sprintf(LeftPwm,"LP:%d",(int16)g_fLeftRealSpeed);//×óÂÖÂö³å
-                                                  //sprintf(RightPwm,"RP:%d",(int16)g_fRighRealSpeed);//ÓÒÂÖÂö³å
+                                                  //sprintf(LeftPwm,"LP:%d",(int16)g_fLeftRealSpeed);//å·¦è½®è„‰å†²
+                                                  //sprintf(RightPwm,"RP:%d",(int16)g_fRighRealSpeed);//å³è½®è„‰å†²
                                                   /*//KEA version
     OLED_Display_Config(1);
     OLED_Clear(0x00);
@@ -112,7 +112,7 @@ void oled()
     //not sure if refresh is required
 }
 
-//À¶ÑÀ²ÎÊı¼à¿Ø
+//è“ç‰™å‚æ•°ç›‘æ§
 void BlueTooth()
 {
     char data[16];
@@ -275,7 +275,7 @@ void myoled4()
         FreezingTimeDuring -= 10;
 }
 
-//À¶ÑÀ½ÓÊÜÖĞ¶Ï
+//è“ç‰™æ¥å—ä¸­æ–­
 /*
 void uart_RX_INT(uint8 ch)
 {
@@ -375,7 +375,7 @@ int main(void)
 
     EnableGlobalIRQ(0);
 
-    //while ((1280 * ex_clk_khz) != (256 * ics_clk_khz)); //È·±£Ê±ÖÓÅäÖÃÎŞÎó
+    //while ((1280 * ex_clk_khz) != (256 * ics_clk_khz)); //ç¡®ä¿æ—¶é’Ÿé…ç½®æ— è¯¯
 
     //UART_RX_IRQ_Enable(uart2);
     Flag_Stop = ON;
@@ -384,7 +384,7 @@ int main(void)
     {
 
         //myoled();
-        //ÎåÏò¿ª¹Øµ÷²Î
+        //äº”å‘å¼€å…³è°ƒå‚
 
         BlueTooth();
         if (gpio_get(F4) == 0)
@@ -414,7 +414,7 @@ int main(void)
             break;
         }
 
-        //0.5sLEDÉÁË¸
+        //0.5sLEDé—ªçƒ
         static uint16 i = 0;
         i++;
         if (i >= 100)
@@ -427,7 +427,7 @@ int main(void)
             i = 0;
         }
 
-        //²¦Âë¿ª¹Ø»»²Î
+        //æ‹¨ç å¼€å…³æ¢å‚
         /*//KEA VERSION
         SW1 = gpio_get(C5);
         SW2 = gpio_get(H7);
@@ -441,133 +441,133 @@ int main(void)
         SW3 = gpio_get(H5); //C27
         SW4 = gpio_get(H2); //C25
 
-        TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200, TurnAD3 = 1200; //Ë®Æ½×óÓÒ£¬´¹Ö±×óÓÒµç¸Ğ£¬ÅĞ¶ÏÊÇ·ñµ½´ï»·µºµÄãĞÖµ
+        TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200, TurnAD3 = 1200; //æ°´å¹³å·¦å³ï¼Œå‚ç›´å·¦å³ç”µæ„Ÿï¼Œåˆ¤æ–­æ˜¯å¦åˆ°è¾¾ç¯å²›çš„é˜ˆå€¼
         LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
-        DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1200, DownAD3 = 1200; //ÏÂÆÂÅĞ¶¨µç¸ĞÖµ
+        DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1200, DownAD3 = 1200; //ä¸‹å¡åˆ¤å®šç”µæ„Ÿå€¼
 
         int Flag_0 = 1;
         if (Flag_0)
         {
-            if (SW1 && SW2 && SW3 && SW4) //Õı³£  Ä¦²Á²»¹»¿ÉÄÜÆ¯ÒÆ
+            if (SW1 && SW2 && SW3 && SW4) //æ­£å¸¸  æ‘©æ“¦ä¸å¤Ÿå¯èƒ½æ¼‚ç§»
             {
-                StraightExpectSpeed = 3700; //Ö±ĞĞÆÚÍûËÙ¶È
-                TurnExpectSpeed = 3600;     //ÍäµÀÆÚÍûËÙ¶È
-                DownSpeed = 3450;           //ÏÂÆÂÆÚÍûËÙ¶È
+                StraightExpectSpeed = 3700; //ç›´è¡ŒæœŸæœ›é€Ÿåº¦
+                TurnExpectSpeed = 3600;     //å¼¯é“æœŸæœ›é€Ÿåº¦
+                DownSpeed = 3450;           //ä¸‹å¡æœŸæœ›é€Ÿåº¦
 
-                g_dirControl_P = 3000; //·½Ïò¿ØÖÆP
-                g_dirControl_D = 5000; //·½Ïò¿ØÖÆD
+                g_dirControl_P = 3000; //æ–¹å‘æ§åˆ¶P
+                g_dirControl_D = 5000; //æ–¹å‘æ§åˆ¶D
 
-                Turn_dirControl_P = 3000; //½øµº·½Ïò¿ØÖÆP
-                Turn_dirControl_D = 7000; //½øµº·½Ïò¿ØÖÆD
+                Turn_dirControl_P = 3000; //è¿›å²›æ–¹å‘æ§åˆ¶P
+                Turn_dirControl_D = 7000; //è¿›å²›æ–¹å‘æ§åˆ¶D
 
-                TurnTimeDuring = 100;     //×ªÏòÊ±¼ä³£Á¿£¬ÈôÒªĞŞ¸Ä×ªÏòÊ±¼ä£¬¾ÍĞŞ¸ÄÕâ¸ö
-                FreezingTimeDuring = 250; //¶³½áÊ±¼ä³£Á¿
-                DownTimeDuring = 175;     //ÏÂÆÂÊ±¼ä³£Á¿
+                TurnTimeDuring = 100;     //è½¬å‘æ—¶é—´å¸¸é‡ï¼Œè‹¥è¦ä¿®æ”¹è½¬å‘æ—¶é—´ï¼Œå°±ä¿®æ”¹è¿™ä¸ª
+                FreezingTimeDuring = 250; //å†»ç»“æ—¶é—´å¸¸é‡
+                DownTimeDuring = 175;     //ä¸‹å¡æ—¶é—´å¸¸é‡
 
                 Expect_P = 0.4; //1.25
                 Expect_D = 0.5;
 
                 TurnValue = (int)(275 * Environment);
             }
-            if (!SW1 && SW2 && SW3 && SW4) //ÎÈ
+            if (!SW1 && SW2 && SW3 && SW4) //ç¨³
             {
-                StraightExpectSpeed = 3500; //Ö±ĞĞÆÚÍûËÙ¶È
-                TurnExpectSpeed = 3400;     //ÍäµÀÆÚÍûËÙ¶È9
-                DownSpeed = 3250;           //ÏÂÆÂÆÚÍûËÙ¶È
+                StraightExpectSpeed = 3500; //ç›´è¡ŒæœŸæœ›é€Ÿåº¦
+                TurnExpectSpeed = 3400;     //å¼¯é“æœŸæœ›é€Ÿåº¦9
+                DownSpeed = 3250;           //ä¸‹å¡æœŸæœ›é€Ÿåº¦
 
-                g_dirControl_P = 3000; //·½Ïò¿ØÖÆP
-                g_dirControl_D = 3200; //·½Ïò¿ØÖÆD
+                g_dirControl_P = 3000; //æ–¹å‘æ§åˆ¶P
+                g_dirControl_D = 3200; //æ–¹å‘æ§åˆ¶D
 
-                Turn_dirControl_P = 2500; //½øµº·½Ïò¿ØÖÆP
-                Turn_dirControl_D = 6000; //½øµº·½Ïò¿ØÖÆD
+                Turn_dirControl_P = 2500; //è¿›å²›æ–¹å‘æ§åˆ¶P
+                Turn_dirControl_D = 6000; //è¿›å²›æ–¹å‘æ§åˆ¶D
 
-                TurnTimeDuring = 100;     //×ªÏòÊ±¼ä³£Á¿£¬ÈôÒªĞŞ¸Ä×ªÏòÊ±¼ä£¬¾ÍĞŞ¸ÄÕâ¸ö
-                FreezingTimeDuring = 250; //¶³½áÊ±¼ä³£Á¿
-                DownTimeDuring = 175;     //ÏÂÆÂÊ±¼ä³£Á¿
+                TurnTimeDuring = 100;     //è½¬å‘æ—¶é—´å¸¸é‡ï¼Œè‹¥è¦ä¿®æ”¹è½¬å‘æ—¶é—´ï¼Œå°±ä¿®æ”¹è¿™ä¸ª
+                FreezingTimeDuring = 250; //å†»ç»“æ—¶é—´å¸¸é‡
+                DownTimeDuring = 175;     //ä¸‹å¡æ—¶é—´å¸¸é‡
 
                 Expect_P = 0.4; //1.25
                 Expect_D = 0.5;
 
                 TurnValue = (int)(275 * Environment);
             }
-            if (SW1 && !SW2 && SW3 && SW4) //¸üÎÈ
+            if (SW1 && !SW2 && SW3 && SW4) //æ›´ç¨³
             {
-                StraightExpectSpeed = 3200; //Ö±ĞĞÆÚÍûËÙ¶È
-                TurnExpectSpeed = 3100;     //ÍäµÀÆÚÍûËÙ¶È
-                DownSpeed = 2950;           //ÏÂÆÂÆÚÍûËÙ¶È
+                StraightExpectSpeed = 3200; //ç›´è¡ŒæœŸæœ›é€Ÿåº¦
+                TurnExpectSpeed = 3100;     //å¼¯é“æœŸæœ›é€Ÿåº¦
+                DownSpeed = 2950;           //ä¸‹å¡æœŸæœ›é€Ÿåº¦
 
-                g_dirControl_P = 3000; //·½Ïò¿ØÖÆP
-                g_dirControl_D = 3200; //·½Ïò¿ØÖÆD
+                g_dirControl_P = 3000; //æ–¹å‘æ§åˆ¶P
+                g_dirControl_D = 3200; //æ–¹å‘æ§åˆ¶D
 
-                Turn_dirControl_P = 2500; //½øµº·½Ïò¿ØÖÆP
-                Turn_dirControl_D = 5500; //½øµº·½Ïò¿ØÖÆD
+                Turn_dirControl_P = 2500; //è¿›å²›æ–¹å‘æ§åˆ¶P
+                Turn_dirControl_D = 5500; //è¿›å²›æ–¹å‘æ§åˆ¶D
 
-                TurnTimeDuring = 100;     //×ªÏòÊ±¼ä³£Á¿£¬ÈôÒªĞŞ¸Ä×ªÏòÊ±¼ä£¬¾ÍĞŞ¸ÄÕâ¸ö
-                FreezingTimeDuring = 300; //¶³½áÊ±¼ä³£Á¿
-                DownTimeDuring = 175;     //ÏÂÆÂÊ±¼ä³£Á¿
+                TurnTimeDuring = 100;     //è½¬å‘æ—¶é—´å¸¸é‡ï¼Œè‹¥è¦ä¿®æ”¹è½¬å‘æ—¶é—´ï¼Œå°±ä¿®æ”¹è¿™ä¸ª
+                FreezingTimeDuring = 300; //å†»ç»“æ—¶é—´å¸¸é‡
+                DownTimeDuring = 175;     //ä¸‹å¡æ—¶é—´å¸¸é‡
 
                 Expect_P = 0.5; //1.25
                 Expect_D = 0.6;
 
                 TurnValue = (int)(275 * Environment);
             }
-            if (SW1 && SW2 && !SW3 && SW4) //×îÎÈ
+            if (SW1 && SW2 && !SW3 && SW4) //æœ€ç¨³
             {
-                StraightExpectSpeed = 2800; //Ö±ĞĞÆÚÍûËÙ¶È
-                TurnExpectSpeed = 2700;     //ÍäµÀÆÚÍûËÙ¶È
-                DownSpeed = 2650;           //ÏÂÆÂÆÚÍûËÙ¶È
+                StraightExpectSpeed = 2800; //ç›´è¡ŒæœŸæœ›é€Ÿåº¦
+                TurnExpectSpeed = 2700;     //å¼¯é“æœŸæœ›é€Ÿåº¦
+                DownSpeed = 2650;           //ä¸‹å¡æœŸæœ›é€Ÿåº¦
 
-                g_dirControl_P = 3000; //·½Ïò¿ØÖÆP
-                g_dirControl_D = 3200; //·½Ïò¿ØÖÆD
+                g_dirControl_P = 3000; //æ–¹å‘æ§åˆ¶P
+                g_dirControl_D = 3200; //æ–¹å‘æ§åˆ¶D
 
-                Turn_dirControl_P = 3000; //½øµº·½Ïò¿ØÖÆP
-                Turn_dirControl_D = 6000; //½øµº·½Ïò¿ØÖÆD
+                Turn_dirControl_P = 3000; //è¿›å²›æ–¹å‘æ§åˆ¶P
+                Turn_dirControl_D = 6000; //è¿›å²›æ–¹å‘æ§åˆ¶D
 
-                TurnTimeDuring = 100;     //×ªÏòÊ±¼ä³£Á¿£¬ÈôÒªĞŞ¸Ä×ªÏòÊ±¼ä£¬¾ÍĞŞ¸ÄÕâ¸ö
-                FreezingTimeDuring = 350; //¶³½áÊ±¼ä³£Á¿
-                DownTimeDuring = 175;     //ÏÂÆÂÊ±¼ä³£Á¿
+                TurnTimeDuring = 100;     //è½¬å‘æ—¶é—´å¸¸é‡ï¼Œè‹¥è¦ä¿®æ”¹è½¬å‘æ—¶é—´ï¼Œå°±ä¿®æ”¹è¿™ä¸ª
+                FreezingTimeDuring = 350; //å†»ç»“æ—¶é—´å¸¸é‡
+                DownTimeDuring = 175;     //ä¸‹å¡æ—¶é—´å¸¸é‡
 
                 Expect_P = 0.5; //1.25
                 Expect_D = 0.6;
 
                 TurnValue = (int)(275 * Environment);
             }
-            if (!SW1 && !SW2 && SW3 && SW4) //¼ÓËÙ
+            if (!SW1 && !SW2 && SW3 && SW4) //åŠ é€Ÿ
             {
-                StraightExpectSpeed = 3800; //Ö±ĞĞÆÚÍûËÙ¶È
-                TurnExpectSpeed = 3700;     //ÍäµÀÆÚÍûËÙ¶È9
-                DownSpeed = 3500;           //ÏÂÆÂÆÚÍûËÙ¶È
+                StraightExpectSpeed = 3800; //ç›´è¡ŒæœŸæœ›é€Ÿåº¦
+                TurnExpectSpeed = 3700;     //å¼¯é“æœŸæœ›é€Ÿåº¦9
+                DownSpeed = 3500;           //ä¸‹å¡æœŸæœ›é€Ÿåº¦
 
-                g_dirControl_P = 3800; //·½Ïò¿ØÖÆP
-                g_dirControl_D = 6800; //·½Ïò¿ØÖÆD2069622222222262090
+                g_dirControl_P = 3800; //æ–¹å‘æ§åˆ¶P
+                g_dirControl_D = 6800; //æ–¹å‘æ§åˆ¶D2069622222222262090
 
-                Turn_dirControl_P = 4500; //½øµº·½Ïò¿ØÖÆP
-                Turn_dirControl_D = 8500; //½øµº·½Ïò¿ØÖÆD
+                Turn_dirControl_P = 4500; //è¿›å²›æ–¹å‘æ§åˆ¶P
+                Turn_dirControl_D = 8500; //è¿›å²›æ–¹å‘æ§åˆ¶D
 
-                TurnTimeDuring = 100;     //×ªÏòÊ±¼ä³£Á¿£¬ÈôÒªĞŞ¸Ä×ªÏòÊ±¼ä£¬¾ÍĞŞ¸ÄÕâ¸ö
-                FreezingTimeDuring = 220; //¶³½áÊ±¼ä³£Á¿
-                DownTimeDuring = 175;     //ÏÂÆÂÊ±¼ä³£Á¿
+                TurnTimeDuring = 100;     //è½¬å‘æ—¶é—´å¸¸é‡ï¼Œè‹¥è¦ä¿®æ”¹è½¬å‘æ—¶é—´ï¼Œå°±ä¿®æ”¹è¿™ä¸ª
+                FreezingTimeDuring = 220; //å†»ç»“æ—¶é—´å¸¸é‡
+                DownTimeDuring = 175;     //ä¸‹å¡æ—¶é—´å¸¸é‡
 
                 Expect_P = 0.5; //1.25
                 Expect_D = 0.65;
 
                 TurnValue = (int)(275 * Environment);
             }
-            if (!SW1 && SW2 && !SW3 && SW4) //¼ÓËÙ+1
+            if (!SW1 && SW2 && !SW3 && SW4) //åŠ é€Ÿ+1
             {
-                StraightExpectSpeed = 4200; //Ö±ĞĞÆÚÍûËÙ¶È
-                TurnExpectSpeed = 3900;     //ÍäµÀÆÚÍûËÙ¶È9
-                DownSpeed = 3900;           //ÏÂÆÂÆÚÍûËÙ¶È
+                StraightExpectSpeed = 4200; //ç›´è¡ŒæœŸæœ›é€Ÿåº¦
+                TurnExpectSpeed = 3900;     //å¼¯é“æœŸæœ›é€Ÿåº¦9
+                DownSpeed = 3900;           //ä¸‹å¡æœŸæœ›é€Ÿåº¦
 
-                g_dirControl_P = 3500; //·½Ïò¿ØÖÆP
-                g_dirControl_D = 6000; //·½Ïò¿ØÖÆD
+                g_dirControl_P = 3500; //æ–¹å‘æ§åˆ¶P
+                g_dirControl_D = 6000; //æ–¹å‘æ§åˆ¶D
 
-                Turn_dirControl_P = 4500; //½øµº·½Ïò¿ØÖÆP
-                Turn_dirControl_D = 9000; //½øµº·½Ïò¿ØÖÆD
+                Turn_dirControl_P = 4500; //è¿›å²›æ–¹å‘æ§åˆ¶P
+                Turn_dirControl_D = 9000; //è¿›å²›æ–¹å‘æ§åˆ¶D
 
-                TurnTimeDuring = 100;     //×ªÏòÊ±¼ä³£Á¿£¬ÈôÒªĞŞ¸Ä×ªÏòÊ±¼ä£¬¾ÍĞŞ¸ÄÕâ¸ö
-                FreezingTimeDuring = 200; //¶³½áÊ±¼ä³£Á¿
-                DownTimeDuring = 175;     //ÏÂÆÂÊ±¼ä³£Á¿
+                TurnTimeDuring = 100;     //è½¬å‘æ—¶é—´å¸¸é‡ï¼Œè‹¥è¦ä¿®æ”¹è½¬å‘æ—¶é—´ï¼Œå°±ä¿®æ”¹è¿™ä¸ª
+                FreezingTimeDuring = 200; //å†»ç»“æ—¶é—´å¸¸é‡
+                DownTimeDuring = 175;     //ä¸‹å¡æ—¶é—´å¸¸é‡
 
                 Expect_P = 0.5; //1.25
                 Expect_D = 0.65;

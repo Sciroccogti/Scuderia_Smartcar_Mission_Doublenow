@@ -82,11 +82,9 @@ void param_save(struct PARAM *p_param)    //把结构体中的数据存到flash�
 {
     flash_erase_sector(255); //擦除第255页数据
     flash_erase_sector(253);
- 
-	flash_page_program(uint32 sector_num, uint32 page_num, const uint32 *buf, uint8 len)
 
     flash_page_program( 255,0,(const uint8*)&(p_param->int01),4);
-    flash_page_program( 255,1(const uint8*)&(p_param->int02),4);
+    flash_page_program( 255,1,(const uint8*)&(p_param->int02),4);
     flash_page_program( 255,2,(const uint8*)&(p_param->int03),4);
     flash_page_program( 255,3,(const uint8*)&(p_param->int04),4);
     flash_page_program( 255,4,(const uint8*)&(p_param->int05),4);
@@ -112,6 +110,6 @@ void param_save(struct PARAM *p_param)    //把结构体中的数据存到flash�
     flash_page_program( 255,23,(const uint8*)&(p_param->float12),4);
     
     flash_page_program( 253,0,(const uint8*)&(p_param->param_flag),4);
-    //源代码的offset和逐飞库里面的page是一个东西吗？此处假定page=offset/4
-
+    // TODO: 源代码的offset和逐飞库里面的page是一个东西吗？此处假定page=offset/4
+    // RE: 好像是
 }

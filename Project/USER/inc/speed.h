@@ -5,7 +5,7 @@
 
 
 
-/**********全局变量外部申明********/
+/**********鍏ㄥ眬鍙橀噺澶栭儴鐢虫槑********/
 extern int32 g_nLeftpulse;
 extern int32 g_nRighpulse;
 extern float g_fSpeedError;
@@ -18,8 +18,8 @@ extern int32 g_nLeftPWM, g_nRighPWM;
 extern float g_fExpectSpeed;
 extern int32 MaxPWM;
 
-extern float StraightExpectSpeed;     //直行期望速度
-extern float TurnExpectSpeed;         //弯道期望速度
+extern float StraightExpectSpeed;     //鐩磋鏈熸湜閫熷害
+extern float TurnExpectSpeed;         //寮亾鏈熸湜閫熷害
 extern float SpeedUpSpeed;
 extern float DownSpeed ;
 
@@ -28,14 +28,14 @@ extern float Expect_D;
 //extern float TurnExpect_P;
 //extern float TurnExpect_D;
 
-extern int16 TurnValue;//弯道判定参数
+extern int16 TurnValue;//寮亾鍒ゅ畾鍙傛暟
 extern int16 BasePWM ;
 extern int16 TurnBasePWM ;
 
-extern float Kspeed;  //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
+extern float Kspeed;  //閫熷害鍜屾柟鍚戞帶鍒剁殑姣斾緥绯绘暟锛岃娉ㄦ剰鎺у埗Kspeed锛屼笉鐒堕�熷害闂幆鎺у埗浼氫笉骞虫粦
 extern float Kdirection; 
 
-/***********函数声明***********/
+/***********鍑芥暟澹版槑***********/
 void MotorInit(void);
 void PWMOut(void);
 void CalSpeedError(void);

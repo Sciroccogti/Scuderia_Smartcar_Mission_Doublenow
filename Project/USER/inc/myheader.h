@@ -4,6 +4,7 @@
 #include "isr.h"
 #include "myoled.h"
 #include "RT106X_config.h"
+#include "headfile.h"
 
 //---------------------------------  MY Define  --------------------------------
 #define    BUZZ    		I1

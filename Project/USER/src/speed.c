@@ -1,7 +1,7 @@
 /*********************************************************************************************************************
  * 
  * @file       		speed.c
- *  				ËÙ¶È¿ØÖÆ
+ *  				é€Ÿåº¦æŽ§åˆ¶
  * @core			S9KEA128
  * @date       		2018
  ********************************************************************************************************************/
@@ -17,49 +17,49 @@
 //KEA VERSION
 //#include  "headerfile.h"
 //RT1064 VERSION
-#include"headfile.h"
+#include "myheader.h"
 
-/**********È«¾Ö±äÁ¿¶¨Òå********/
+/**********å…¨å±€å˜é‡å®šä¹‰********/
 int32 LeftDead = 0;
 int32 RighDead = 0;
-float Ratio_Encoder_Left = 200/(1175*0.02);// ×óÂÖËÙ¶È=counter*×óÂÖÖÜ³¤(mm)/(×óÂÖ×ªÒ»È¦¶ÔÓ¦µÄÂö³åÊý*³ÌÐòÖÜÆÚ)
-float Ratio_Encoder_Righ = 200/(1175*0.02);// ÓÒÂÖËÙ¶È=counter*ÓÒÂÖÖÜ³¤(mm)/(ÓÒÂÖ×ªÒ»È¦¶ÔÓ¦µÄÂö³åÊý*³ÌÐòÖÜÆÚ)
-float g_fRealSpeed = 0;				//ÕæÊµËÙ¶È
+float Ratio_Encoder_Left = 200/(1175*0.02);// å·¦è½®é€Ÿåº¦=counter*å·¦è½®å‘¨é•¿(mm)/(å·¦è½®è½¬ä¸€åœˆå¯¹åº”çš„è„‰å†²æ•°*ç¨‹åºå‘¨æœŸ)
+float Ratio_Encoder_Righ = 200/(1175*0.02);// å³è½®é€Ÿåº¦=counter*å³è½®å‘¨é•¿(mm)/(å³è½®è½¬ä¸€åœˆå¯¹åº”çš„è„‰å†²æ•°*ç¨‹åºå‘¨æœŸ)
+float g_fRealSpeed = 0;				//çœŸå®žé€Ÿåº¦
 float g_fLeftRealSpeed;
 float g_fRighRealSpeed;
-float g_fSpeedFilter = 0;			//½×ÌÝÂË²¨ËÙ¶È
-float g_fExpectSpeed = 1300;		//ÆÚÍûËÙ¶È
-float g_fSpeedError;				//ËÙ¶ÈÆ«²î
+float g_fSpeedFilter = 0;			//é˜¶æ¢¯æ»¤æ³¢é€Ÿåº¦
+float g_fExpectSpeed = 1300;		//æœŸæœ›é€Ÿåº¦
+float g_fSpeedError;				//é€Ÿåº¦åå·®
 float g_fSpeedErrorTemp[5] = {0};		
 int32 g_nLeftpulse = 0,g_nRighpulse = 0;
 int32 nLeftPWM = 0,nRighPWM = 0;
 int32 g_nLeftPWM = 0, g_nRighPWM = 0;
-float g_fSpeedControlOut = 100;		//ËÙ¶ÈÊä³ö
+float g_fSpeedControlOut = 100;		//é€Ÿåº¦è¾“å‡º
 int32 MaxPWM = 650;
 int8 TurnFlag = OFF;
 int8 StraightClk = 0;
-//ÒÔÏÂÎª¿ÉÄÜÐèÒªµ÷ÕûµÄ²ÎÊý
+//ä»¥ä¸‹ä¸ºå¯èƒ½éœ€è¦è°ƒæ•´çš„å‚æ•°
 
-float StraightExpectSpeed;     //Ö±ÐÐÆÚÍûËÙ¶È
-float TurnExpectSpeed ;         //ÍäµÀÆÚÍûËÙ¶È
-float SpeedUpSpeed;  //¼ÓËÙÆÚÍûËÙ¶È
-float DownSpeed;//ÏÂÆÂÆÚÍûËÙ¶È
+float StraightExpectSpeed;     //ç›´è¡ŒæœŸæœ›é€Ÿåº¦
+float TurnExpectSpeed ;         //å¼¯é“æœŸæœ›é€Ÿåº¦
+float SpeedUpSpeed;  //åŠ é€ŸæœŸæœ›é€Ÿåº¦
+float DownSpeed;//ä¸‹å¡æœŸæœ›é€Ÿåº¦
 
 float Expect_P;
 float Expect_D;
 //float TurnExpect_P = 0.25;
 //float TurnExpect_D = 1.5;
 
-int16 TurnValue = 400;//ÍäµÀÅÐ¶¨²ÎÊý
+int16 TurnValue = 400;//å¼¯é“åˆ¤å®šå‚æ•°
 int16 BasePWM = 0;
 int16 TurnBasePWM = 0;
 
-float Kspeed = 1;  //ËÙ¶ÈºÍ·½Ïò¿ØÖÆµÄ±ÈÀýÏµÊý£¬Òª×¢Òâ¿ØÖÆKspeed£¬²»È»ËÙ¶È±Õ»·¿ØÖÆ»á²»Æ½»¬
+float Kspeed = 1;  //é€Ÿåº¦å’Œæ–¹å‘æŽ§åˆ¶çš„æ¯”ä¾‹ç³»æ•°ï¼Œè¦æ³¨æ„æŽ§åˆ¶Kspeedï¼Œä¸ç„¶é€Ÿåº¦é—­çŽ¯æŽ§åˆ¶ä¼šä¸å¹³æ»‘
 float Kdirection = 1;   
 
 
 /**
- * @file		PWMÊä³ö
+ * @file		PWMè¾“å‡º
  * @date		2018
  */
 
@@ -91,7 +91,7 @@ void PWMOut(void)
 	
         
         
-    if(Flag_Stop == OFF) 									//Èç¹ûFlag_Stop == OFFµç»úÊä³ö0
+    if(Flag_Stop == OFF) 									//å¦‚æžœFlag_Stop == OFFç”µæœºè¾“å‡º0
 	{
 	  	g_nLeftPWM = 0;g_nRighPWM = 0;
 	}
@@ -149,8 +149,8 @@ void PWMOut(void)
    
 
 /**
- * @file		¼ÆËãËÙ¶ÈÆ«²î
- * @note      	²úÉúÈ«¾Ö±äÁ¿g_fSpeedError
+ * @file		è®¡ç®—é€Ÿåº¦åå·®
+ * @note      	äº§ç”Ÿå…¨å±€å˜é‡g_fSpeedError
  * @date		2018
  */
 void CalSpeedError(void)
@@ -158,26 +158,26 @@ void CalSpeedError(void)
 	static float fSpeedOld = 0, fSpeedNew = 0;
 
 	/*//KEA version
-	g_nLeftpulse = (GPIO_Get(E1) ==1?FTM_Pulse_Get(ftm0):-FTM_Pulse_Get(ftm0));//¶ÁÈ¡×óÂÖÂö³å
+	g_nLeftpulse = (GPIO_Get(E1) ==1?FTM_Pulse_Get(ftm0):-FTM_Pulse_Get(ftm0));//è¯»å–å·¦è½®è„‰å†²
 	FTM_Count_Clean(ftm0);
-	g_nRighpulse = (GPIO_Get(H6)==0?FTM_Pulse_Get(ftm1):-FTM_Pulse_Get(ftm1));//¶ÁÈ¡ÓÒÂÖÂö³å
+	g_nRighpulse = (GPIO_Get(H6)==0?FTM_Pulse_Get(ftm1):-FTM_Pulse_Get(ftm1));//è¯»å–å³è½®è„‰å†²
 	FTM_Count_Clean(ftm1);	
 	*/
 
 	//rt1064 version, optimizing style of coding
-	g_nLeftpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER0_C0);//¶ÁÈ¡×óÂÖÂö³å C0:LSB C1:DIR
-	g_nLeftpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER0_C2);//¶ÁÈ¡ÓÒÂÖÂö³å C2:LSB C24:DIR
+	g_nLeftpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER0_C0);//è¯»å–å·¦è½®è„‰å†² C0:LSB C1:DIR
+	g_nLeftpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER0_C2);//è¯»å–å³è½®è„‰å†² C2:LSB C24:DIR
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER0_C0 );  
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER2_C2 );  
 
 	g_fLeftRealSpeed = g_nLeftpulse*Ratio_Encoder_Left;
-	g_fLeftRealSpeed = (g_fLeftRealSpeed>3400?3400:g_fLeftRealSpeed);		//ÂË×ó±àÂëÆ÷µÄÔëÉù
+	g_fLeftRealSpeed = (g_fLeftRealSpeed>3400?3400:g_fLeftRealSpeed);		//æ»¤å·¦ç¼–ç å™¨çš„å™ªå£°
 	g_fRighRealSpeed = g_nRighpulse*Ratio_Encoder_Righ;
-	g_fRighRealSpeed = (g_fRighRealSpeed>3400?3400:g_fRighRealSpeed);		//ÂËÓÒ±àÂëÆ÷µÄÔëÉù
+	g_fRighRealSpeed = (g_fRighRealSpeed>3400?3400:g_fRighRealSpeed);		//æ»¤å³ç¼–ç å™¨çš„å™ªå£°
 	
-	g_fRealSpeed = (g_fLeftRealSpeed + g_fRighRealSpeed)*0.5;				//ÕæÊµËÙ¶È
+	g_fRealSpeed = (g_fLeftRealSpeed + g_fRighRealSpeed)*0.5;				//çœŸå®žé€Ÿåº¦
 	
-	//ËÙ¶È²É¼¯ÌÝ¶ÈÆ½»¬£¬Ã¿´Î²É¼¯×î´ó±ä»¯200
+	//é€Ÿåº¦é‡‡é›†æ¢¯åº¦å¹³æ»‘ï¼Œæ¯æ¬¡é‡‡é›†æœ€å¤§å˜åŒ–200
 	fSpeedOld = g_fSpeedFilter;
 	fSpeedNew = g_fRealSpeed;
 
@@ -216,13 +216,13 @@ void CalSpeedError(void)
 
 
 /**
- * @file		ËÙ¶È¿ØÖÆ
- * @note      	ËÙ¶ÈÌÝ¶ÈÆ½»¬
+ * @file		é€Ÿåº¦æŽ§åˆ¶
+ * @note      	é€Ÿåº¦æ¢¯åº¦å¹³æ»‘
  * @date		2019
  */
 void SpeedControl(void)
 {
-	CalSpeedError();	//¼ÆËãËÙ¶ÈÆ«²î
+	CalSpeedError();	//è®¡ç®—é€Ÿåº¦åå·®
  
         if(g_ValueOfAD[0]-g_ValueOfAD[1]>  TurnValue||g_ValueOfAD[1]-g_ValueOfAD[0]>  TurnValue)
           g_fSpeedControlOut = Expect_P * g_fSpeedError + Expect_D * (g_fSpeedErrorTemp[0]-g_fSpeedErrorTemp[1]);
