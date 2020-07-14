@@ -8,13 +8,15 @@
 #include "myheader.h"
 
 /**********全局变量定义********/
-float
-    g_fDirectionError[2];  //方向偏差（g_fDirectionError[0]为一对水平电感的差比和偏差）
-                           ////
-                           //（g_fDirectionError[1]为一对垂直电感的差比和偏差）
-float g_fDirectionError_dot
-    [2];  //方向偏差微分（g_fDirectionError_dot[0]为一对水平电感的差比和偏差微分）
-          //// （g_fDirectionError_dot[1]为一对垂直电感的差比和偏差微分）
+// 方向偏差
+//（g_fDirectionError[0]为一对水平电感的差比和偏差）
+//（g_fDirectionError[1]为一对垂直电感的差比和偏差）
+float g_fDirectionError[2];
+
+// 方向偏差微分
+//（g_fDirectionError_dot[0]为一对水平电感的差比和偏差微分）
+//（g_fDirectionError_dot[1]为一对垂直电感的差比和偏差微分）
+float g_fDirectionError_dot[2];
 float g_fDirectionControlOut;      //方向控制输出
 int16 g_ValueOfAD[4] = {0};        //获取的电感值
 int16 g_ValueOfADFilter[4] = {0};  //阶梯滤波的电感值（未使用）
@@ -36,15 +38,17 @@ float TurnTimeDuring;  //转向时间常量，若要修改转向时间，就修�
 float FreezingTimeDuring;  //冻结时间常量
 float DownTimeDuring;      //下坡时间常量
 
-int16 TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200,
-      TurnAD3 = 1200;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
-int16 LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000,
-      LeaveAD3 = 1000;  //离开环岛的阈值放松
-int16 DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1000,
-      DownAD3 = 1000;  //下坡判定电感值
+// 水平左右，垂直左右电感，判断是否到达环岛的阈值
+int16 TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200, TurnAD3 = 1200;
 
-float Environment =
-    0.9;  //受环境影响的电感系数  把左右水平电感控制在 800左右（参考）
+// 离开环岛的阈值放松
+int16 LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
+
+// 下坡判定电感值
+int16 DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1000, DownAD3 = 1000;
+
+// 受环境影响的电感系数  把左右水平电感控制在 800左右（参考）
+float Environment = 0.9;
 
 /**
  * @file		方向控制
@@ -53,9 +57,9 @@ float Environment =
  *
  *									电感值对应变量
  *
- *				g_ValueOfAD[0]									g_ValueOfAD[1]
- *				(水平左电感)				g_ValueOfAD[2](水平中电感）
- *（水平右电感）
+ *				g_ValueOfAD[0] (水平左电感)	
+ *              g_ValueOfAD[1]（水平右电感）
+ *				g_ValueOfAD[2]（水平中电感）
  *
  * @date		2018
  */
@@ -205,10 +209,10 @@ void Read_ADC(void) {
     int16 ValueOfADOld[4], ValueOfADNew[4];
 
     for (i = 0; i < 5; i++) {
-        ad_valu[0][i] = adc_mean_filter(AD3, AD3, 5) * 11046 / 10000;  // 水平左
-        ad_valu[1][i] = adc_mean_filter(AD5, AD5, 5) * 13624 / 10000;  // 水平右
-        ad_valu[2][i] = adc_mean_filter(AD4, AD4, 5);                  // 垂直左
-        ad_valu[3][i] = adc_mean_filter(AD2, AD2, 5);                  //垂直右
+        ad_valu[0][i] = adc_mean_filter(ADC_1, AD3, 5) * 11046 / 10000;  // 水平左
+        ad_valu[1][i] = adc_mean_filter(ADC_1, AD5, 5) * 13624 / 10000;  // 水平右
+        ad_valu[2][i] = adc_mean_filter(ADC_1, AD4, 5);  // 垂直左
+        ad_valu[3][i] = adc_mean_filter(ADC_1, AD2, 5);  //垂直右
     }
     /*=========================冒泡排序升序==========================*/  //舍弃最大值和最小值
     for (i = 0; i < 4; i++) {

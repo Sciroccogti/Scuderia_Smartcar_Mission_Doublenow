@@ -243,37 +243,38 @@ void myoled3()
     }
 }
 
-void myoled4()
+// 逐飞无五向开关
+// void myoled4()
 
-{
-    char TurnTD[16];
-    char FreezeTD[16];
+// {
+//     char TurnTD[16];
+//     char FreezeTD[16];
 
-    sprintf(TurnTD, "TTDur:%d", (int16)TurnTimeDuring);
-    sprintf(FreezeTD, "FTDur:%d", (int16)FreezingTimeDuring);
+//     sprintf(TurnTD, "TTDur:%d", (int16)TurnTimeDuring);
+//     sprintf(FreezeTD, "FTDur:%d", (int16)FreezingTimeDuring);
 
-    /*//KEA128 version
-    OLED_Display_Config(1);
-    OLED_Clear(0x00);
-    OLED_Show_String(8, 13, 0, 63, 1, TurnTD, 0);
-    OLED_Show_String(8, 13, 0, 32, 1, FreezeTD, 0);
-    OLED_Refresh_Gram();
-    */
+//     /*//KEA128 version
+//     OLED_Display_Config(1);
+//     OLED_Clear(0x00);
+//     OLED_Show_String(8, 13, 0, 63, 1, TurnTD, 0);
+//     OLED_Show_String(8, 13, 0, 32, 1, FreezeTD, 0);
+//     OLED_Refresh_Gram();
+//     */
 
-    //RT1064 version
-    oled_fill(0x00); //clear
-    oled_p8x16str(0, 6, TurnTD);
-    oled_p8x16str(0, 4, FreezeTD);
+//     //RT1064 version
+//     oled_fill(0x00); //clear
+//     oled_p8x16str(0, 6, TurnTD);
+//     oled_p8x16str(0, 4, FreezeTD);
 
-    if (gpio_get(H3) == 0)
-        TurnTimeDuring += 10;
-    if (gpio_get(F7) == 0)
-        TurnTimeDuring -= 10;
-    if (gpio_get(H4) == 0)
-        FreezingTimeDuring += 10;
-    if (gpio_get(F5) == 0)
-        FreezingTimeDuring -= 10;
-}
+//     if (gpio_get(H3) == 0)
+//         TurnTimeDuring += 10;
+//     if (gpio_get(F7) == 0)
+//         TurnTimeDuring -= 10;
+//     if (gpio_get(H4) == 0)
+//         FreezingTimeDuring += 10;
+//     if (gpio_get(F5) == 0)
+//         FreezingTimeDuring -= 10;
+// }
 
 //蓝牙接受中断
 /*

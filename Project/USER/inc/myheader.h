@@ -19,8 +19,8 @@
 #define    OFF  		1
 
 //---------------------------------  ADC  -------------------------------
-#define AD1 ADC0_SE1
-#define AD2	ADC0_SE3
-#define AD3 ADC0_SE2
-#define AD4	ADC0_SE9
-#define AD5 ADC0_SE10
+// #define AD1 ADC0_SE1
+#define AD2	ADC1_CH3_B14 // 垂直右
+#define AD3 ADC1_CH4_B15 // 水平左
+#define AD4	ADC1_CH10_B21 // 垂直左
+#define AD5 ADC1_CH12_B23 // 水平右
