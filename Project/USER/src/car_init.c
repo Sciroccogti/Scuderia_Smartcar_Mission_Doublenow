@@ -1,4 +1,5 @@
-#include "car_init.h"
+#include "myheader.h"
+
 // TODO: 上电时序
 void car_init() {
     // ADC初始化
@@ -15,10 +16,10 @@ void car_init() {
     // gpio_init(F7, GPI, 1, GPIO_PIN_CONFIG);  //右
     // gpio_init(F4, GPI, 1, GPIO_PIN_CONFIG);  //中
     // OLED初始化
-    OLED_Init();
+    oled_init();
 
     // flash初始化
-    FLASH_Init();
+    flash_init();
 
     /*红外线初始化
     ir_init();
@@ -36,10 +37,10 @@ void car_init() {
     // gpio_init(E6, GPO, 0, GPIO_PIN_CONFIG);
 
     // LED初始化
-    gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG); // 核心板蓝色
+    gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG);  // 核心板蓝色
 
     //蓝牙串口初始化
-    uart_init(USART_8, 115200,UART8_TX_D16,UART8_RX_D17);
+    uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
 
     // UART_Init(uart0,9600,RXTX_B0B1);
 
@@ -69,13 +70,13 @@ void car_init() {
     gpio_init(H6, GPI, HIGH, GPIO_PIN_CONFIG);
 
     //延时2s
-    Soft_Delay_ms(2000);
+    systick_delay_ms(2000);
 
     //定时器初始化
     pit_init();                       //初始化pit外设
     pit_interrupt_ms(PIT_CH0, 5000);  //初始化pit通道0 周期
-    PIT_SetCallback(PIT_Interrupt);
-    // NVIC_SetPriority(PIT_IRQn,15);      ///设置中断优先级 范围0-15
+    // PIT_SetCallback(PIT_Interrupt);
+    NVIC_SetPriority(PIT_IRQn,15);      ///设置中断优先级 范围0-15
     // 越小优先级越高 四路PIT共用一个PIT中断函数
     EnableGlobalIRQ(0);  //使能中断
 }

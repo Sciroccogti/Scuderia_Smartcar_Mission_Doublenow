@@ -8,7 +8,7 @@
 #include "common.h"
 
 /******************小车调整参数结构体***********/
-struct PARAM parameter;     //把结构体的参数传到这里面来   parameter:参数
+// struct PARAM parameter;     //把结构体的参数传到这里面来   parameter:参数
 
 int16 int01=0;
 int16 int02=0;

@@ -2007,22 +2007,52 @@
     <group>
         <name>user_c</name>
         <file>
-            <name>$PROJ_DIR$\..\..\USER\src\main.c</name>
+            <name>$PROJ_DIR$\..\..\USER\src\car_init.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\USER\src\direction.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\USER\src\isr.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\USER\src\myoled.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\USER\src\scope.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\USER\src\speed.c</name>
         </file>
     </group>
     <group>
         <name>user_h</name>
         <file>
+            <name>$PROJ_DIR$\..\..\USER\inc\car_init.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\USER\inc\direction.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\Libraries\seekfree_libraries\headfile.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\USER\inc\isr.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\USER\inc\myheader.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\USER\inc\myoled.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\USER\inc\RT106X_config.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\USER\inc\scope.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\USER\inc\speed.h</name>
         </file>
     </group>
     <group>
@@ -2076,4 +2106,7 @@
             <name>$PROJ_DIR$\..\..\..\Libraries\nxp_libraries\xip\fsl_flexspi_nor_boot.c</name>
         </file>
     </group>
+    <file>
+        <name>$PROJ_DIR$\..\..\..\main.c</name>
+    </file>
 </project>

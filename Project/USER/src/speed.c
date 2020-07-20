@@ -166,7 +166,7 @@ void CalSpeedError(void)
 
 	//rt1064 version, optimizing style of coding
 	g_nLeftpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER0_C0);//读取左轮脉冲 C0:LSB C1:DIR
-	g_nLeftpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER0_C2);//读取右轮脉冲 C2:LSB C24:DIR
+	g_nLeftpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER2_C2);//读取右轮脉冲 C2:LSB C24:DIR
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER0_C0 );  
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER2_C2 );  
 

@@ -4,10 +4,11 @@
  *  				虚拟示波器
  ********************************************************************************************************************/
 #include "scope.h"
+#include "myheader.h"
 
 short int OutData[4]={0};
 
-unsigned short CRC_CHECK(unsigned char *Buf,unsigned char CRC_CNT)
+unsigned short SCOPE_CRC_CHECK(unsigned char *Buf,unsigned char CRC_CNT)
 {
 	unsigned short CRC_Temp;
 	unsigned char i,j;
@@ -46,13 +47,14 @@ void OutPut_Data(void)
 		databuf[(i*2)+1]=(unsigned char)(temp1[i]/256);
 		
 	}
-	CRC16=CRC_CHECK(databuf,8);
+	CRC16 = SCOPE_CRC_CHECK(databuf,8);
 	databuf[8]=CRC16%256;
 	databuf[9]=CRC16/256;
 	for(i=0;i<10;i++)
 	{
+		uart_putchar(USART_8,(char)databuf[i]);
     	//uart_putchar (uart1, (char)databuf[i]);
-	 	printf("%c",databuf[i]);
+	 	// printf("%c",databuf[i]);
 	}
 }
 

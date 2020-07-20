@@ -2,6 +2,8 @@
 #define __MY_OLED_H
 #include "common.h"
 
+// 是 Libraries/seekfree_peripheral/SEEKFREE_OLED.h 的补充
+
 void oled_p6x8char(uint8 x, uint8 y, const int8 ch);
 void oled_p6x8char_highlight(uint8 x, uint8 y, const int8 ch);
 

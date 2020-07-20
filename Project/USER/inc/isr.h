@@ -24,7 +24,7 @@
 /**************全局变量外部申明*****************/
 
 extern uint8 Flag_Stop;
-void PIT_Interrupt(uint8 h);
+void PIT_Interrupt(void);
 void Interrupt_Test(uint8 h);
 
 #endif
