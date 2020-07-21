@@ -2,6 +2,8 @@
 
 // TODO: 上电时序
 void car_init() {
+    DisableGlobalIRQ();
+
     // ADC初始化
     // adc_init(AD1,ADC_12BIT);
     adc_init(ADC_1, AD2, ADC_12BIT);  // 垂直右
@@ -16,7 +18,8 @@ void car_init() {
     // gpio_init(F7, GPI, 1, GPIO_PIN_CONFIG);  //右
     // gpio_init(F4, GPI, 1, GPIO_PIN_CONFIG);  //中
     // OLED初始化
-    oled_init();
+    // oled_init();
+    lcd_init();
 
     // flash初始化
     flash_init();
@@ -69,8 +72,11 @@ void car_init() {
     gpio_init(E1, GPI, HIGH, GPIO_PIN_CONFIG);
     gpio_init(H6, GPI, HIGH, GPIO_PIN_CONFIG);
 
+    // 摄像头初始化
+    scc8660_csi_init();
     //延时2s
-    systick_delay_ms(2000);
+    systick_delay_ms(500);
+    gpio_set(B9, 1);
 
     //定时器初始化
     pit_init();                       //初始化pit外设
@@ -79,4 +85,5 @@ void car_init() {
     NVIC_SetPriority(PIT_IRQn,15);      ///设置中断优先级 范围0-15
     // 越小优先级越高 四路PIT共用一个PIT中断函数
     EnableGlobalIRQ(0);  //使能中断
+
 }
