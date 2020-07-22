@@ -54,10 +54,10 @@ void car_init() {
     gpio_init(H2, GPI, 1, GPIO_PIN_CONFIG);  // 4
 
     //电机初始化
-    pwm_init(PWM1_MODULE3_CHB_D1, 50, 5000);
-    pwm_init(PWM1_MODULE3_CHA_D0, 50, 5000);
-    pwm_init(PWM2_MODULE3_CHB_D3, 50, 5000);
-    pwm_init(PWM2_MODULE3_CHA_D2, 50, 5000);
+    pwm_init(PWM1_MODULE3_CHB_D1, 14000, 0);
+    pwm_init(PWM1_MODULE3_CHA_D0, 14000, 0);
+    pwm_init(PWM2_MODULE3_CHB_D3, 14000, 0);
+    pwm_init(PWM2_MODULE3_CHA_D2, 14000, 0);
 
     //左编码器初始化
     //右编码器初始化
