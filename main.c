@@ -17,7 +17,7 @@ uint8 page = 0;
 uint8 SW1, SW2, SW3, SW4;
 uint8 UpFlag = 1, DownFlag = 1, LeftFlag = 1, RightFlag = 1, MidFlag = 1;
 
-void myoled() {
+void display() {
     // need adc_init(ADC_1,ADC1_CH3_B14,ADC_8BIT); //初始化B14为ADC功能
     // 分辨率为8位 and adc_init(ADC_1,ADC1_CH4_B15,ADC_8BIT);
     uint16 ad5 = adc_convert(ADC_1, ADC1_CH3_B14);
@@ -56,11 +56,17 @@ OLED_Refresh_Gram();
 */
 
     // RT1064 version
-    oled_fill(0x00);  // clear
-    oled_p8x16str(0, 6, Left);
-    oled_p8x16str(0, 4, Right);
-    oled_p8x16str(64, 6, LeftMiddle);
-    oled_p8x16str(64, 4, RightMiddle);
+    // oled_fill(0x00);  // clear
+    lcd_clear(WHITE);
+    lcd_showstr(0, 6, Left);
+    lcd_showstr(0, 4, Right);
+    lcd_showstr(64, 6, LeftMiddle);
+    lcd_showstr(64, 4, RightMiddle);
+
+    // oled_p8x16str(0, 6, Left);
+    // oled_p8x16str(0, 4, Right);
+    // oled_p8x16str(64, 6, LeftMiddle);
+    // oled_p8x16str(64, 4, RightMiddle);
 }
 
 void oled() {
@@ -356,75 +362,25 @@ void uart_RX_INT(uint8 ch)
 */
 
 int main(void) {
-    // RT1064 EXCLUSIVE CONTENT
     DisableGlobalIRQ();
     board_init();
     systick_delay_ms(220);
     car_init();
 
     EnableGlobalIRQ(0);
-/*
-    // while ((1280 * ex_clk_khz) != (256 * ics_clk_khz)); //确保时钟配置无误
-
-    // UART_RX_IRQ_Enable(USART_8);
-    Flag_Stop = ON;
 
     while (1) {
-        // myoled();
-        //五向开关调参
+        display();
+        // if (scc8660_csi_finish_flag)  //图像采集完成
+        // {
+        //     scc8660_csi_finish_flag = 0;  //清除采集完成标志位
 
-        BlueTooth();
-        if (gpio_get(F4) == 0) {
-            page++;
-        }
-        switch (page % 4) {
-            case 0:
-                oled();
-
-                break;
-
-            case 1:
-                myoled1();
-                break;
-
-            case 2:
-                myoled2();
-                break;
-
-            case 3:
-                myoled3();
-                break;
-
-            default:
-                break;
-        }
-
-        // 0.5sLED闪烁
-        static uint16 i = 0;
-        i++;
-        if (i >= 100) {
-            // KEA VERSION
-            // GPIO_Turn(LED_R);
-
-            // RT1064 VERSION
-            gpio_toggle(LED_R);
-            i = 0;
-        }
-
-        //拨码开关换参
-        //KEA VERSION
-        // SW1 = gpio_get(C5);
-        // SW2 = gpio_get(H7);
-        // SW3 = gpio_get(H5);
-        // SW4 = gpio_get(H2);
-        
-
-        // RT1064 VERSION
-        SW1 = gpio_get(C5);  // C31
-        SW2 = gpio_get(H7);  // B11
-        SW3 = gpio_get(H5);  // C27
-        SW4 = gpio_get(H2);  // C25
-
+        //     //使用缩放显示函数，根据原始图像大小
+        //     //以及设置需要显示的大小自动进行缩放或者放大显示
+        //     //本例程默认采集分辨率为160*120，显示分辨率为160*128，纵向拉伸全屏
+        //     lcd_displayimage8660_zoom(scc8660_csi_image[0], SCC8660_CSI_PIC_W,
+        //                               SCC8660_CSI_PIC_H, 160, 128);
+        // }
         TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200,
         TurnAD3 = 1200;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
         LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
@@ -433,141 +389,233 @@ int main(void) {
 
         int Flag_0 = 1;
         if (Flag_0) {
-            if (SW1 && SW2 && SW3 && SW4)  //正常  摩擦不够可能漂移
-            {
-                StraightExpectSpeed = 3700;  //直行期望速度
-                TurnExpectSpeed = 3600;      //弯道期望速度
-                DownSpeed = 3450;            //下坡期望速度
+            StraightExpectSpeed = 2800;  //直行期望速度
+            TurnExpectSpeed = 2700;      //弯道期望速度
+            DownSpeed = 2650;            //下坡期望速度
 
-                g_dirControl_P = 3000;  //方向控制P
-                g_dirControl_D = 5000;  //方向控制D
+            g_dirControl_P = 3000;  //方向控制P
+            g_dirControl_D = 3200;  //方向控制D
 
-                Turn_dirControl_P = 3000;  //进岛方向控制P
-                Turn_dirControl_D = 7000;  //进岛方向控制D
+            Turn_dirControl_P = 3000;  //进岛方向控制P
+            Turn_dirControl_D = 6000;  //进岛方向控制D
 
-                TurnTimeDuring =
-                    100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 250;  //冻结时间常量
-                DownTimeDuring = 175;      //下坡时间常量
+            TurnTimeDuring = 100;  //转向时间常量，若要修改转向时间，就修改这个
+            FreezingTimeDuring = 350;  //冻结时间常量
+            DownTimeDuring = 175;      //下坡时间常量
 
-                Expect_P = 0.4;  // 1.25
-                Expect_D = 0.5;
+            Expect_P = 0.5;  // 1.25
+            Expect_D = 0.6;
 
-                TurnValue = (int)(275 * Environment);
-            }
-            if (!SW1 && SW2 && SW3 && SW4)  //稳
-            {
-                StraightExpectSpeed = 3500;  //直行期望速度
-                TurnExpectSpeed = 3400;      //弯道期望速度9
-                DownSpeed = 3250;            //下坡期望速度
-
-                g_dirControl_P = 3000;  //方向控制P
-                g_dirControl_D = 3200;  //方向控制D
-
-                Turn_dirControl_P = 2500;  //进岛方向控制P
-                Turn_dirControl_D = 6000;  //进岛方向控制D
-
-                TurnTimeDuring =
-                    100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 250;  //冻结时间常量
-                DownTimeDuring = 175;      //下坡时间常量
-
-                Expect_P = 0.4;  // 1.25
-                Expect_D = 0.5;
-
-                TurnValue = (int)(275 * Environment);
-            }
-            if (SW1 && !SW2 && SW3 && SW4)  //更稳
-            {
-                StraightExpectSpeed = 3200;  //直行期望速度
-                TurnExpectSpeed = 3100;      //弯道期望速度
-                DownSpeed = 2950;            //下坡期望速度
-
-                g_dirControl_P = 3000;  //方向控制P
-                g_dirControl_D = 3200;  //方向控制D
-
-                Turn_dirControl_P = 2500;  //进岛方向控制P
-                Turn_dirControl_D = 5500;  //进岛方向控制D
-
-                TurnTimeDuring =
-                    100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 300;  //冻结时间常量
-                DownTimeDuring = 175;      //下坡时间常量
-
-                Expect_P = 0.5;  // 1.25
-                Expect_D = 0.6;
-
-                TurnValue = (int)(275 * Environment);
-            }
-            if (SW1 && SW2 && !SW3 && SW4)  //最稳
-            {
-                StraightExpectSpeed = 2800;  //直行期望速度
-                TurnExpectSpeed = 2700;      //弯道期望速度
-                DownSpeed = 2650;            //下坡期望速度
-
-                g_dirControl_P = 3000;  //方向控制P
-                g_dirControl_D = 3200;  //方向控制D
-
-                Turn_dirControl_P = 3000;  //进岛方向控制P
-                Turn_dirControl_D = 6000;  //进岛方向控制D
-
-                TurnTimeDuring =
-                    100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 350;  //冻结时间常量
-                DownTimeDuring = 175;      //下坡时间常量
-
-                Expect_P = 0.5;  // 1.25
-                Expect_D = 0.6;
-
-                TurnValue = (int)(275 * Environment);
-            }
-            if (!SW1 && !SW2 && SW3 && SW4)  //加速
-            {
-                StraightExpectSpeed = 3800;  //直行期望速度
-                TurnExpectSpeed = 3700;      //弯道期望速度9
-                DownSpeed = 3500;            //下坡期望速度
-
-                g_dirControl_P = 3800;  //方向控制P
-                g_dirControl_D = 6800;  //方向控制D2069622222222262090
-
-                Turn_dirControl_P = 4500;  //进岛方向控制P
-                Turn_dirControl_D = 8500;  //进岛方向控制D
-
-                TurnTimeDuring =
-                    100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 220;  //冻结时间常量
-                DownTimeDuring = 175;      //下坡时间常量
-
-                Expect_P = 0.5;  // 1.25
-                Expect_D = 0.65;
-
-                TurnValue = (int)(275 * Environment);
-            }
-            if (!SW1 && SW2 && !SW3 && SW4)  //加速+1
-            {
-                StraightExpectSpeed = 4200;  //直行期望速度
-                TurnExpectSpeed = 3900;      //弯道期望速度9
-                DownSpeed = 3900;            //下坡期望速度
-
-                g_dirControl_P = 3500;  //方向控制P
-                g_dirControl_D = 6000;  //方向控制D
-
-                Turn_dirControl_P = 4500;  //进岛方向控制P
-                Turn_dirControl_D = 9000;  //进岛方向控制D
-
-                TurnTimeDuring =
-                    100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 200;  //冻结时间常量
-                DownTimeDuring = 175;      //下坡时间常量
-
-                Expect_P = 0.5;  // 1.25
-                Expect_D = 0.65;
-
-                TurnValue = (int)(275 * Environment);
-            }
-            Flag_0--;
+            TurnValue = (int)(275 * Environment);
         }
+    }
 
-        if (!SW4) Flag_Stop = ON;
-    }*/
+    /*
+        // while ((1280 * ex_clk_khz) != (256 * ics_clk_khz));
+       //确保时钟配置无误
+
+        // UART_RX_IRQ_Enable(USART_8);
+        Flag_Stop = ON;
+
+        while (1) {
+            // myoled();
+            //五向开关调参
+
+            BlueTooth();
+            if (gpio_get(F4) == 0) {
+                page++;
+            }
+            switch (page % 4) {
+                case 0:
+                    oled();
+
+                    break;
+
+                case 1:
+                    myoled1();
+                    break;
+
+                case 2:
+                    myoled2();
+                    break;
+
+                case 3:
+                    myoled3();
+                    break;
+
+                default:
+                    break;
+            }
+
+            // 0.5sLED闪烁
+            static uint16 i = 0;
+            i++;
+            if (i >= 100) {
+                // KEA VERSION
+                // GPIO_Turn(LED_R);
+
+                // RT1064 VERSION
+                gpio_toggle(LED_R);
+                i = 0;
+            }
+
+            //拨码开关换参
+            //KEA VERSION
+            // SW1 = gpio_get(C5);
+            // SW2 = gpio_get(H7);
+            // SW3 = gpio_get(H5);
+            // SW4 = gpio_get(H2);
+
+
+            // RT1064 VERSION
+            SW1 = gpio_get(C5);  // C31
+            SW2 = gpio_get(H7);  // B11
+            SW3 = gpio_get(H5);  // C27
+            SW4 = gpio_get(H2);  // C25
+
+            TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200,
+            TurnAD3 = 1200;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
+            LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
+            DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1200,
+            DownAD3 = 1200;  //下坡判定电感值
+
+            int Flag_0 = 1;
+            if (Flag_0) {
+                if (SW1 && SW2 && SW3 && SW4)  //正常  摩擦不够可能漂移
+                {
+                    StraightExpectSpeed = 3700;  //直行期望速度
+                    TurnExpectSpeed = 3600;      //弯道期望速度
+                    DownSpeed = 3450;            //下坡期望速度
+
+                    g_dirControl_P = 3000;  //方向控制P
+                    g_dirControl_D = 5000;  //方向控制D
+
+                    Turn_dirControl_P = 3000;  //进岛方向控制P
+                    Turn_dirControl_D = 7000;  //进岛方向控制D
+
+                    TurnTimeDuring =
+                        100;  //转向时间常量，若要修改转向时间，就修改这个
+                    FreezingTimeDuring = 250;  //冻结时间常量
+                    DownTimeDuring = 175;      //下坡时间常量
+
+                    Expect_P = 0.4;  // 1.25
+                    Expect_D = 0.5;
+
+                    TurnValue = (int)(275 * Environment);
+                }
+                if (!SW1 && SW2 && SW3 && SW4)  //稳
+                {
+                    StraightExpectSpeed = 3500;  //直行期望速度
+                    TurnExpectSpeed = 3400;      //弯道期望速度9
+                    DownSpeed = 3250;            //下坡期望速度
+
+                    g_dirControl_P = 3000;  //方向控制P
+                    g_dirControl_D = 3200;  //方向控制D
+
+                    Turn_dirControl_P = 2500;  //进岛方向控制P
+                    Turn_dirControl_D = 6000;  //进岛方向控制D
+
+                    TurnTimeDuring =
+                        100;  //转向时间常量，若要修改转向时间，就修改这个
+                    FreezingTimeDuring = 250;  //冻结时间常量
+                    DownTimeDuring = 175;      //下坡时间常量
+
+                    Expect_P = 0.4;  // 1.25
+                    Expect_D = 0.5;
+
+                    TurnValue = (int)(275 * Environment);
+                }
+                if (SW1 && !SW2 && SW3 && SW4)  //更稳
+                {
+                    StraightExpectSpeed = 3200;  //直行期望速度
+                    TurnExpectSpeed = 3100;      //弯道期望速度
+                    DownSpeed = 2950;            //下坡期望速度
+
+                    g_dirControl_P = 3000;  //方向控制P
+                    g_dirControl_D = 3200;  //方向控制D
+
+                    Turn_dirControl_P = 2500;  //进岛方向控制P
+                    Turn_dirControl_D = 5500;  //进岛方向控制D
+
+                    TurnTimeDuring =
+                        100;  //转向时间常量，若要修改转向时间，就修改这个
+                    FreezingTimeDuring = 300;  //冻结时间常量
+                    DownTimeDuring = 175;      //下坡时间常量
+
+                    Expect_P = 0.5;  // 1.25
+                    Expect_D = 0.6;
+
+                    TurnValue = (int)(275 * Environment);
+                }
+                if (SW1 && SW2 && !SW3 && SW4)  //最稳
+                {
+                    StraightExpectSpeed = 2800;  //直行期望速度
+                    TurnExpectSpeed = 2700;      //弯道期望速度
+                    DownSpeed = 2650;            //下坡期望速度
+
+                    g_dirControl_P = 3000;  //方向控制P
+                    g_dirControl_D = 3200;  //方向控制D
+
+                    Turn_dirControl_P = 3000;  //进岛方向控制P
+                    Turn_dirControl_D = 6000;  //进岛方向控制D
+
+                    TurnTimeDuring =
+                        100;  //转向时间常量，若要修改转向时间，就修改这个
+                    FreezingTimeDuring = 350;  //冻结时间常量
+                    DownTimeDuring = 175;      //下坡时间常量
+
+                    Expect_P = 0.5;  // 1.25
+                    Expect_D = 0.6;
+
+                    TurnValue = (int)(275 * Environment);
+                }
+                if (!SW1 && !SW2 && SW3 && SW4)  //加速
+                {
+                    StraightExpectSpeed = 3800;  //直行期望速度
+                    TurnExpectSpeed = 3700;      //弯道期望速度9
+                    DownSpeed = 3500;            //下坡期望速度
+
+                    g_dirControl_P = 3800;  //方向控制P
+                    g_dirControl_D = 6800;  //方向控制D2069622222222262090
+
+                    Turn_dirControl_P = 4500;  //进岛方向控制P
+                    Turn_dirControl_D = 8500;  //进岛方向控制D
+
+                    TurnTimeDuring =
+                        100;  //转向时间常量，若要修改转向时间，就修改这个
+                    FreezingTimeDuring = 220;  //冻结时间常量
+                    DownTimeDuring = 175;      //下坡时间常量
+
+                    Expect_P = 0.5;  // 1.25
+                    Expect_D = 0.65;
+
+                    TurnValue = (int)(275 * Environment);
+                }
+                if (!SW1 && SW2 && !SW3 && SW4)  //加速+1
+                {
+                    StraightExpectSpeed = 4200;  //直行期望速度
+                    TurnExpectSpeed = 3900;      //弯道期望速度9
+                    DownSpeed = 3900;            //下坡期望速度
+
+                    g_dirControl_P = 3500;  //方向控制P
+                    g_dirControl_D = 6000;  //方向控制D
+
+                    Turn_dirControl_P = 4500;  //进岛方向控制P
+                    Turn_dirControl_D = 9000;  //进岛方向控制D
+
+                    TurnTimeDuring =
+                        100;  //转向时间常量，若要修改转向时间，就修改这个
+                    FreezingTimeDuring = 200;  //冻结时间常量
+                    DownTimeDuring = 175;      //下坡时间常量
+
+                    Expect_P = 0.5;  // 1.25
+                    Expect_D = 0.65;
+
+                    TurnValue = (int)(275 * Environment);
+                }
+                Flag_0--;
+            }
+
+            if (!SW4) Flag_Stop = ON;
+        }*/
 }
