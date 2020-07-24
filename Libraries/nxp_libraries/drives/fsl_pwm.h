@@ -260,7 +260,7 @@ typedef enum _pwm_module_control
     kPWM_Control_Module_3 = (1U << 3)  /*!< Control submodule 3's start/stop,buffer reload operation */
 } pwm_module_control_t;
 
-#define PWM_DUTY_MAX    50000
+#define PWM_DUTY_MAX    1000
 
 /*! @brief Structure for the user to define the PWM signal characteristics */
 typedef struct _pwm_signal_param

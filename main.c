@@ -24,22 +24,34 @@ void display() {
     // uint16 ad4=ADC_Read(ADC0_SE9);
     // uint16 ad3 = adc_convert(ADC_1, ADC1_CH4_B15);
 
-    char Left[8];
-    char Right[8];
-    char LeftMiddle[8];
-    char RightMiddle[8];
+    char Left[10];
+    char Right[10];
+    char LeftMiddle[10];
+    char RightMiddle[10];
 
-    // char LeftPwm[8];
-    // char RightPwm[8];
+    char LeftPwm[10];
+    char RightPwm[10];
+
+    char LeftSpeed[10];
+    char RightSpeed[10];
+
+    char SpeedOut[10];
+    char DirOut[10];
 
     sprintf(Left, "L:%04d", g_ValueOfAD[0]);          //水平左电感
     sprintf(Right, "R:%04d", g_ValueOfAD[1]);         //水平右电感
     sprintf(LeftMiddle, "LM:%04d", g_ValueOfAD[2]);   //水平左电感
     sprintf(RightMiddle, "RM:%04d", g_ValueOfAD[3]);  //水平右电感
-    // sprintf(LeftPwm,"LP:%d",LeftP);
-    // sprintf(LeftPwm,"RP:%d",RightP);
-    // sprintf(LeftPwm,"LP:%d",(int16)g_fLeftRealSpeed);//左轮脉冲
-    // sprintf(RightPwm,"RP:%d",(int16)g_fRighRealSpeed);//右轮脉冲
+    sprintf(LeftPwm, "LP:%05d", g_nLeftPWM);
+    sprintf(RightPwm, "RP:%05d", g_nRighPWM);
+    sprintf(LeftSpeed, "LS:%06d",
+            (int16)g_fLeftRealSpeed);  //左轮脉冲 取相反数只是为了显示
+    sprintf(RightSpeed, "RS:%06d", (int16)g_fRighRealSpeed);  //右轮脉冲
+    sprintf(SpeedOut, "SO:%05d", (int)g_fSpeedControlOut);
+    sprintf(DirOut, "DO:%05d", (int)g_fDirectionControlOut);
+
+
+
     /*//KEA version
 OLED_Display_Config(1);
 OLED_Clear(0x00);
@@ -62,6 +74,12 @@ OLED_Refresh_Gram();
     lcd_showstr(64, 0, Right);
     lcd_showstr(0, 1, LeftMiddle);
     lcd_showstr(64, 1, RightMiddle);
+    lcd_showstr(0, 2, LeftPwm);
+    lcd_showstr(64, 2, RightPwm);
+    lcd_showstr(0, 3, LeftSpeed);
+    lcd_showstr(0, 4, RightSpeed);
+    lcd_showstr(0, 5, SpeedOut);
+    lcd_showstr(0, 6, DirOut);
 
     // lcd_showstr(0, 2)
 
@@ -86,17 +104,15 @@ void oled() {
     // char LeftPwm[8];
     // char RightPwm[8];
 
-    sprintf(Left, "L:%d", g_ValueOfAD[0]);         //水平左电感
-    sprintf(Right, "R:%d", g_ValueOfAD[1]);        //水平右电感
-    sprintf(LeftMiddle, "LM:%d", g_ValueOfAD[2]);  //水平左电感
-    sprintf(
-        RightMiddle, "RM:%d",
-        g_ValueOfAD
-            [3]);  //水平右电感
-                   // sprintf(LeftPwm,"LP:%d",LeftP);
-                   // sprintf(LeftPwm,"RP:%d",RightP);
-                   // sprintf(LeftPwm,"LP:%d",(int16)g_fLeftRealSpeed);//左轮脉冲
-                   // sprintf(RightPwm,"RP:%d",(int16)g_fRighRealSpeed);//右轮脉冲
+    sprintf(Left, "L:%d", g_ValueOfAD[0]);          //水平左电感
+    sprintf(Right, "R:%d", g_ValueOfAD[1]);         //水平右电感
+    sprintf(LeftMiddle, "LM:%d", g_ValueOfAD[2]);   //水平左电感
+    sprintf(RightMiddle, "RM:%d", g_ValueOfAD[3]);  //水平右电感
+
+    // sprintf(LeftPwm,"LP:%d",LeftP);
+    // sprintf(LeftPwm,"RP:%d",RightP);
+    // sprintf(LeftPwm,"LP:%d",(int16)g_fLeftRealSpeed);//左轮脉冲
+    // sprintf(RightPwm,"RP:%d",(int16)g_fRighRealSpeed);//右轮脉冲
     /*//KEA version
 OLED_Display_Config(1);
 OLED_Clear(0x00);
@@ -394,24 +410,22 @@ int main(void) {
 
         int Flag_0 = 1;
         if (Flag_0) {
-            StraightExpectSpeed = 2800;  //直行期望速度
-            TurnExpectSpeed = 2700;      //弯道期望速度
-            DownSpeed = 2650;            //下坡期望速度
-
-            g_dirControl_P = 3000;  //方向控制P
-            g_dirControl_D = 3200;  //方向控制D
-
-            Turn_dirControl_P = 3000;  //进岛方向控制P
-            Turn_dirControl_D = 6000;  //进岛方向控制D
-
-            TurnTimeDuring = 100;  //转向时间常量，若要修改转向时间，就修改这个
+            StraightExpectSpeed = 1000;     //直行期望速度
+            TurnExpectSpeed = 700;         //弯道期望速度
+            DownSpeed = 1350;               //下坡期望速度
+            
+            g_dirControl_P = 3000;		//方向控制P
+            g_dirControl_D = 3200;	//方向控制D
+            
+            Turn_dirControl_P = 3000;		//进岛方向控制P
+            Turn_dirControl_D = 6000;	//进岛方向控制D
+            
+            TurnTimeDuring = 100; //转向时间常量，若要修改转向时间，就修改这个
             FreezingTimeDuring = 350;  //冻结时间常量
-            DownTimeDuring = 175;      //下坡时间常量
-
-            Expect_P = 0.5;  // 1.25
-            Expect_D = 0.6;
-
-            TurnValue = (int)(275 * Environment);
+            DownTimeDuring = 175; //下坡时间常量
+            
+            Expect_P = 0.45;//1.25
+            Expect_D = 0.55;
         }
     }
 

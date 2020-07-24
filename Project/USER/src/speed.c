@@ -54,8 +54,8 @@ int16 TurnValue = 400;//弯道判定参数
 int16 BasePWM = 0;
 int16 TurnBasePWM = 0;
 
-float Kspeed = 1;  //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
-float Kdirection = 1;   
+float Kspeed = 2;  //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
+float Kdirection = 1.0 / 20.0;
 
 
 /**
@@ -165,8 +165,8 @@ void CalSpeedError(void)
 	*/
 
 	//rt1064 version, optimizing style of coding
-	g_nLeftpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER0_C0);//读取左轮脉冲 C0:LSB C1:DIR
-	g_nLeftpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER2_C2);//读取右轮脉冲 C2:LSB C24:DIR
+	g_nLeftpulse = -qtimer_quad_get(QTIMER_1, QTIMER1_TIMER0_C0);//读取左轮脉冲 C0:LSB C1:DIR
+	g_nRighpulse = qtimer_quad_get(QTIMER_1, QTIMER1_TIMER2_C2);//读取右轮脉冲 C2:LSB C24:DIR
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER0_C0 );  
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER2_C2 );  
 

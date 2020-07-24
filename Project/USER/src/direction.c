@@ -209,8 +209,11 @@ void Read_ADC(void) {
     int16 ValueOfADOld[4], ValueOfADNew[4];
 
     for (i = 0; i < 5; i++) {
-        ad_valu[0][i] = adc_mean_filter(ADC_1, AD3, 5) * 11046 / 10000;  // 水平左
-        ad_valu[1][i] = adc_mean_filter(ADC_1, AD5, 5) * 13624 / 10000;  // 水平右
+        // ad_valu[0][i] = adc_mean_filter(ADC_1, AD3, 5) * 11046 / 10000;  // 水平左
+        // ad_valu[1][i] = adc_mean_filter(ADC_1, AD5, 5) * 13624 / 10000;  // 水平右
+        ad_valu[0][i] = adc_mean_filter(ADC_1, AD3, 5) * 10000 / 10000;  // 水平左
+        ad_valu[1][i] = adc_mean_filter(ADC_1, AD5, 5) * 15000 / 10000;  // 水平右
+
         ad_valu[2][i] = adc_mean_filter(ADC_1, AD4, 5);  // 垂直左
         ad_valu[3][i] = adc_mean_filter(ADC_1, AD2, 5);  //垂直右
     }
