@@ -20,9 +20,9 @@ uint8 UpFlag = 1, DownFlag = 1, LeftFlag = 1, RightFlag = 1, MidFlag = 1;
 void display() {
     // need adc_init(ADC_1,ADC1_CH3_B14,ADC_8BIT); //初始化B14为ADC功能
     // 分辨率为8位 and adc_init(ADC_1,ADC1_CH4_B15,ADC_8BIT);
-    uint16 ad5 = adc_convert(ADC_1, ADC1_CH3_B14);
+    // uint16 ad5 = adc_convert(ADC_1, ADC1_CH3_B14);
     // uint16 ad4=ADC_Read(ADC0_SE9);
-    uint16 ad3 = adc_convert(ADC_1, ADC1_CH4_B15);
+    // uint16 ad3 = adc_convert(ADC_1, ADC1_CH4_B15);
 
     char Left[8];
     char Right[8];
@@ -32,10 +32,10 @@ void display() {
     // char LeftPwm[8];
     // char RightPwm[8];
 
-    sprintf(Left, "L:%d", g_ValueOfAD[0]);          //水平左电感
-    sprintf(Right, "R:%d", g_ValueOfAD[1]);         //水平右电感
-    sprintf(LeftMiddle, "LM:%d", g_ValueOfAD[2]);   //水平左电感
-    sprintf(RightMiddle, "RM:%d", g_ValueOfAD[3]);  //水平右电感
+    sprintf(Left, "L:%04d", g_ValueOfAD[0]);          //水平左电感
+    sprintf(Right, "R:%04d", g_ValueOfAD[1]);         //水平右电感
+    sprintf(LeftMiddle, "LM:%04d", g_ValueOfAD[2]);   //水平左电感
+    sprintf(RightMiddle, "RM:%04d", g_ValueOfAD[3]);  //水平右电感
     // sprintf(LeftPwm,"LP:%d",LeftP);
     // sprintf(LeftPwm,"RP:%d",RightP);
     // sprintf(LeftPwm,"LP:%d",(int16)g_fLeftRealSpeed);//左轮脉冲
@@ -57,11 +57,13 @@ OLED_Refresh_Gram();
 
     // RT1064 version
     // oled_fill(0x00);  // clear
-    lcd_clear(WHITE);
-    lcd_showstr(0, 6, Left);
-    lcd_showstr(0, 4, Right);
-    lcd_showstr(64, 6, LeftMiddle);
-    lcd_showstr(64, 4, RightMiddle);
+    // lcd_clear(WHITE);
+    lcd_showstr(0, 0, Left);
+    lcd_showstr(64, 0, Right);
+    lcd_showstr(0, 1, LeftMiddle);
+    lcd_showstr(64, 1, RightMiddle);
+
+    // lcd_showstr(0, 2)
 
     // oled_p8x16str(0, 6, Left);
     // oled_p8x16str(0, 4, Right);
@@ -369,6 +371,8 @@ int main(void) {
 
     EnableGlobalIRQ(0);
 
+    Flag_Stop = ON;
+
     while (1) {
         display();
         // if (scc8660_csi_finish_flag)  //图像采集完成
@@ -378,7 +382,8 @@ int main(void) {
         //     //使用缩放显示函数，根据原始图像大小
         //     //以及设置需要显示的大小自动进行缩放或者放大显示
         //     //本例程默认采集分辨率为160*120，显示分辨率为160*128，纵向拉伸全屏
-        //     lcd_displayimage8660_zoom(scc8660_csi_image[0], SCC8660_CSI_PIC_W,
+        //     lcd_displayimage8660_zoom(scc8660_csi_image[0],
+        //     SCC8660_CSI_PIC_W,
         //                               SCC8660_CSI_PIC_H, 160, 128);
         // }
         TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200,

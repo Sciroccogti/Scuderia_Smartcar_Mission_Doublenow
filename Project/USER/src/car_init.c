@@ -80,7 +80,7 @@ void car_init() {
 
     //定时器初始化
     pit_init();                       //初始化pit外设
-    pit_interrupt_ms(PIT_CH0, 5000);  //初始化pit通道0 周期
+    pit_interrupt_ms(PIT_CH0, 5);  //初始化pit通道0 周期
     // PIT_SetCallback(PIT_Interrupt);
     NVIC_SetPriority(PIT_IRQn,15);      ///设置中断优先级 范围0-15
     // 越小优先级越高 四路PIT共用一个PIT中断函数

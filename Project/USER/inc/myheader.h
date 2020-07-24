@@ -27,9 +27,9 @@
 
 //---------------------------------  ADC  -------------------------------
 // #define AD1 ADC0_SE1
-#define AD2 ADC1_CH3_B14   // 垂直右
-#define AD3 ADC1_CH4_B15   // 水平左
-#define AD4 ADC1_CH10_B21  // 垂直左
+#define AD2 ADC1_CH10_B21   // 垂直右
+#define AD3 ADC1_CH3_B14   // 水平左
+#define AD4 ADC1_CH4_B15  // 垂直左
 #define AD5 ADC1_CH12_B23  // 水平右
 
 #define LMOTOR_F PWM1_MODULE3_CHA_D0 // Left Forward
