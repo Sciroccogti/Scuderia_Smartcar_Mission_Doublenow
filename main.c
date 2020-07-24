@@ -410,8 +410,8 @@ int main(void) {
 
         int Flag_0 = 1;
         if (Flag_0) {
-            StraightExpectSpeed = 1000;     //直行期望速度
-            TurnExpectSpeed = 700;         //弯道期望速度
+            StraightExpectSpeed = 2000;     //直行期望速度
+            TurnExpectSpeed = 1700;         //弯道期望速度
             DownSpeed = 1350;               //下坡期望速度
             
             g_dirControl_P = 3000;		//方向控制P

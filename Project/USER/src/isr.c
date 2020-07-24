@@ -34,11 +34,11 @@ void PIT_IRQHandler(void) {
         PIT_FLAG_CLEAR(PIT_CH0);
         static uint16 j = 0;
         // GPIO_Init(LED_G,GPO,0);
-        static int STOPi = 3000;
-        if (!STOPi) {
-            if (!gpio_get(I0)) Flag_Stop = OFF;
-        } else
-            STOPi--;
+        // static int STOPi = 3000;
+        // if (!STOPi) {
+        //     if (!gpio_get(I0)) Flag_Stop = OFF;
+        // } else
+        //     STOPi--;
 
         // 20ms一次速度控制
         j++;

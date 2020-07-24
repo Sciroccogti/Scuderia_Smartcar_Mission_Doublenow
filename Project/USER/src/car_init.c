@@ -79,18 +79,20 @@ void car_init() {
     gpio_set(B9, 1);
     
     //Garage out
-    const int outpower = 50;
-    const int stime = 500;
-    const int ttime = 200;
+    const int outpower = 250;
+    const int stime = 600;
+    const int ttime = 400;
     pwm_duty(LMOTOR_B, 0);
-	pwm_duty(LMOTOR_F, outpower);
+    pwm_duty(LMOTOR_F, outpower);
     pwm_duty(RMOTOR_B, 0);
-	pwm_duty(RMOTOR_F, outpower);
+    pwm_duty(RMOTOR_F, outpower);
     systick_delay_ms(stime);
-    //End Garage Out
-
     pwm_duty(LMOTOR_F, outpower*2);
+    pwm_duty(RMOTOR_F, 0);
+    pwm_duty(RMOTOR_B, outpower/4);
     systick_delay_ms(ttime);
+    //End Garage Out
+    
     //定时器初始化
     pit_init();                       //初始化pit外设
     pit_interrupt_ms(PIT_CH0, 5);  //初始化pit通道0 周期
