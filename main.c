@@ -23,118 +23,62 @@ void display() {
     // uint16 ad5 = adc_convert(ADC_1, ADC1_CH3_B14);
     // uint16 ad4=ADC_Read(ADC0_SE9);
     // uint16 ad3 = adc_convert(ADC_1, ADC1_CH4_B15);
+    static uint8 last_D4 = 0;
+    if(gpio_get(D4) != last_D4){
+        last_D4 = 1 - last_D4;
+        lcd_clear(WHITE);
+    }
+    if (gpio_get(D4)) {
+        char Left[10];
+        char Right[10];
+        char LeftMiddle[10];
+        char RightMiddle[10];
 
-    char Left[10];
-    char Right[10];
-    char LeftMiddle[10];
-    char RightMiddle[10];
+        char LeftPwm[10];
+        char RightPwm[10];
 
-    char LeftPwm[10];
-    char RightPwm[10];
+        char LeftSpeed[10];
+        char RightSpeed[10];
 
-    char LeftSpeed[10];
-    char RightSpeed[10];
+        char SpeedOut[10];
+        char DirOut[10];
+        char Sonic[20];
 
-    char SpeedOut[10];
-    char DirOut[10];
+        sprintf(Left, "L:%04d", g_ValueOfAD[0]);          //水平左电感
+        sprintf(Right, "R:%04d", g_ValueOfAD[1]);         //水平右电感
+        sprintf(LeftMiddle, "LM:%04d", g_ValueOfAD[2]);   //水平左电感
+        sprintf(RightMiddle, "RM:%04d", g_ValueOfAD[3]);  //水平右电感
+        sprintf(LeftPwm, "LP:%05d", g_nLeftPWM);
+        sprintf(RightPwm, "RP:%05d", g_nRighPWM);
+        sprintf(LeftSpeed, "LS:%06d", (int16)g_fLeftRealSpeed);   //左轮脉冲
+        sprintf(RightSpeed, "RS:%06d", (int16)g_fRighRealSpeed);  //右轮脉冲
+        sprintf(SpeedOut, "SO:%05d", (int)g_fSpeedControlOut);
+        sprintf(DirOut, "DO:%05d", (int)g_fDirectionControlOut);
+        sprintf(Sonic, "sonic:%04dmm", distance); // 超声波
 
-    sprintf(Left, "L:%04d", g_ValueOfAD[0]);          //水平左电感
-    sprintf(Right, "R:%04d", g_ValueOfAD[1]);         //水平右电感
-    sprintf(LeftMiddle, "LM:%04d", g_ValueOfAD[2]);   //水平左电感
-    sprintf(RightMiddle, "RM:%04d", g_ValueOfAD[3]);  //水平右电感
-    sprintf(LeftPwm, "LP:%05d", g_nLeftPWM);
-    sprintf(RightPwm, "RP:%05d", g_nRighPWM);
-    sprintf(LeftSpeed, "LS:%06d",
-            (int16)g_fLeftRealSpeed);  //左轮脉冲 取相反数只是为了显示
-    sprintf(RightSpeed, "RS:%06d", (int16)g_fRighRealSpeed);  //右轮脉冲
-    sprintf(SpeedOut, "SO:%05d", (int)g_fSpeedControlOut);
-    sprintf(DirOut, "DO:%05d", (int)g_fDirectionControlOut);
+        lcd_showstr(0, 0, Left);
+        lcd_showstr(64, 0, Right);
+        lcd_showstr(0, 1, LeftMiddle);
+        lcd_showstr(64, 1, RightMiddle);
+        lcd_showstr(0, 2, LeftPwm);
+        lcd_showstr(64, 2, RightPwm);
+        lcd_showstr(0, 3, LeftSpeed);
+        lcd_showstr(0, 4, RightSpeed);
+        lcd_showstr(0, 5, SpeedOut);
+        lcd_showstr(0, 6, DirOut);
+        lcd_showstr(0, 7, Sonic);
+    } else {
+        if (scc8660_csi_finish_flag)  //图像采集完成
+        {
+            scc8660_csi_finish_flag = 0;  //清除采集完成标志位
 
-
-
-    /*//KEA version
-OLED_Display_Config(1);
-OLED_Clear(0x00);
-
-OLED_Show_String(8, 13, 0, 63, 1, Left, 0);
-OLED_Show_String(8, 13, 0, 32, 1, Right, 0);
-OLED_Show_String(8, 13, 50, 63, 1, LeftMiddle, 0);
-OLED_Show_String(8, 13, 50, 32, 1, RightMiddle, 0);
-
-
-//OLED_Show_String(8,13,50,63,1,RightPwm,0);
-//OLED_Show_String(8,13,50,32,1,LeftPwm,0);
-OLED_Refresh_Gram();
-*/
-
-    // RT1064 version
-    // oled_fill(0x00);  // clear
-    // lcd_clear(WHITE);
-    lcd_showstr(0, 0, Left);
-    lcd_showstr(64, 0, Right);
-    lcd_showstr(0, 1, LeftMiddle);
-    lcd_showstr(64, 1, RightMiddle);
-    lcd_showstr(0, 2, LeftPwm);
-    lcd_showstr(64, 2, RightPwm);
-    lcd_showstr(0, 3, LeftSpeed);
-    lcd_showstr(0, 4, RightSpeed);
-    lcd_showstr(0, 5, SpeedOut);
-    lcd_showstr(0, 6, DirOut);
-
-    // lcd_showstr(0, 2)
-
-    // oled_p8x16str(0, 6, Left);
-    // oled_p8x16str(0, 4, Right);
-    // oled_p8x16str(64, 6, LeftMiddle);
-    // oled_p8x16str(64, 4, RightMiddle);
-}
-
-void oled() {
-    // need adc_init(ADC_1,ADC1_CH3_B14,ADC_8BIT); //初始化B14为ADC功能
-    // 分辨率为8位 and adc_init(ADC_1,ADC1_CH4_B15,ADC_8BIT);
-    uint16 ad5 = adc_convert(ADC_1, ADC1_CH3_B14);
-    // uint16 ad4=ADC_Read(ADC0_SE9);
-    uint16 ad3 = adc_convert(ADC_1, ADC1_CH4_B15);
-
-    char Left[8];
-    char Right[8];
-    char LeftMiddle[8];
-    char RightMiddle[8];
-
-    // char LeftPwm[8];
-    // char RightPwm[8];
-
-    sprintf(Left, "L:%d", g_ValueOfAD[0]);          //水平左电感
-    sprintf(Right, "R:%d", g_ValueOfAD[1]);         //水平右电感
-    sprintf(LeftMiddle, "LM:%d", g_ValueOfAD[2]);   //水平左电感
-    sprintf(RightMiddle, "RM:%d", g_ValueOfAD[3]);  //水平右电感
-
-    // sprintf(LeftPwm,"LP:%d",LeftP);
-    // sprintf(LeftPwm,"RP:%d",RightP);
-    // sprintf(LeftPwm,"LP:%d",(int16)g_fLeftRealSpeed);//左轮脉冲
-    // sprintf(RightPwm,"RP:%d",(int16)g_fRighRealSpeed);//右轮脉冲
-    /*//KEA version
-OLED_Display_Config(1);
-OLED_Clear(0x00);
-
-OLED_Show_String(8, 13, 0, 63, 1, Left, 0);
-OLED_Show_String(8, 13, 0, 32, 1, Right, 0);
-OLED_Show_String(8, 13, 50, 63, 1, LeftMiddle, 0);
-OLED_Show_String(8, 13, 50, 32, 1, RightMiddle, 0);
-
-
-//OLED_Show_String(8,13,50,63,1,RightPwm,0);
-//OLED_Show_String(8,13,50,32,1,LeftPwm,0);
-OLED_Refresh_Gram();
-*/
-
-    // RT1064 version
-    oled_fill(0x00);  // clear
-    oled_p8x16str(0, 6, Left);
-    oled_p8x16str(0, 4, Right);
-    oled_p8x16str(64, 6, LeftMiddle);
-    oled_p8x16str(64, 4, RightMiddle);
-    // not sure if refresh is required
+            //使用缩放显示函数，根据原始图像大小
+            //以及设置需要显示的大小自动进行缩放或者放大显示
+            //本例程默认采集分辨率为160*120，显示分辨率为160*128，纵向拉伸全屏
+            lcd_displayimage8660_zoom(scc8660_csi_image[0], SCC8660_CSI_PIC_W,
+                                      SCC8660_CSI_PIC_H, 160, 128);
+        }
+    }
 }
 
 //蓝牙参数监控
@@ -391,17 +335,6 @@ int main(void) {
 
     while (1) {
         display();
-        // if (scc8660_csi_finish_flag)  //图像采集完成
-        // {
-        //     scc8660_csi_finish_flag = 0;  //清除采集完成标志位
-
-        //     //使用缩放显示函数，根据原始图像大小
-        //     //以及设置需要显示的大小自动进行缩放或者放大显示
-        //     //本例程默认采集分辨率为160*120，显示分辨率为160*128，纵向拉伸全屏
-        //     lcd_displayimage8660_zoom(scc8660_csi_image[0],
-        //     SCC8660_CSI_PIC_W,
-        //                               SCC8660_CSI_PIC_H, 160, 128);
-        // }
         TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200,
         TurnAD3 = 1200;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
         LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
@@ -410,21 +343,21 @@ int main(void) {
 
         int Flag_0 = 1;
         if (Flag_0) {
-            StraightExpectSpeed = 2000;     //直行期望速度
-            TurnExpectSpeed = 1700;         //弯道期望速度
-            DownSpeed = 1350;               //下坡期望速度
-            
-            g_dirControl_P = 3000;		//方向控制P
-            g_dirControl_D = 3200;	//方向控制D
-            
-            Turn_dirControl_P = 3000;		//进岛方向控制P
-            Turn_dirControl_D = 6000;	//进岛方向控制D
-            
-            TurnTimeDuring = 100; //转向时间常量，若要修改转向时间，就修改这个
+            StraightExpectSpeed = 2000;  //直行期望速度
+            TurnExpectSpeed = 1700;      //弯道期望速度
+            DownSpeed = 1350;            //下坡期望速度
+
+            g_dirControl_P = 3000;  //方向控制P
+            g_dirControl_D = 3200;  //方向控制D
+
+            Turn_dirControl_P = 3000;  //进岛方向控制P
+            Turn_dirControl_D = 6000;  //进岛方向控制D
+
+            TurnTimeDuring = 100;  //转向时间常量，若要修改转向时间，就修改这个
             FreezingTimeDuring = 350;  //冻结时间常量
-            DownTimeDuring = 175; //下坡时间常量
-            
-            Expect_P = 0.45;//1.25
+            DownTimeDuring = 175;      //下坡时间常量
+
+            Expect_P = 0.45;  // 1.25
             Expect_D = 0.55;
         }
     }

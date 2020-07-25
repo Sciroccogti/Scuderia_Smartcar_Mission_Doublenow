@@ -22,6 +22,16 @@
 /****************全局变量定义******************/
 uint8 Flag_Stop = OFF;    //=OFF停车
 uint8 Flag_Debuge = OFF;  //=ON进入调参界面
+uint16 distance = 0;	//超声波接收端测得的距离值
+
+uint8 sonic_rx_buffer;
+lpuart_transfer_t   sonic_receivexfer;
+lpuart_handle_t     sonic_g_lpuartHandle;
+
+// 本文件临时变量
+uint8 sonic_temp;
+uint8 sonic_data[3];
+uint8 sonic_count;
 
 void CSI_IRQHandler(void) {
     CSI_DriverIRQHandler();  //调用SDK自带的中断函数
@@ -68,6 +78,34 @@ void PIT_IRQHandler(void) {
     __DSB();
 }
 
+void sonic_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData)
+{
+    if(kStatus_LPUART_RxIdle == status)
+    {
+        //数据已经被写入到了 之前返回的BUFF中
+        //本例程使用的BUFF为 example_rx_buffer
+        sonic_temp = sonic_rx_buffer;//将数据取出
+		
+		if(sonic_count == 3)					//接收完成，开始处理数据
+		{
+			sonic_count = 0;
+			distance = sonic_data[1]<<8 | sonic_data[2];	//得到超声波模块测出的距离
+		}
+		if(sonic_count != 0)
+		{
+			sonic_data[sonic_count] = sonic_temp;
+			sonic_count ++;
+		}
+		if(sonic_temp == 0xa5)
+		{
+			sonic_count ++;
+		}
+    }
+    
+    handle->rxDataSize = sonic_receivexfer.dataSize;  //还原缓冲区长度
+    handle->rxData = sonic_receivexfer.data;          //还原缓冲区地址
+}
+
 void GPIO2_Combined_16_31_IRQHandler(void) {
     if (GET_GPIO_FLAG(C16)) {
         CLEAR_GPIO_FLAG(C16);  //清除中断标志位
@@ -92,44 +130,5 @@ GPIO3_Combined_0_15_IRQHandler
 SDMMCHOST_CARD_DETECT_GPIO_INTERRUPT_HANDLER函数注释掉即可
 
 */
-
-// 中断函数名称，用于设置对应功能的中断函数
-// Sample usage:当前启用了周期定时器中断
-/*
-void PIT_IRQHandler(void)
-{
-
-    //标志变量定义
-
-    static uint16 j = 0;
-        //GPIO_Init(LED_G,GPO,0);
-        static int STOPi = 3000;
-    if(!STOPi)
-        {
-          if(!gpio_get(I0))
-            Flag_Stop=OFF;
-        }
-        else
-          STOPi--;
-
-
-        //20ms一次速度控制
-    j++;
-    if(j >= 4)
-        {
-          j = 0;
-          SpeedControl();
-    }
-
-    DirectionControl();	//方向控制
-
-        PWMOut();
-            //最终PWM输出
-
-    //务必清除标志位
-    __DSB();
-}
-*/
-// 记得进入中断后清除标志位
 
 //李的程序中test部分扔了

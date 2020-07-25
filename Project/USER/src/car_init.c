@@ -48,10 +48,12 @@ void car_init() {
     // UART_Init(uart0,9600,RXTX_B0B1);
 
     //拨码开关或备用接口初始化(复用为拨码开关或备用接口)，K1-4若用于备用接口则改为GPO;
-    gpio_init(C5, GPI, 1, GPIO_PIN_CONFIG);  // 1
-    gpio_init(H7, GPI, 1, GPIO_PIN_CONFIG);  // 2
-    gpio_init(H5, GPI, 1, GPIO_PIN_CONFIG);  // 3
-    gpio_init(H2, GPI, 1, GPIO_PIN_CONFIG);  // 4
+    // gpio_init(C5, GPI, 1, GPIO_PIN_CONFIG);  // 1
+    // gpio_init(H7, GPI, 1, GPIO_PIN_CONFIG);  // 2
+    // gpio_init(H5, GPI, 1, GPIO_PIN_CONFIG);  // 3
+    // gpio_init(H2, GPI, 1, GPIO_PIN_CONFIG);  // 4
+    gpio_init(D27, GPI, 1, GPIO_PIN_CONFIG);  // 1
+    gpio_init(D4, GPI, 1, GPIO_PIN_CONFIG);   // 2
 
     //电机初始化
     pwm_init(PWM1_MODULE3_CHB_D1, 14000, 0);
@@ -77,8 +79,8 @@ void car_init() {
     //延时2s
     systick_delay_ms(500);
     gpio_set(B9, 1);
-    
-    //Garage out
+
+    // Garage out
     const int outpower = 250;
     const int stime = 600;
     const int ttime = 400;
@@ -87,18 +89,31 @@ void car_init() {
     pwm_duty(RMOTOR_B, 0);
     pwm_duty(RMOTOR_F, outpower);
     systick_delay_ms(stime);
-    pwm_duty(LMOTOR_F, outpower*2);
+    pwm_duty(LMOTOR_F, outpower * 2);
     pwm_duty(RMOTOR_F, 0);
-    pwm_duty(RMOTOR_B, outpower/4);
+    pwm_duty(RMOTOR_B, outpower / 4);
     systick_delay_ms(ttime);
-    //End Garage Out
-    
+    // End Garage Out
+
     //定时器初始化
-    pit_init();                       //初始化pit外设
+    pit_init();                    //初始化pit外设
     pit_interrupt_ms(PIT_CH0, 5);  //初始化pit通道0 周期
     // PIT_SetCallback(PIT_Interrupt);
-    NVIC_SetPriority(PIT_IRQn,15);      ///设置中断优先级 范围0-15
+    NVIC_SetPriority(PIT_IRQn, 0);  ///设置中断优先级 范围0-15
     // 越小优先级越高 四路PIT共用一个PIT中断函数
-    EnableGlobalIRQ(0);  //使能中断
 
+    // 超声波串口   波特率为115200 TX为D16 RX为D17
+    uart_init(USART_1, 115200, UART1_TX_B12, UART1_RX_B13);
+    NVIC_SetPriority(LPUART1_IRQn, 15);  //设置串口中断优先级
+    uart_rx_irq(USART_1, 1);
+
+    //配置串口接收的缓冲区及缓冲区长度
+    sonic_receivexfer.dataSize = 1;
+    sonic_receivexfer.data = &sonic_rx_buffer;
+
+    //设置中断函数及其参数
+    uart_set_handle(USART_1, &sonic_g_lpuartHandle, sonic_callback,
+                    NULL, 0, sonic_receivexfer.data, 1);
+
+    EnableGlobalIRQ(0);  //使能中断
 }
