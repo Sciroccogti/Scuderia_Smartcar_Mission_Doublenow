@@ -55,7 +55,7 @@ int16 BasePWM = 0;
 int16 TurnBasePWM = 0;
 
 float Kspeed = 1;  //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
-float Kdirection = 1;
+float Kdirection = 0.2;
 
 
 /**

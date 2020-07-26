@@ -4,6 +4,9 @@
 void car_init() {
     DisableGlobalIRQ();
 
+    // 电磁铁
+    gpio_init(C9, GPO, 1, SPEED_200MHZ | DSE_R0_7 | PULLUP_100K | PULL_EN);
+
     // ADC初始化
     // adc_init(AD1,ADC_12BIT);
     adc_init(ADC_1, AD2, ADC_12BIT);  // 垂直右

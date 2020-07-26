@@ -22,7 +22,7 @@
 /****************全局变量定义******************/
 uint8 Flag_Stop = OFF;    //=OFF停车
 uint8 Flag_Debuge = OFF;  //=ON进入调参界面
-uint16 distance = 0;	//超声波接收端测得的距离值
+uint16 distance = 6800;	//超声波接收端测得的距离值
 
 uint8 sonic_rx_buffer;
 lpuart_transfer_t   sonic_receivexfer;
@@ -43,13 +43,22 @@ void PIT_IRQHandler(void) {
     if (PIT_FLAG_GET(PIT_CH0)) {
         PIT_FLAG_CLEAR(PIT_CH0);
         static uint16 j = 0;
+        static uint8 k = 0;
         // GPIO_Init(LED_G,GPO,0);
         // static int STOPi = 3000;
         // if (!STOPi) {
         //     if (!gpio_get(I0)) Flag_Stop = OFF;
         // } else
         //     STOPi--;
-
+        if (distance < 150){
+            k++;
+            if(k >= 3){
+                Flag_Stop = OFF;
+            }
+            if(k == 5){
+                gpio_set(C9, 0);
+            }
+        }
         // 20ms一次速度控制
         j++;
         if (j >= 4) {
