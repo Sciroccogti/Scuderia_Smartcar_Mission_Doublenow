@@ -28,6 +28,10 @@ uint8 sonic_rx_buffer;
 lpuart_transfer_t   sonic_receivexfer;
 lpuart_handle_t     sonic_g_lpuartHandle;
 
+uint8 bluetooth_rx_buffer;
+lpuart_transfer_t   bluetooth_receivexfer;
+lpuart_handle_t     bluetooth_g_lpuartHandle;
+
 // 本文件临时变量
 uint8 sonic_temp;
 uint8 sonic_data[3];
@@ -113,6 +117,16 @@ void sonic_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status,
     
     handle->rxDataSize = sonic_receivexfer.dataSize;  //还原缓冲区长度
     handle->rxData = sonic_receivexfer.data;          //还原缓冲区地址
+}
+
+void bluetooth_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData){
+    if(kStatus_LPUART_RxIdle == status){
+        // char bt[10];
+        // sprintf(bt, "bt:%d", (int)bluetooth_rx_buffer);
+        // lcd_showstr(0, 7, bt);
+    }
+    handle->rxDataSize = bluetooth_receivexfer.dataSize;  //还原缓冲区长度
+    handle->rxData = bluetooth_receivexfer.data;          //还原缓冲区地址
 }
 
 void GPIO2_Combined_16_31_IRQHandler(void) {

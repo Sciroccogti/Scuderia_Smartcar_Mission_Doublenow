@@ -29,8 +29,14 @@ extern uint16 distance;
 extern lpuart_transfer_t   sonic_receivexfer;
 extern lpuart_handle_t     sonic_g_lpuartHandle;
 
+
+extern uint8 bluetooth_rx_buffer;
+extern lpuart_transfer_t   bluetooth_receivexfer;
+extern lpuart_handle_t     bluetooth_g_lpuartHandle;
+
 void PIT_Interrupt(void);
 void Interrupt_Test(uint8 h);
 void sonic_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData);
+void bluetooth_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData);
 
 #endif
