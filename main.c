@@ -44,6 +44,7 @@ void display() {
         char DirOut[10];
         char Sonic[20];
         char Garage[20];
+        char Garagedirection[10];
 
         sprintf(Left, "L:%04d", g_ValueOfAD[0]);          //水平左电感
         sprintf(Right, "R:%04d", g_ValueOfAD[1]);         //水平右电感
@@ -55,8 +56,13 @@ void display() {
         sprintf(RightSpeed, "RS:%06d", (int16)g_fRighRealSpeed);  //右轮脉冲
         sprintf(SpeedOut, "SO:%05d", (int)g_fSpeedControlOut);
         sprintf(DirOut, "DO:%05d", (int)g_fDirectionControlOut);
-        sprintf(Sonic, "sonic:%04dmm", distance);  // 超声波
-        sprintf(Garage, "garage:%d", garage_count);  // 超声波
+        sprintf(Sonic, "sonic:%04dmm", distance);    // 超声波
+        sprintf(Garage, "garage:%d", garage_count);  // 车库计数
+        if (GarageDirection) {
+            sprintf(Garagedirection, "RIGHT");
+        } else {
+            sprintf(Garagedirection, "LEFT ");
+        }
 
         lcd_showstr(0, 0, Left);
         lcd_showstr(64, 0, Right);
@@ -70,6 +76,7 @@ void display() {
         lcd_showstr(64, 5, DirOut);
         lcd_showstr(0, 6, Sonic);
         lcd_showstr(0, 7, Garage);
+        lcd_showstr(64, 7, Garagedirection);
     } else {
         if (scc8660_csi_finish_flag)  //图像采集完成
         {
