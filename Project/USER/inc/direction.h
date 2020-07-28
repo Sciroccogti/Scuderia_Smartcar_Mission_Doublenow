@@ -25,7 +25,9 @@ extern float FreezingTimeDuring;  //冻结时间常量
 extern int16 TurnAD0,TurnAD1,TurnAD2,TurnAD3;//水平左右，垂直左右电感，判断是否到达环岛的阈值
 extern int16 LeaveAD0,LeaveAD1,LeaveAD2,LeaveAD3;//离开环岛的阈值放松
 extern int16 DownAD0 ,DownAD1,DownAD2,DownAD3;//下坡判定电感值
+extern int16 GarageAD23; // 车库电感2,3之和
 extern uint8 Flag_Round;
+extern uint8 garage_count;  // 出车库计数器
 
 
 

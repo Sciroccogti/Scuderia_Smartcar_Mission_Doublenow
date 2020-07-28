@@ -24,7 +24,7 @@ void display() {
     // uint16 ad4=ADC_Read(ADC0_SE9);
     // uint16 ad3 = adc_convert(ADC_1, ADC1_CH4_B15);
     static uint8 last_D4 = 0;
-    if(gpio_get(D4) != last_D4){
+    if (gpio_get(D4) != last_D4) {
         last_D4 = 1 - last_D4;
         lcd_clear(WHITE);
     }
@@ -43,6 +43,8 @@ void display() {
         char SpeedOut[10];
         char DirOut[10];
         char Sonic[20];
+        char Garage[20];
+        char Garagedirection[10];
 
         sprintf(Left, "L:%04d", g_ValueOfAD[0]);          //水平左电感
         sprintf(Right, "R:%04d", g_ValueOfAD[1]);         //水平右电感
@@ -54,7 +56,13 @@ void display() {
         sprintf(RightSpeed, "RS:%06d", (int16)g_fRighRealSpeed);  //右轮脉冲
         sprintf(SpeedOut, "SO:%05d", (int)g_fSpeedControlOut);
         sprintf(DirOut, "DO:%05d", (int)g_fDirectionControlOut);
-        sprintf(Sonic, "sonic:%04dmm", distance); // 超声波
+        sprintf(Sonic, "sonic:%04dmm", distance);    // 超声波
+        sprintf(Garage, "garage:%d", garage_count);  // 车库计数
+        if (GarageDirection) {
+            sprintf(Garagedirection, "RIGHT");
+        } else {
+            sprintf(Garagedirection, "LEFT ");
+        }
 
         lcd_showstr(0, 0, Left);
         lcd_showstr(64, 0, Right);
@@ -65,8 +73,10 @@ void display() {
         lcd_showstr(0, 3, LeftSpeed);
         lcd_showstr(0, 4, RightSpeed);
         lcd_showstr(0, 5, SpeedOut);
-        lcd_showstr(0, 6, DirOut);
-        lcd_showstr(0, 7, Sonic);
+        lcd_showstr(64, 5, DirOut);
+        lcd_showstr(0, 6, Sonic);
+        lcd_showstr(0, 7, Garage);
+        lcd_showstr(64, 7, Garagedirection);
     } else {
         if (scc8660_csi_finish_flag)  //图像采集完成
         {
@@ -335,6 +345,8 @@ int main(void) {
 
     while (1) {
         display();
+        BlueTooth();
+        GarageDirection = gpio_get(D27);
         TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200,
         TurnAD3 = 1200;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
         LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;

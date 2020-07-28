@@ -41,6 +41,7 @@ void car_init() {
     //环岛指示灯初始化
     // gpio_init(H0, GPO, 0, GPIO_PIN_CONFIG);
     // gpio_init(E6, GPO, 0, GPIO_PIN_CONFIG);
+    gpio_init(C14, GPO, 0, GPIO_PIN_CONFIG);
 
     // LED初始化
     gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG);  // 核心板蓝色
@@ -74,28 +75,25 @@ void car_init() {
 
     //初始化 QTIMER_1 A相使用QTIMER1_TIMER2_C2 B相使用QTIMER1_TIMER3_C24
     qtimer_quad_init(QTIMER_1, QTIMER1_TIMER2_C2, QTIMER1_TIMER3_C24);
-    gpio_init(E1, GPI, HIGH, GPIO_PIN_CONFIG);
-    gpio_init(H6, GPI, HIGH, GPIO_PIN_CONFIG);
-
     // 摄像头初始化
     scc8660_csi_init();
-    //延时2s
+    //延时0.5s
     systick_delay_ms(500);
     gpio_set(B9, 1);
 
     // Garage out
-    const int outpower = 250;
-    const int stime = 600;
-    const int ttime = 400;
-    pwm_duty(LMOTOR_B, 0);
-    pwm_duty(LMOTOR_F, outpower);
-    pwm_duty(RMOTOR_B, 0);
-    pwm_duty(RMOTOR_F, outpower);
-    systick_delay_ms(stime);
-    pwm_duty(LMOTOR_F, outpower * 2);
-    pwm_duty(RMOTOR_F, 0);
-    pwm_duty(RMOTOR_B, outpower / 4);
-    systick_delay_ms(ttime);
+    // const int outpower = 250;
+    // const int stime = 600;
+    // const int ttime = 400;
+    // pwm_duty(LMOTOR_B, 0);
+    // pwm_duty(LMOTOR_F, outpower);
+    // pwm_duty(RMOTOR_B, 0);
+    // pwm_duty(RMOTOR_F, outpower);
+    // systick_delay_ms(stime);
+    // pwm_duty(LMOTOR_F, outpower * 2);
+    // pwm_duty(RMOTOR_F, 0);
+    // pwm_duty(RMOTOR_B, outpower / 4);
+    // systick_delay_ms(ttime);
     // End Garage Out
 
     //定时器初始化
@@ -115,8 +113,21 @@ void car_init() {
     sonic_receivexfer.data = &sonic_rx_buffer;
 
     //设置中断函数及其参数
-    uart_set_handle(USART_1, &sonic_g_lpuartHandle, sonic_callback,
-                    NULL, 0, sonic_receivexfer.data, 1);
+    uart_set_handle(USART_1, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
+                    sonic_receivexfer.data, 1);
+
+    // 蓝牙串口   波特率为115200 TX为D16 RX为D17
+    uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
+    NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
+    uart_rx_irq(USART_8, 1);
+
+    //配置串口接收的缓冲区及缓冲区长度
+    bluetooth_receivexfer.dataSize = 1;
+    bluetooth_receivexfer.data = &bluetooth_rx_buffer;
+
+    //设置中断函数及其参数
+    uart_set_handle(USART_8, &bluetooth_g_lpuartHandle, bluetooth_callback, NULL, 0,
+                    bluetooth_receivexfer.data, 1);
 
     EnableGlobalIRQ(0);  //使能中断
 }

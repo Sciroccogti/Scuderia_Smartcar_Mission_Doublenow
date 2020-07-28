@@ -26,6 +26,7 @@ float TurnTime = 0;      //进岛转向时间
 float FreezingTime = 0;  //进岛判定冻结时间
 float DownTime = 100;    //下坡时间
 int DownFlagI = 0;
+uint8 garage_count = 0;  // 出车库计数器
 
 //以下为可能需要调整的参数
 
@@ -47,6 +48,9 @@ int16 LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
 // 下坡判定电感值
 int16 DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1000, DownAD3 = 1000;
 
+// 车库电感2,3之和
+int16 GarageAD23 = 500;
+
 // 受环境影响的电感系数  把左右水平电感控制在 800左右（参考）
 float Environment = 0.9;
 
@@ -57,7 +61,7 @@ float Environment = 0.9;
  *
  *									电感值对应变量
  *
- *				g_ValueOfAD[0] (水平左电感)	
+ *				g_ValueOfAD[0] (水平左电感)
  *              g_ValueOfAD[1]（水平右电感）
  *				g_ValueOfAD[2]（水平中电感）
  *
@@ -68,8 +72,24 @@ void DirectionControl(void) {
 
     Read_ADC();  //获取电感值
 
-    if (g_ValueOfAD[0] < 50 && g_ValueOfAD[1] < 50)
+    if (g_ValueOfAD[0] < 50 && g_ValueOfAD[1] < 50 && garage_count > 1)
         Flag_Stop = OFF;  //冲出赛道停车保护
+
+    // 以下为出车库处理
+    if ((g_ValueOfAD[2] + g_ValueOfAD[3] < GarageAD23) &&
+        (g_ValueOfAD[2] + g_ValueOfAD[3] > 0) &&
+        !garage_count)  //到达电感阈值且未出车库，开始转向
+    {
+        garage_count++;
+        gpio_set(C14, 1);  // 黄灯亮
+    }
+
+    if ((g_ValueOfAD[0] > 1000 && g_ValueOfAD[1] > 1000) &&
+        garage_count == 1)  //到达电感阈值且已出车库，结束转向
+    {
+        garage_count++;
+        gpio_set(C14, 0);  // 黄灯灭
+    }
 
     g_ValueOfAD[0] =
         (g_ValueOfAD[0] < 10 ? 10 : g_ValueOfAD[0]);  //四个电感值限幅
@@ -161,7 +181,6 @@ void DirectionControl(void) {
         else {
             DownFlagI = 30;
             gpio_toggle(H0);
-            //是反转吗
         }
 
         DownTime--;
@@ -209,10 +228,13 @@ void Read_ADC(void) {
     int16 ValueOfADOld[4], ValueOfADNew[4];
 
     for (i = 0; i < 5; i++) {
-        // ad_valu[0][i] = adc_mean_filter(ADC_1, AD3, 5) * 11046 / 10000;  // 水平左
-        // ad_valu[1][i] = adc_mean_filter(ADC_1, AD5, 5) * 13624 / 10000;  // 水平右
-        ad_valu[0][i] = adc_mean_filter(ADC_1, AD3, 5) * 10000 / 10000;  // 水平左
-        ad_valu[1][i] = adc_mean_filter(ADC_1, AD5, 5) * 15000 / 10000;  // 水平右
+        // ad_valu[0][i] = adc_mean_filter(ADC_1, AD3, 5) * 11046 / 10000;  //
+        // 水平左 ad_valu[1][i] = adc_mean_filter(ADC_1, AD5, 5) * 13624 /
+        // 10000;  // 水平右
+        ad_valu[0][i] =
+            adc_mean_filter(ADC_1, AD3, 5) * 10000 / 10000;  // 水平左
+        ad_valu[1][i] =
+            adc_mean_filter(ADC_1, AD5, 5) * 15000 / 10000;  // 水平右
 
         ad_valu[2][i] = adc_mean_filter(ADC_1, AD4, 5);  // 垂直左
         ad_valu[3][i] = adc_mean_filter(ADC_1, AD2, 5);  //垂直右
