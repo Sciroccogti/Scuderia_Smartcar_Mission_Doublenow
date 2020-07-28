@@ -20,6 +20,11 @@ void car_init() {
     // gpio_init(H3, GPI, 1, GPIO_PIN_CONFIG);  //左
     // gpio_init(F7, GPI, 1, GPIO_PIN_CONFIG);  //右
     // gpio_init(F4, GPI, 1, GPIO_PIN_CONFIG);  //中
+    
+    gpio_init(C4, GPI, 0, GPIO_PIN_CONFIG);
+    gpio_init(C26, GPI, 0, GPIO_PIN_CONFIG);
+    gpio_init(C27, GPI, 0, GPIO_PIN_CONFIG);
+    gpio_init(C31, GPI, 0, GPIO_PIN_CONFIG);
     // OLED初始化
     // oled_init();
     lcd_init();
@@ -105,7 +110,7 @@ void car_init() {
 
     // 超声波串口   波特率为115200 TX为D16 RX为D17
     uart_init(USART_1, 115200, UART1_TX_B12, UART1_RX_B13);
-    NVIC_SetPriority(LPUART1_IRQn, 15);  //设置串口中断优先级
+    NVIC_SetPriority(LPUART1_IRQn, 2);  //设置串口中断优先级
     uart_rx_irq(USART_1, 1);
 
     //配置串口接收的缓冲区及缓冲区长度
@@ -119,15 +124,16 @@ void car_init() {
     // 蓝牙串口   波特率为115200 TX为D16 RX为D17
     uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
     NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
-    uart_rx_irq(USART_8, 1);
+    uart_tx_irq(USART_8, 1);
+    // uart_rx_irq(USART_8, 1);
 
     //配置串口接收的缓冲区及缓冲区长度
-    bluetooth_receivexfer.dataSize = 1;
-    bluetooth_receivexfer.data = &bluetooth_rx_buffer;
+    // bluetooth_receivexfer.dataSize = 16;
+    // bluetooth_receivexfer.data = &bluetooth_rx_buffer;
 
-    //设置中断函数及其参数
-    uart_set_handle(USART_8, &bluetooth_g_lpuartHandle, bluetooth_callback, NULL, 0,
-                    bluetooth_receivexfer.data, 1);
+    // //设置中断函数及其参数
+    // uart_set_handle(USART_8, &bluetooth_g_lpuartHandle, bluetooth_callback, NULL, 0,
+    //                 bluetooth_receivexfer.data, 1);
 
     EnableGlobalIRQ(0);  //使能中断
 }

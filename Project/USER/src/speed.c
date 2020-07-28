@@ -51,6 +51,8 @@ float StraightExpectSpeed;  //直行期望速度
 float TurnExpectSpeed;      //弯道期望速度
 float SpeedUpSpeed;         //加速期望速度
 float DownSpeed;            //下坡期望速度
+int outPWM1 = 200;
+int outPWM2 = 300, diffPWM = 700; // 出车库直行速度 和 转向偏差
 
 float Expect_P;
 float Expect_D;
@@ -66,7 +68,7 @@ uint8 GarageDirection = 1;
 
 float Kspeed =
     1;  //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
-float Kdirection = 0.2;
+float Kdirection = 1;
 
 /**
  * @file		PWM输出
@@ -103,13 +105,11 @@ void PWMOut(void) {
         g_nRighPWM = 0;
     } else if (garage_count == 0)  // 未出车库
     {
-        const int outPWM = 200;
-		g_nLeftPWM = g_nRighPWM = outPWM;
+		g_nLeftPWM = g_nRighPWM = outPWM1;
     } else if (garage_count == 1) // 车库口转向
     {
-        const int outPWM = 300, diffPWM = 700 * (-1 + 2 * GarageDirection);
-        g_nLeftPWM = outPWM + diffPWM;
-        g_nRighPWM = outPWM - diffPWM;
+        g_nLeftPWM = outPWM2 + diffPWM * (-1 + 2 * GarageDirection);
+        g_nRighPWM = outPWM2 - diffPWM * (-1 + 2 * GarageDirection);
     }
 
 
