@@ -49,7 +49,7 @@ int16 LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
 int16 DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1000, DownAD3 = 1000;
 
 // 车库电感2,3之和
-int16 GarageAD23 = 800;
+int16 GarageAD23 = 500;
 
 // 受环境影响的电感系数  把左右水平电感控制在 800左右（参考）
 float Environment = 0.9;
@@ -78,16 +78,14 @@ void DirectionControl(void) {
     // 以下为出车库处理
     if ((g_ValueOfAD[2] + g_ValueOfAD[3] < GarageAD23) &&
         (g_ValueOfAD[2] + g_ValueOfAD[3] > 0) &&
-        !garage_count)  //到达电感阈值且未出车库
+        !garage_count)  //到达电感阈值且未出车库，开始转向
     {
         garage_count++;
         gpio_set(C14, 1);  // 黄灯亮
     }
 
-    if (((g_ValueOfAD[0] > 50 && g_ValueOfAD[1] > 50) ||
-        (g_ValueOfAD[2] + g_ValueOfAD[3] > GarageAD23 && (g_ValueOfAD[0] < 50 ||
-         g_ValueOfAD[1] < 50))) &&
-            garage_count == 1)  //到达电感阈值且已出车库
+    if ((g_ValueOfAD[0] > 1000 && g_ValueOfAD[1] > 1000) &&
+        garage_count == 1)  //到达电感阈值且已出车库，结束转向
     {
         garage_count++;
         gpio_set(C14, 0);  // 黄灯灭

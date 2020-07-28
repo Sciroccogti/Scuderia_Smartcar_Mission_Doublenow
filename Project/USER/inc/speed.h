@@ -32,6 +32,8 @@ extern int16 TurnValue;//弯道判定参数
 extern int16 BasePWM ;
 extern int16 TurnBasePWM ;
 
+extern uint8 GarageDirection;
+
 extern float Kspeed;  //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
 extern float Kdirection; 
 

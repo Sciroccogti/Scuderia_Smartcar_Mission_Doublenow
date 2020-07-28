@@ -61,6 +61,9 @@ int16 TurnValue = 400;  //弯道判定参数
 int16 BasePWM = 0;
 int16 TurnBasePWM = 0;
 
+// 出车库方向，1为右转，0为左转
+uint8 GarageDirection = 1;
+
 float Kspeed =
     1;  //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
 float Kdirection = 0.2;
@@ -104,7 +107,7 @@ void PWMOut(void) {
 		g_nLeftPWM = g_nRighPWM = outPWM;
     } else if (garage_count == 1) // 车库口转向
     {
-        const int outPWM = 300, diffPWM = 700;
+        const int outPWM = 300, diffPWM = 700 * (-1 + 2 * GarageDirection);
         g_nLeftPWM = outPWM + diffPWM;
         g_nRighPWM = outPWM - diffPWM;
     }
