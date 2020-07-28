@@ -34,8 +34,8 @@ lpuart_handle_t     bluetooth_g_lpuartHandle;
 
 // 本文件临时变量
 uint8 sonic_temp;
-uint8 sonic_data[3];
-uint8 sonic_count;
+uint8 sonic_data[3] = {0};
+uint8 sonic_count = 0;
 
 void CSI_IRQHandler(void) {
     CSI_DriverIRQHandler();  //调用SDK自带的中断函数

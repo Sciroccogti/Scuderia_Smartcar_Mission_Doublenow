@@ -27,12 +27,12 @@ void display() {
     // uint16 ad3 = adc_convert(ADC_1, ADC1_CH4_B15);
 
     // 拨码开关 D4 控制显示摄像头还是数据
-    static uint8 last_D4 = 0;
-    if (gpio_get(D4) != last_D4) {
-        last_D4 = 1 - last_D4;
-        lcd_clear(WHITE);
-    }
-    if (gpio_get(D4)) {
+    // static uint8 last_D4 = 0;
+    // if (gpio_get(D4) != last_D4) {
+    //     last_D4 = 1 - last_D4;
+    //     lcd_clear(WHITE);
+    // }
+    // if (gpio_get(D4)) {
         char Left[10];
         char Right[10];
         char LeftMiddle[10];
@@ -82,18 +82,18 @@ void display() {
         lcd_showstr(0, 6, Garage);
         lcd_showstr(80, 6, Garagedirection);
         lcd_showint8(0, 7, mode);
-    } else {
-        if (scc8660_csi_finish_flag)  //图像采集完成
-        {
-            scc8660_csi_finish_flag = 0;  //清除采集完成标志位
+    // } else {
+    //     if (scc8660_csi_finish_flag)  //图像采集完成
+    //     {
+    //         scc8660_csi_finish_flag = 0;  //清除采集完成标志位
 
-            //使用缩放显示函数，根据原始图像大小
-            //以及设置需要显示的大小自动进行缩放或者放大显示
-            //本例程默认采集分辨率为160*120，显示分辨率为160*128，纵向拉伸全屏
-            lcd_displayimage8660_zoom(scc8660_csi_image[0], SCC8660_CSI_PIC_W,
-                                      SCC8660_CSI_PIC_H, 160, 128);
-        }
-    }
+    //         //使用缩放显示函数，根据原始图像大小
+    //         //以及设置需要显示的大小自动进行缩放或者放大显示
+    //         //本例程默认采集分辨率为160*120，显示分辨率为160*128，纵向拉伸全屏
+    //         lcd_displayimage8660_zoom(scc8660_csi_image[0], SCC8660_CSI_PIC_W,
+    //                                   SCC8660_CSI_PIC_H, 160, 128);
+    //     }
+    // }
 }
 
 //蓝牙参数监控
@@ -420,6 +420,7 @@ int main(void) {
 
                 Expect_P = 0.45;  // 1.25
                 Expect_D = 0.55;
+                Kdirection = 0.2;
             }
         }
     }

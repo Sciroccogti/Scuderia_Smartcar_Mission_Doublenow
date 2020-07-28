@@ -79,7 +79,7 @@ void DirectionControl(void) {
 
     // 以下为出车库处理
     if ((g_ValueOfAD[2] + g_ValueOfAD[3] < GarageAD23) &&
-        (g_ValueOfAD[2] + g_ValueOfAD[3] > 0) &&
+        (g_ValueOfAD[2] + g_ValueOfAD[3] > 25) &&
         !garage_count)  //到达电感阈值且未出车库，开始转向
     {
         garage_count++;

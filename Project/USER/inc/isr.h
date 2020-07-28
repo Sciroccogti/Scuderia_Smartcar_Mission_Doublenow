@@ -29,6 +29,10 @@ extern uint16 distance;
 extern lpuart_transfer_t   sonic_receivexfer;
 extern lpuart_handle_t     sonic_g_lpuartHandle;
 
+extern uint8 sonic_temp;
+extern uint8 sonic_data[3];
+extern uint8 sonic_count;
+
 
 extern uint8 bluetooth_rx_buffer;
 extern lpuart_transfer_t   bluetooth_receivexfer;
