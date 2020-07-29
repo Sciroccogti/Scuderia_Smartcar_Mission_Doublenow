@@ -54,12 +54,12 @@ void PIT_IRQHandler(void) {
         //     if (!gpio_get(I0)) Flag_Stop = OFF;
         // } else
         //     STOPi--;
-        if (distance < 150){
+        if (distance < 200){
             k++;
-            if(k >= 3){
+            if(k >= 2){
                 Flag_Stop = OFF;
             }
-            if(k == 5){
+            if(k == 10){
                 gpio_set(C9, 0);
             }
         }
