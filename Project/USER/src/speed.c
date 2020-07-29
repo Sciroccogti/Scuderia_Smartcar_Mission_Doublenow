@@ -31,7 +31,7 @@ float Ratio_Encoder_Righ =
     200 /
     (1175 *
      0.02);  // 右轮速度=counter*右轮周长(mm)/(右轮转一圈对应的脉冲数*程序周期)
-float g_fRealSpeed = 0;  //真实速度
+extern float g_fRealSpeed = 0;  //真实速度
 float g_fLeftRealSpeed;
 float g_fRighRealSpeed;
 float g_fSpeedFilter = 0;     //阶梯滤波速度
