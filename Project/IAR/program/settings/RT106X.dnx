@@ -18,7 +18,7 @@
     <Jet>
         <JetConnSerialNo>SEEKFREE CMSIS-DAP V2:0</JetConnSerialNo>
         <JetConnFoundProbes>SEEKFREE CMSIS-DAP V1:SF1414824529-202:SEEKFREE CMSIS-DAP V2:0:</JetConnFoundProbes>
-        <PrevWtdReset>Core</PrevWtdReset>
+        <PrevWtdReset>System</PrevWtdReset>
         <DisableInterrupts>0</DisableInterrupts>
         <LeaveRunning>1</LeaveRunning>
         <MultiCoreRunAll>0</MultiCoreRunAll>
@@ -28,7 +28,7 @@
         <EnableCache>1</EnableCache>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>2541610217</Checksum>
+        <Checksum>4287527050</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -44,8 +44,8 @@
     <SWOManager>
         <SamplingDivider>8192</SamplingDivider>
         <OverrideClock>0</OverrideClock>
-        <CpuClock>6029413</CpuClock>
-        <SwoClock>5177411</SwoClock>
+        <CpuClock>0</CpuClock>
+        <SwoClock>0</SwoClock>
         <DataLogMode>0</DataLogMode>
         <ItmPortsEnabled>63</ItmPortsEnabled>
         <ItmTermIOPorts>1</ItmTermIOPorts>

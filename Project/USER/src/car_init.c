@@ -20,12 +20,17 @@ void car_init() {
     // gpio_init(H3, GPI, 1, GPIO_PIN_CONFIG);  //左
     // gpio_init(F7, GPI, 1, GPIO_PIN_CONFIG);  //右
     // gpio_init(F4, GPI, 1, GPIO_PIN_CONFIG);  //中
+    
+    gpio_init(C4, GPI, 0, GPIO_PIN_CONFIG);
+    gpio_init(C26, GPI, 0, GPIO_PIN_CONFIG);
+    gpio_init(C27, GPI, 0, GPIO_PIN_CONFIG);
+    gpio_init(C31, GPI, 0, GPIO_PIN_CONFIG);
     // OLED初始化
     // oled_init();
     lcd_init();
 
     // flash初始化
-    flash_init();
+    // flash_init();
 
     /*红外线初始化
     ir_init();
@@ -47,7 +52,7 @@ void car_init() {
     gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG);  // 核心板蓝色
 
     //蓝牙串口初始化
-    uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
+    // uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
 
     // UART_Init(uart0,9600,RXTX_B0B1);
 
@@ -76,7 +81,7 @@ void car_init() {
     //初始化 QTIMER_1 A相使用QTIMER1_TIMER2_C2 B相使用QTIMER1_TIMER3_C24
     qtimer_quad_init(QTIMER_1, QTIMER1_TIMER2_C2, QTIMER1_TIMER3_C24);
     // 摄像头初始化
-    scc8660_csi_init();
+    // scc8660_csi_init();
     //延时0.5s
     systick_delay_ms(500);
     gpio_set(B9, 1);
@@ -117,17 +122,18 @@ void car_init() {
                     sonic_receivexfer.data, 1);
 
     // 蓝牙串口   波特率为115200 TX为D16 RX为D17
-    uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
-    NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
-    uart_rx_irq(USART_8, 1);
+    // uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
+    // NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
+    // uart_tx_irq(USART_8, 1);
+    // uart_rx_irq(USART_8, 1);
 
     //配置串口接收的缓冲区及缓冲区长度
-    bluetooth_receivexfer.dataSize = 1;
-    bluetooth_receivexfer.data = &bluetooth_rx_buffer;
+    // bluetooth_receivexfer.dataSize = 16;
+    // bluetooth_receivexfer.data = &bluetooth_rx_buffer;
 
-    //设置中断函数及其参数
-    uart_set_handle(USART_8, &bluetooth_g_lpuartHandle, bluetooth_callback, NULL, 0,
-                    bluetooth_receivexfer.data, 1);
+    // //设置中断函数及其参数
+    // uart_set_handle(USART_8, &bluetooth_g_lpuartHandle, bluetooth_callback, NULL, 0,
+    //                 bluetooth_receivexfer.data, 1);
 
     EnableGlobalIRQ(0);  //使能中断
 }
