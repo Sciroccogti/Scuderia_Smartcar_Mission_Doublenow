@@ -18,6 +18,7 @@
  ********************************************************************************************************************/
 
 #include "myheader.h"
+#include "math.h"
 
 /****************全局变量定义******************/
 uint8 Flag_Stop = OFF;    //=OFF停车
@@ -54,15 +55,20 @@ void PIT_IRQHandler(void) {
         //     if (!gpio_get(I0)) Flag_Stop = OFF;
         // } else
         //     STOPi--;
-        if (distance < 200){
+        //Ball release & full stop
+        const float ball_height_mm = 50;
+        float drop_time = sqrt(2 * ball_height_mm / 0.01);
+        const float box_length = 10;
+        if (distance < drop_time * g_fRealSpeed - box_length){
             k++;
-            if(k >= 2){
+            gpio_set(C9, 0);
+            if(k >= 3){
                 Flag_Stop = OFF;
             }
-            if(k == 10){
-                gpio_set(C9, 0);
+            if(k == 5){
             }
         }
+
         // 20ms一次速度控制
         j++;
         if (j >= 4) {
