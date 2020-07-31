@@ -26,11 +26,11 @@
 #define OFF 1
 
 //---------------------------------  ADC  -------------------------------
-// #define AD1 ADC0_SE1
-#define AD2 ADC1_CH10_B21   // 垂直右
-#define AD3 ADC1_CH3_B14   // 水平左
-#define AD4 ADC1_CH4_B15  // 垂直左
-#define AD5 ADC1_CH12_B23  // 水平右
+#define AD1 ADC1_CH5_B16 // 中间
+#define AD2 ADC1_CH4_B15   // 垂直右
+#define AD3 ADC1_CH2_B13   // 水平左
+#define AD4 ADC1_CH1_B12  // 垂直左
+#define AD5 ADC1_CH3_B14  // 水平右
 
 #define LMOTOR_F PWM1_MODULE3_CHA_D0 // Left Forward
 #define LMOTOR_B PWM1_MODULE3_CHB_D1 // Left Backward

@@ -360,16 +360,16 @@ int main(void) {
     while (1) {
         display();
         BlueTooth();
-        GarageDirection = gpio_get(D27);
+        GarageDirection = gpio_get(C31);
         TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200,
         TurnAD3 = 1200;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
         LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
         DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1200,
         DownAD3 = 1200;  //下坡判定电感值
 
-        if (!gpio_get(C4)) {
+        if (!gpio_get(B23)) {
             mode++;
-        } else if (!gpio_get(C26)){
+        } else if (!gpio_get(B21)){
             mode--;
         }
 
