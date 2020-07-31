@@ -378,7 +378,7 @@ int main(void) {
                 StraightExpectSpeed = 2800;  //直行期望速度
                 TurnExpectSpeed = 2700;      //弯道期望速度
                 DownSpeed = 2650;            //下坡期望速度
-                outPWM1 = 300;
+                outPWM1 = 250;
                 outPWM2 = 300;
                 diffPWM = 700;
 
