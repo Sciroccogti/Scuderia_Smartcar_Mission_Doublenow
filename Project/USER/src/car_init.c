@@ -1,4 +1,6 @@
 #include "myheader.h"
+#define GPIO_PULLUP_CONFIG SPEED_100MHZ | DSE_R0 | PULLDOWN_100K | PULL_EN
+
 
 // TODO: 上电时序
 void car_init() {
@@ -14,18 +16,12 @@ void car_init() {
     adc_init(ADC_1, AD4, ADC_12BIT);  // 垂直左
     adc_init(ADC_1, AD5, ADC_12BIT);  // 水平右
 
-    //五向开关初始化
-    // gpio_init(H4, GPI, 1, GPIO_PIN_CONFIG);  //上
-    // gpio_init(F5, GPI, 1, GPIO_PIN_CONFIG);  //下
-    // gpio_init(H3, GPI, 1, GPIO_PIN_CONFIG);  //左
-    // gpio_init(F7, GPI, 1, GPIO_PIN_CONFIG);  //右
-    // gpio_init(F4, GPI, 1, GPIO_PIN_CONFIG);  //中
-    
-    gpio_init(B23, GPI, 1, GPIO_PIN_CONFIG); // 上
-    gpio_init(B21, GPI, 1, GPIO_PIN_CONFIG); // 下
-    gpio_init(B19, GPI, 1, GPIO_PIN_CONFIG); // 左
-    gpio_init(B18, GPI, 1, GPIO_PIN_CONFIG); // 右
-    gpio_init(B17, GPI, 1, GPIO_PIN_CONFIG); // 中
+    //五向开关初始化    
+    gpio_init(B23, GPI, 1, GPIO_PULLUP_CONFIG); // 上
+    gpio_init(B21, GPI, 1, GPIO_PULLUP_CONFIG); // 下
+    gpio_init(B19, GPI, 1, GPIO_PULLUP_CONFIG); // 左
+    gpio_init(B18, GPI, 1, GPIO_PULLUP_CONFIG); // 右
+    gpio_init(B17, GPI, 1, GPIO_PULLUP_CONFIG); // 中
     // OLED初始化
     // oled_init();
     lcd_init();
@@ -47,7 +43,7 @@ void car_init() {
     //环岛指示灯初始化
     // gpio_init(H0, GPO, 0, GPIO_PIN_CONFIG);
     // gpio_init(E6, GPO, 0, GPIO_PIN_CONFIG);
-    gpio_init(C14, GPO, 0, GPIO_PIN_CONFIG);
+    // gpio_init(C14, GPO, 0, GPIO_PIN_CONFIG);
 
     // LED初始化
     gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG);  // 核心板蓝色
@@ -64,10 +60,10 @@ void car_init() {
     // gpio_init(H2, GPI, 1, GPIO_PIN_CONFIG);  // 4
     // gpio_init(D27, GPI, 1, GPIO_PIN_CONFIG);  // 1
     // gpio_init(D4, GPI, 1, GPIO_PIN_CONFIG);   // 2
-    gpio_init(C31, GPI, 1, GPIO_PIN_CONFIG); // 1
-    gpio_init(B11, GPI, 1, GPIO_PIN_CONFIG); // 2
-    gpio_init(C27, GPI, 1, GPIO_PIN_CONFIG); // 3
-    gpio_init(C25, GPI, 1, GPIO_PIN_CONFIG); // 4
+    gpio_init(C31, GPI, 1, GPIO_PULLUP_CONFIG); // 1
+    gpio_init(B11, GPI, 1, GPIO_PULLUP_CONFIG); // 2
+    gpio_init(C27, GPI, 1, GPIO_PULLUP_CONFIG); // 3
+    gpio_init(C25, GPI, 1, GPIO_PULLUP_CONFIG); // 4
 
     //电机初始化
     pwm_init(PWM1_MODULE3_CHB_D1, 14000, 0);

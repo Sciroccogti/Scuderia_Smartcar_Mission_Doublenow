@@ -367,9 +367,9 @@ int main(void) {
         DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1200,
         DownAD3 = 1200;  //下坡判定电感值
 
-        if (!gpio_get(B23)) {
+        if (gpio_get(B23)) {
             mode++;
-        } else if (!gpio_get(B21)){
+        } else if (gpio_get(B21)){
             mode--;
         }
 
