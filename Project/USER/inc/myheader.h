@@ -26,9 +26,10 @@
 #define OFF 1
 
 //---------------------------------  ADC  -------------------------------
-#define AD1 ADC1_CH5_B16 // 中间
+// #define AD1 ADC1_CH5_B16 // 中间
 #define AD2 ADC1_CH4_B15   // 垂直右
-#define AD3 ADC1_CH2_B13   // 水平左
+// #define AD3 ADC1_CH2_B13   // 水平左
+#define AD3 ADC1_CH5_B16 // 飞线水平左
 #define AD4 ADC1_CH1_B12  // 垂直左
 #define AD5 ADC1_CH3_B14  // 水平右
 
