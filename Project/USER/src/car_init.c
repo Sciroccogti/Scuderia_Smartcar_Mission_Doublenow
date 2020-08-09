@@ -20,8 +20,8 @@ void car_init() {
     gpio_init(B23, GPI, 1, GPIO_PULLUP_CONFIG); // 上
     gpio_init(B21, GPI, 1, GPIO_PULLUP_CONFIG); // 下
     gpio_init(B19, GPI, 1, GPIO_PULLUP_CONFIG); // 左
-    gpio_init(B18, GPI, 1, GPIO_PULLUP_CONFIG); // 右
-    gpio_init(B17, GPI, 1, GPIO_PULLUP_CONFIG); // 中
+    gpio_init(B10, GPI, 1, GPIO_PULLUP_CONFIG); // 右
+    gpio_init(B9, GPI, 1, GPIO_PULLUP_CONFIG); // 中
     // OLED初始化
     // oled_init();
     lcd_init();
@@ -123,7 +123,7 @@ void car_init() {
     //                 sonic_receivexfer.data, 1);
 
     // 蓝牙串口   波特率为115200 TX为D16 RX为D17
-    // uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
+    // uart_init(USART_8, 115200, UART8_TX_B12, UART8_RX_B13);
     // NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
     // uart_tx_irq(USART_8, 1);
     // uart_rx_irq(USART_8, 1);
