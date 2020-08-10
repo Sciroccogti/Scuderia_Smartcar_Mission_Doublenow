@@ -8,6 +8,9 @@ void car_init() {
 
     // 电磁铁
     // gpio_init(C9, GPO, 1, SPEED_200MHZ | DSE_R0_7 | PULLUP_100K | PULL_EN);
+    
+    // PWM enable
+    gpio_init(D12, GPO, 1, GPIO_PIN_CONFIG);
 
     // ADC初始化
     // adc_init(AD1,ADC_12BIT);
@@ -110,9 +113,9 @@ void car_init() {
     // 越小优先级越高 四路PIT共用一个PIT中断函数
 
     // 超声波串口   波特率为115200 TX为D16 RX为D17
-    // uart_init(USART_1, 115200, UART1_TX_B12, UART1_RX_B13);
-    // NVIC_SetPriority(LPUART1_IRQn, 15);  //设置串口中断优先级
-    // uart_rx_irq(USART_1, 1);
+    uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
+    NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
+    uart_rx_irq(USART_8, 1);
 
     // //配置串口接收的缓冲区及缓冲区长度
     // sonic_receivexfer.dataSize = 1;

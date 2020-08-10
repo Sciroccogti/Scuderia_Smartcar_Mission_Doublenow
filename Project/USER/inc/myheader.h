@@ -28,15 +28,15 @@
 //---------------------------------  ADC  -------------------------------
 // #define AD1 ADC1_CH5_B16 // 中间
 #define AD2 ADC1_CH4_B15   // 垂直右
-#define AD3 ADC1_CH2_B18   // 水平左
+#define AD3 ADC1_CH7_B18   // 水平左
 //#define ADM ADC1_CH5_B16 // 中
-#define AD4 ADC1_CH1_B17  // 垂直左
+#define AD4 ADC1_CH6_B17  // 垂直左
 #define AD5 ADC1_CH3_B14  // 水平右
 
 #define LMOTOR_F PWM1_MODULE3_CHA_D0 // Left Forward
 #define LMOTOR_B PWM1_MODULE3_CHB_D1 // Left Backward
-#define RMOTOR_F PWM2_MODULE3_CHA_D2 // Right Forward
-#define RMOTOR_B PWM2_MODULE3_CHB_D3 // Right Backward
+#define RMOTOR_F PWM2_MODULE3_CHB_D3 // Right Forward
+#define RMOTOR_B PWM2_MODULE3_CHA_D2 // Right Backward
 
 
 #endif

@@ -49,9 +49,9 @@ int16 LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
 int16 DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1000, DownAD3 = 1000;
 
 // 车库电感2,3之和
-int16 GarageAD23 = 500;
+int16 GarageAD23 = 1500;
 // 车库电感0,1
-int16 GarageAD0 =1000, GarageAD1 = 1000;
+int16 GarageAD0 =1100, GarageAD1 = 1100;
 
 // 受环境影响的电感系数  把左右水平电感控制在 800左右（参考）
 float Environment = 0.9;
