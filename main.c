@@ -61,7 +61,15 @@ void display() {
         sprintf(SpeedOut, "SO:%05d", (int)g_fSpeedControlOut);
         sprintf(DirOut, "DO:%05d", (int)g_fDirectionControlOut);
         sprintf(Sonic, "sonic:%04dmm", distance);    // 超声波
-        sprintf(Garage, "garage:%d", garage_count);  // 车库计数
+
+        if (garage_count == 0){
+            sprintf(Garage, "in gar");  // 车库内
+        } else if(garage_count == 1){
+            sprintf(Garage, "gar turn"); // 出车库中
+        } else {
+            sprintf(Garage, "out gar"); // 已出车库
+        }
+
         if (GarageDirection) {
             sprintf(Garagedirection, "RIGHT");
         } else {
@@ -361,11 +369,11 @@ int main(void) {
         display();
         BlueTooth();
         GarageDirection = gpio_get(C31);
-        TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200,
-        TurnAD3 = 1200;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
-        LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
-        DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1200,
-        DownAD3 = 1200;  //下坡判定电感值
+        TurnAD0 = 3300, TurnAD1 = 3000, TurnAD2 = 2000,
+        TurnAD3 = 2000;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
+        LeaveAD0 = 2600, LeaveAD1 = 2600, LeaveAD2 = 2000, LeaveAD3 = 2000;
+        DownAD0 = 4000, DownAD1 = 4000, DownAD2 = 2400,
+        DownAD3 = 2400;  //下坡判定电感值
 
         if (gpio_get(B23)) {
             mode++;
@@ -390,7 +398,7 @@ int main(void) {
 
                 TurnTimeDuring =
                     100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 350;  //冻结时间常量
+                FreezingTimeDuring = 6000000 / (g_fLeftRealSpeed + g_fRighRealSpeed);  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.5;  // 1.25
@@ -417,7 +425,7 @@ int main(void) {
 
                 TurnTimeDuring =
                     100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 350;  //冻结时间常量
+                FreezingTimeDuring = 6000000 / (g_fLeftRealSpeed + g_fRighRealSpeed);  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.45;  // 1.25

@@ -159,5 +159,3 @@ GPIO3_Combined_0_15_IRQHandler
 SDMMCHOST_CARD_DETECT_GPIO_INTERRUPT_HANDLER函数注释掉即可
 
 */
-
-//李的程序中test部分扔了

@@ -40,18 +40,18 @@ float FreezingTimeDuring;  //冻结时间常量
 float DownTimeDuring;      //下坡时间常量
 
 // 水平左右，垂直左右电感，判断是否到达环岛的阈值
-int16 TurnAD0 = 2000, TurnAD1 = 2000, TurnAD2 = 1200, TurnAD3 = 1200;
+int16 TurnAD0 = 4000, TurnAD1 = 4000, TurnAD2 = 2400, TurnAD3 = 2400;
 
 // 离开环岛的阈值放松
-int16 LeaveAD0 = 1300, LeaveAD1 = 1300, LeaveAD2 = 1000, LeaveAD3 = 1000;
+int16 LeaveAD0 = 2600, LeaveAD1 = 2600, LeaveAD2 = 2600, LeaveAD3 = 2600;
 
 // 下坡判定电感值
-int16 DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1000, DownAD3 = 1000;
+int16 DownAD0 = 4000, DownAD1 = 4000, DownAD2 = 2000, DownAD3 = 2000;
 
 // 车库电感2,3之和
 int16 GarageAD23 = 1500;
 // 车库电感0,1
-int16 GarageAD0 =1000, GarageAD1 = 1000;
+int16 GarageAD0 = 1000, GarageAD1 = 1000;
 
 // 受环境影响的电感系数  把左右水平电感控制在 800左右（参考）
 float Environment = 0.9;
@@ -83,14 +83,14 @@ void DirectionControl(void) {
         !garage_count)  //到达电感阈值且未出车库，开始转向
     {
         garage_count++;
-        gpio_set(C14, 1);  // 黄灯亮
+        // gpio_set(C14, 1);  // 黄灯亮
     }
 
     if ((g_ValueOfAD[0] > GarageAD0 && g_ValueOfAD[1] > GarageAD1) &&
         garage_count == 1)  //到达电感阈值且已出车库，结束转向
     {
         garage_count++;
-        gpio_set(C14, 0);  // 黄灯灭
+        // gpio_set(C14, 0);  // 黄灯灭
     }
 
     g_ValueOfAD[0] =
@@ -146,7 +146,7 @@ void DirectionControl(void) {
         (g_fDirectionError_dot[1] < -0.7 ? -0.7 : g_fDirectionError_dot[1]);
 
     //以下为环岛处理
-    if ((g_ValueOfAD[0] > TurnAD0) && (g_ValueOfAD[1] > TurnAD1) &&
+    if ((g_ValueOfAD[0] + g_ValueOfAD[1] > TurnAD0 + TurnAD1) &&  //(g_ValueOfAD[0] > TurnAD0) && (g_ValueOfAD[1] > TurnAD1) &&
         ((g_ValueOfAD[2] > TurnAD2) || (g_ValueOfAD[3] > TurnAD3)) &&
         !FreezingTime)  //到达电感阈值且不与上一次判定重复
     {
@@ -154,7 +154,7 @@ void DirectionControl(void) {
         {
             Flag_Round = ON;
             Leave = ON;
-            gpio_set(E6, 1);
+            // gpio_set(D13, 1);
             TurnTime = TurnTimeDuring;
             FreezingTime = FreezingTimeDuring;
         }
@@ -165,7 +165,7 @@ void DirectionControl(void) {
             ON)  //离岛标志，亮红灯，不改变方向控制，冻结一次进岛判定时间
         {
             Leave = OFF;
-            gpio_set(H0, 1);
+            // gpio_set(D13, 0);
             FreezingTime = FreezingTimeDuring;
         }
     }
@@ -209,14 +209,17 @@ void DirectionControl(void) {
     }
 
     //方向算法（位置式PD）
-    if (Flag_Round == ON)
+    if (Flag_Round == ON) {
         g_fDirectionControlOut =
             (g_fDirectionError[1] * Turn_dirControl_P +
              g_fDirectionError_dot[1] * Turn_dirControl_D);  //依据垂直电感转向
-    else
+        gpio_set(D13, 1);
+    } else {
         g_fDirectionControlOut =
             (g_fDirectionError[0] * g_dirControl_P +
              g_fDirectionError_dot[0] * g_dirControl_D);  //依据水平电感转向
+        gpio_set(D13, 0);
+    }
 }
 
 /**
@@ -236,7 +239,7 @@ void Read_ADC(void) {
         ad_valu[0][i] =
             adc_mean_filter(ADC_1, AD3, 5) * 10000 / 10000;  // 水平左
         ad_valu[1][i] =
-            adc_mean_filter(ADC_1, AD5, 5) * 15000 / 10000;  // 水平右
+            adc_mean_filter(ADC_1, AD5, 5) * 10000 / 10000;  // 水平右
 
         ad_valu[2][i] = adc_mean_filter(ADC_1, AD4, 5);  // 垂直左
         ad_valu[3][i] = adc_mean_filter(ADC_1, AD2, 5);  //垂直右

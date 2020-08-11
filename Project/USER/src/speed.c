@@ -59,16 +59,16 @@ float Expect_D;
 // float TurnExpect_P = 0.25;
 // float TurnExpect_D = 1.5;
 
-int16 TurnValue = 400;  //弯道判定参数
+int16 TurnValue = 800;  //弯道判定参数
 int16 BasePWM = 0;
 int16 TurnBasePWM = 0;
 
 // 出车库方向，1为右转，0为左转
 uint8 GarageDirection = 1;
 
-float Kspeed = 1;
+float Kspeed = 1.2;
 //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
-float Kdirection = 1;
+float Kdirection = 0.8;
 
 /**
  * @file		PWM输出
@@ -115,21 +115,11 @@ void PWMOut(void) {
     if (g_nLeftPWM < 0) {
         nLeftPWM = LeftDead - g_nLeftPWM;
         nLeftPWM = (nLeftPWM > MaxPWM ? MaxPWM : nLeftPWM);
-        /*//KEA VERSION
-        FTM_PWM_Duty(ftm2, ftm_ch5, nLeftPWM);
-        FTM_PWM_Duty(ftm2, ftm_ch4, 0);
-        */
-        // RT1064 VERSION
         pwm_duty(LMOTOR_B, nLeftPWM);
         pwm_duty(LMOTOR_F, 0);
     } else {
         nLeftPWM = LeftDead + g_nLeftPWM;
         nLeftPWM = (nLeftPWM > MaxPWM ? MaxPWM : nLeftPWM);
-        /*//KEA VERSION
-        FTM_PWM_Duty(ftm2, ftm_ch5, 0);
-        FTM_PWM_Duty(ftm2, ftm_ch4, nLeftPWM);
-        */
-        // RT1064 VERSION
         pwm_duty(LMOTOR_B, 0);
         pwm_duty(LMOTOR_F, nLeftPWM);
     }
@@ -137,21 +127,11 @@ void PWMOut(void) {
     if (g_nRighPWM < 0) {
         nRighPWM = RighDead - g_nRighPWM;
         nRighPWM = (nRighPWM > MaxPWM ? MaxPWM : nRighPWM);
-        /*//KEA VERSION
-        FTM_PWM_Duty(ftm2, ftm_ch0, 0);
-        FTM_PWM_Duty(ftm2, ftm_ch1, nRighPWM);
-        */
-        // RT1064 VERSION
         pwm_duty(RMOTOR_B, nRighPWM);
         pwm_duty(RMOTOR_F, 0);
     } else {
         nRighPWM = RighDead + g_nRighPWM;
         nRighPWM = (nRighPWM > MaxPWM ? MaxPWM : nRighPWM);
-        /*//KEA VERSION
-        FTM_PWM_Duty(ftm2, ftm_ch0, nRighPWM);
-        FTM_PWM_Duty(ftm2, ftm_ch1, 0);
-        */
-        // RT1064 VERSION
         pwm_duty(RMOTOR_B, 0);
         pwm_duty(RMOTOR_F, nRighPWM);
     }
@@ -164,17 +144,6 @@ void PWMOut(void) {
  */
 void CalSpeedError(void) {
     static float fSpeedOld = 0, fSpeedNew = 0;
-
-    /*//KEA version
-    g_nLeftpulse = (GPIO_Get(E1)
-    ==1?FTM_Pulse_Get(ftm0):-FTM_Pulse_Get(ftm0));//读取左轮脉冲
-    FTM_Count_Clean(ftm0);
-    g_nRighpulse =
-    (GPIO_Get(H6)==0?FTM_Pulse_Get(ftm1):-FTM_Pulse_Get(ftm1));//读取右轮脉冲
-    FTM_Count_Clean(ftm1);
-    */
-
-    // rt1064 version, optimizing style of coding
     g_nLeftpulse = -qtimer_quad_get(
         QTIMER_1, QTIMER1_TIMER0_C0);  //读取左轮脉冲 C0:LSB C1:DIR
     g_nRighpulse = qtimer_quad_get(

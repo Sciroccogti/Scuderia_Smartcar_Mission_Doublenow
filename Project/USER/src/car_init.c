@@ -1,5 +1,5 @@
 #include "myheader.h"
-#define GPIO_PULLUP_CONFIG SPEED_100MHZ | DSE_R0 | PULLDOWN_100K | PULL_EN
+#define GPIO_PULLDOWN_CONFIG SPEED_100MHZ | DSE_R0 | PULLDOWN_100K | PULL_EN
 
 
 // TODO: 上电时序
@@ -20,11 +20,11 @@ void car_init() {
     adc_init(ADC_1, AD5, ADC_12BIT);  // 水平右
 
     //五向开关初始化    
-    gpio_init(B23, GPI, 1, GPIO_PULLUP_CONFIG); // 上
-    gpio_init(B21, GPI, 1, GPIO_PULLUP_CONFIG); // 下
-    gpio_init(B19, GPI, 1, GPIO_PULLUP_CONFIG); // 左
-    gpio_init(B10, GPI, 1, GPIO_PULLUP_CONFIG); // 右
-    gpio_init(B9, GPI, 1, GPIO_PULLUP_CONFIG); // 中
+    gpio_init(B23, GPI, 1, GPIO_PULLDOWN_CONFIG); // 上
+    gpio_init(B21, GPI, 1, GPIO_PULLDOWN_CONFIG); // 下
+    gpio_init(B19, GPI, 1, GPIO_PULLDOWN_CONFIG); // 左
+    gpio_init(B10, GPI, 1, GPIO_PULLDOWN_CONFIG); // 右
+    gpio_init(B9, GPI, 1, GPIO_PULLDOWN_CONFIG); // 中
     // OLED初始化
     // oled_init();
     lcd_init();
@@ -38,7 +38,7 @@ void car_init() {
     //设置优先级,根据自己的需求设置可设置范围为 0 - 3 enable_irq(IRQ_IRQn);*/
 
     //蜂鸣器初始化
-    gpio_init(B11, GPO, 0, GPIO_PIN_CONFIG);
+    gpio_init(D13, GPO, 0, GPIO_PIN_CONFIG);
 
     //停车干簧管初始化
     // gpio_init(I0, GPI, 1, GPIO_PIN_CONFIG);
@@ -54,19 +54,11 @@ void car_init() {
     //蓝牙串口初始化
     // uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
 
-    // UART_Init(uart0,9600,RXTX_B0B1);
-
-    //拨码开关或备用接口初始化(复用为拨码开关或备用接口)，K1-4若用于备用接口则改为GPO;
-    // gpio_init(C5, GPI, 1, GPIO_PIN_CONFIG);  // 1
-    // gpio_init(H7, GPI, 1, GPIO_PIN_CONFIG);  // 2
-    // gpio_init(H5, GPI, 1, GPIO_PIN_CONFIG);  // 3
-    // gpio_init(H2, GPI, 1, GPIO_PIN_CONFIG);  // 4
-    // gpio_init(D27, GPI, 1, GPIO_PIN_CONFIG);  // 1
-    // gpio_init(D4, GPI, 1, GPIO_PIN_CONFIG);   // 2
-    gpio_init(C31, GPI, 1, GPIO_PULLUP_CONFIG); // 1
-    gpio_init(B11, GPI, 1, GPIO_PULLUP_CONFIG); // 2
-    gpio_init(C27, GPI, 1, GPIO_PULLUP_CONFIG); // 3
-    gpio_init(C25, GPI, 1, GPIO_PULLUP_CONFIG); // 4
+    //拨码开关或备用接口初始化(复用为拨码开关或备用接口);
+    gpio_init(C31, GPI, 1, GPIO_PULLDOWN_CONFIG); // 1
+    gpio_init(B11, GPI, 1, GPIO_PULLDOWN_CONFIG); // 2
+    gpio_init(C27, GPI, 1, GPIO_PULLDOWN_CONFIG); // 3
+    gpio_init(C25, GPI, 1, GPIO_PULLDOWN_CONFIG); // 4
 
     //电机初始化
     pwm_init(PWM1_MODULE3_CHB_D1, 14000, 0);
@@ -90,25 +82,9 @@ void car_init() {
     systick_delay_ms(500);
     gpio_set(B9, 1);
 
-    // Garage out
-    // const int outpower = 250;
-    // const int stime = 600;
-    // const int ttime = 400;
-    // pwm_duty(LMOTOR_B, 0);
-    // pwm_duty(LMOTOR_F, outpower);
-    // pwm_duty(RMOTOR_B, 0);
-    // pwm_duty(RMOTOR_F, outpower);
-    // systick_delay_ms(stime);
-    // pwm_duty(LMOTOR_F, outpower * 2);
-    // pwm_duty(RMOTOR_F, 0);
-    // pwm_duty(RMOTOR_B, outpower / 4);
-    // systick_delay_ms(ttime);
-    // End Garage Out
-
     //定时器初始化
     pit_init();                    //初始化pit外设
     pit_interrupt_ms(PIT_CH0, 5);  //初始化pit通道0 周期
-    // PIT_SetCallback(PIT_Interrupt);
     NVIC_SetPriority(PIT_IRQn, 0);  ///设置中断优先级 范围0-15
     // 越小优先级越高 四路PIT共用一个PIT中断函数
 
@@ -116,6 +92,7 @@ void car_init() {
     uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
     NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
     uart_rx_irq(USART_8, 1);
+
 
     // //配置串口接收的缓冲区及缓冲区长度
     // sonic_receivexfer.dataSize = 1;
@@ -138,6 +115,5 @@ void car_init() {
     // //设置中断函数及其参数
     // uart_set_handle(USART_8, &bluetooth_g_lpuartHandle, bluetooth_callback, NULL, 0,
     //                 bluetooth_receivexfer.data, 1);
-
     EnableGlobalIRQ(0);  //使能中断
 }
