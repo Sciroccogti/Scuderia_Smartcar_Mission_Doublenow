@@ -43,7 +43,7 @@ int32 nLeftPWM = 0, nRighPWM = 0;
 int32 g_nLeftPWM = 0, g_nRighPWM = 0;
 float g_fSpeedControlOut = 100;  //速度输出
 int32 MaxPWM = 650;
-int8 TurnFlag = OFF;
+int8 TurnFlag = OFF; // 转向标志
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
 
@@ -51,8 +51,8 @@ float StraightExpectSpeed;  //直行期望速度
 float TurnExpectSpeed;      //弯道期望速度
 float SpeedUpSpeed;         //加速期望速度
 float DownSpeed;            //下坡期望速度
-int outPWM1 = 200;
-int outPWM2 = 300, diffPWM = 700; // 出车库直行速度 和 转向偏差
+int outPWM1 = 150;
+int outPWM2 = 000, diffPWM = 300;  // 出车库直行速度 和 转向偏差
 
 float Expect_P;
 float Expect_D;
@@ -66,8 +66,8 @@ int16 TurnBasePWM = 0;
 // 出车库方向，1为右转，0为左转
 uint8 GarageDirection = 1;
 
-float Kspeed =
-    1;  //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
+float Kspeed = 1;
+//速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
 float Kdirection = 1;
 
 /**
@@ -105,13 +105,12 @@ void PWMOut(void) {
         g_nRighPWM = 0;
     } else if (garage_count == 0)  // 未出车库
     {
-		g_nLeftPWM = g_nRighPWM = outPWM1;
-    } else if (garage_count == 1) // 车库口转向
+        g_nLeftPWM = g_nRighPWM = outPWM1;
+    } else if (garage_count == 1)  // 车库口转向
     {
         g_nLeftPWM = outPWM2 + diffPWM * (-1 + 2 * GarageDirection);
         g_nRighPWM = outPWM2 - diffPWM * (-1 + 2 * GarageDirection);
     }
-
 
     if (g_nLeftPWM < 0) {
         nLeftPWM = LeftDead - g_nLeftPWM;

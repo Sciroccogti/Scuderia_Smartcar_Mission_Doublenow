@@ -378,9 +378,9 @@ int main(void) {
                 StraightExpectSpeed = 2800;  //直行期望速度
                 TurnExpectSpeed = 2700;      //弯道期望速度
                 DownSpeed = 2650;            //下坡期望速度
-                outPWM1 = 250;
-                outPWM2 = 300;
-                diffPWM = 700;
+                // outPWM1 = 250;
+                // outPWM2 = 300;
+                // diffPWM = 700;
 
                 g_dirControl_P = 3000;  //方向控制P
                 g_dirControl_D = 3200;  //方向控制D
@@ -405,9 +405,9 @@ int main(void) {
                 StraightExpectSpeed = 1500;  //直行期望速度
                 TurnExpectSpeed = 1000;      //弯道期望速度
                 DownSpeed = 1350;            //下坡期望速度
-                outPWM1 = 200;
-                outPWM2 = 300;
-                diffPWM = 700;
+                // outPWM1 = 200;
+                // outPWM2 = 300;
+                // diffPWM = 700;
 
                 g_dirControl_P = 3000;  //方向控制P
                 g_dirControl_D = 3200;  //方向控制D

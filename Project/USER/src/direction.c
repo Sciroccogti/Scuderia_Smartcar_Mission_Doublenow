@@ -51,7 +51,7 @@ int16 DownAD0 = 2000, DownAD1 = 2000, DownAD2 = 1000, DownAD3 = 1000;
 // 车库电感2,3之和
 int16 GarageAD23 = 1500;
 // 车库电感0,1
-int16 GarageAD0 =1100, GarageAD1 = 1100;
+int16 GarageAD0 =1000, GarageAD1 = 1000;
 
 // 受环境影响的电感系数  把左右水平电感控制在 800左右（参考）
 float Environment = 0.9;
@@ -74,7 +74,7 @@ void DirectionControl(void) {
 
     Read_ADC();  //获取电感值
 
-    if (g_ValueOfAD[0] < 50 && g_ValueOfAD[1] < 50 && garage_count > 1)
+    if (g_ValueOfAD[0] < 300 && g_ValueOfAD[1] < 300 && garage_count > 1)
         Flag_Stop = OFF;  //冲出赛道停车保护
 
     // 以下为出车库处理
