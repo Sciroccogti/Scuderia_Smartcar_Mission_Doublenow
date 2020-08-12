@@ -40,7 +40,7 @@ float FreezingTimeDuring;  //冻结时间常量
 float DownTimeDuring;      //下坡时间常量
 
 // 水平左右，垂直左右电感，判断是否到达环岛的阈值
-int16 TurnAD0 = 4000, TurnAD1 = 4000, TurnAD2 = 2400, TurnAD3 = 2400;
+int16 TurnAD0 = 4000, TurnAD1 = 4000, TurnAD2 = 3400, TurnAD3 = 3400;
 
 // 离开环岛的阈值放松
 int16 LeaveAD0 = 2600, LeaveAD1 = 2600, LeaveAD2 = 2600, LeaveAD3 = 2600;
@@ -199,17 +199,17 @@ void DirectionControl(void) {
         }
     }
 
-    if (TurnTime)  //转向时间倒数
+    if (TurnTime > 0)  //转向时间倒数
     {
         TurnTime--;
-        if (!TurnTime)  //转向时间结束，Flag倒下
+        if (TurnTime <= 0)  //转向时间结束，Flag倒下
         {
             Flag_Round = OFF;
         }
     }
 
     //方向算法（位置式PD）
-    if (Flag_Round == ON) {
+    if (Flag_Round == ON ){//&& Round_Countdown) {
         g_fDirectionControlOut =
             (g_fDirectionError[1] * Turn_dirControl_P +
              g_fDirectionError_dot[1] * Turn_dirControl_D);  //依据垂直电感转向

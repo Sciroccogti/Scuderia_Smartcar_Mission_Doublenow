@@ -90,6 +90,7 @@ void display() {
         lcd_showstr(0, 6, Garage);
         lcd_showstr(80, 6, Garagedirection);
         lcd_showint8(0, 7, mode);
+        lcd_showfloat(80, 7, TurnTime, 6, 0);
     // } else {
     //     if (scc8660_csi_finish_flag)  //图像采集完成
     //     {
@@ -369,11 +370,13 @@ int main(void) {
         display();
         BlueTooth();
         GarageDirection = gpio_get(C31);
-        TurnAD0 = 3300, TurnAD1 = 3000, TurnAD2 = 2000,
-        TurnAD3 = 2000;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
+        TurnAD0 = 2900, TurnAD1 = 2900, TurnAD2 = 3400,
+        TurnAD3 = 3400;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
         LeaveAD0 = 2600, LeaveAD1 = 2600, LeaveAD2 = 2000, LeaveAD3 = 2000;
         DownAD0 = 4000, DownAD1 = 4000, DownAD2 = 2400,
         DownAD3 = 2400;  //下坡判定电感值
+        
+        // 转向时间常量，若要修改转向时间，就修改这个
 
         if (gpio_get(B23)) {
             mode++;
@@ -384,7 +387,7 @@ int main(void) {
         switch (mode) {
             case 1: {
                 StraightExpectSpeed = 2800;  //直行期望速度
-                TurnExpectSpeed = 2700;      //弯道期望速度
+                TurnExpectSpeed = 2500;      //弯道期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -396,13 +399,12 @@ int main(void) {
                 Turn_dirControl_P = 3000;  //进岛方向控制P
                 Turn_dirControl_D = 6000;  //进岛方向控制D
 
-                TurnTimeDuring =
-                    100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 6000000 / (g_fLeftRealSpeed + g_fRighRealSpeed);  //冻结时间常量
+                TurnTimeDuring = 300000 / (StraightExpectSpeed);
+                FreezingTimeDuring = 350;  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.5;  // 1.25
-                Expect_D = 0.6;
+                Expect_D = 0.9;
 
                 Kdirection = 1;
 
@@ -423,13 +425,12 @@ int main(void) {
                 Turn_dirControl_P = 3000;  //进岛方向控制P
                 Turn_dirControl_D = 6000;  //进岛方向控制D
 
-                TurnTimeDuring =
-                    100;  //转向时间常量，若要修改转向时间，就修改这个
-                FreezingTimeDuring = 6000000 / (g_fLeftRealSpeed + g_fRighRealSpeed);  //冻结时间常量
+                TurnTimeDuring = 300000 / (StraightExpectSpeed);
+                FreezingTimeDuring = 350;  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.45;  // 1.25
-                Expect_D = 0.55;
+                Expect_D = 0.8;
                 Kdirection = 0.2;
             }
         }
