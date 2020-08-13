@@ -61,7 +61,7 @@ void PIT_IRQHandler(void) {
         const float box_length = 50;
         if (distance - 100 < drop_time * g_fRealSpeed - box_length){
             k++;
-            gpio_set(C9, 0);
+            // gpio_set(C9, 0);
             if(k >= 3){
                 Flag_Stop = OFF;
             }

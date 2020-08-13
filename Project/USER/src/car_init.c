@@ -40,19 +40,8 @@ void car_init() {
     //蜂鸣器初始化
     gpio_init(D13, GPO, 0, GPIO_PIN_CONFIG);
 
-    //停车干簧管初始化
-    // gpio_init(I0, GPI, 1, GPIO_PIN_CONFIG);
-    // gpio_init(H1, GPO, 0, GPIO_PIN_CONFIG);
-    //环岛指示灯初始化
-    // gpio_init(H0, GPO, 0, GPIO_PIN_CONFIG);
-    // gpio_init(E6, GPO, 0, GPIO_PIN_CONFIG);
-    // gpio_init(C14, GPO, 0, GPIO_PIN_CONFIG);
-
     // LED初始化
     gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG);  // 核心板蓝色
-
-    //蓝牙串口初始化
-    // uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
 
     //拨码开关或备用接口初始化(复用为拨码开关或备用接口);
     gpio_init(C31, GPI, 1, GPIO_PULLDOWN_CONFIG); // 1
@@ -79,7 +68,7 @@ void car_init() {
     // 摄像头初始化
     // scc8660_csi_init();
     //延时0.5s
-    systick_delay_ms(500);
+    // systick_delay_ms(500);
     gpio_set(B9, 1);
 
     //定时器初始化

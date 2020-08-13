@@ -83,14 +83,12 @@ void DirectionControl(void) {
         !garage_count)  //到达电感阈值且未出车库，开始转向
     {
         garage_count++;
-        // gpio_set(C14, 1);  // 黄灯亮
     }
 
     if ((g_ValueOfAD[0] > GarageAD0 && g_ValueOfAD[1] > GarageAD1) &&
         garage_count == 1)  //到达电感阈值且已出车库，结束转向
     {
         garage_count++;
-        // gpio_set(C14, 0);  // 黄灯灭
     }
 
     g_ValueOfAD[0] =
@@ -146,7 +144,9 @@ void DirectionControl(void) {
         (g_fDirectionError_dot[1] < -0.7 ? -0.7 : g_fDirectionError_dot[1]);
 
     //以下为环岛处理
-    if ((g_ValueOfAD[0] + g_ValueOfAD[1] > TurnAD0 + TurnAD1) &&  //(g_ValueOfAD[0] > TurnAD0) && (g_ValueOfAD[1] > TurnAD1) &&
+    if ((g_ValueOfAD[0] + g_ValueOfAD[1] >
+         TurnAD0 + TurnAD1) &&  //(g_ValueOfAD[0] > TurnAD0) && (g_ValueOfAD[1]
+                                //> TurnAD1) &&
         ((g_ValueOfAD[2] > TurnAD2) || (g_ValueOfAD[3] > TurnAD3)) &&
         !FreezingTime)  //到达电感阈值且不与上一次判定重复
     {
@@ -182,11 +182,12 @@ void DirectionControl(void) {
             DownFlagI--;
         else {
             DownFlagI = 30;
-            gpio_toggle(H0);
         }
 
         DownTime--;
-        if (!DownTime) gpio_set(H0, 0);
+        if (!DownTime) {
+            // gpio_set(H0, 0);
+        }
     }
 
     if (FreezingTime)  //冻结时间倒数
@@ -194,8 +195,8 @@ void DirectionControl(void) {
         FreezingTime--;
         if (!FreezingTime)  //冻结时间结束，灭灯
         {
-            gpio_set(E6, 0);
-            gpio_set(H0, 0);
+            // gpio_set(E6, 0);
+            // gpio_set(H0, 0);
         }
     }
 
@@ -209,7 +210,7 @@ void DirectionControl(void) {
     }
 
     //方向算法（位置式PD）
-    if (Flag_Round == ON ){//&& Round_Countdown) {
+    if (Flag_Round == ON) {  //&& Round_Countdown) {
         g_fDirectionControlOut =
             (g_fDirectionError[1] * Turn_dirControl_P +
              g_fDirectionError_dot[1] * Turn_dirControl_D);  //依据垂直电感转向
