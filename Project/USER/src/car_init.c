@@ -95,12 +95,12 @@ void car_init() {
 
 
     // //配置串口接收的缓冲区及缓冲区长度
-    // sonic_receivexfer.dataSize = 1;
-    // sonic_receivexfer.data = &sonic_rx_buffer;
+    sonic_receivexfer.dataSize = 1;
+    sonic_receivexfer.data = &sonic_rx_buffer;
 
     // //设置中断函数及其参数
-    // uart_set_handle(USART_1, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
-    //                 sonic_receivexfer.data, 1);
+    uart_set_handle(USART_8, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
+                    sonic_receivexfer.data, 1);
 
     // 蓝牙串口   波特率为115200 TX为D16 RX为D17
     // uart_init(USART_8, 115200, UART8_TX_B12, UART8_RX_B13);
