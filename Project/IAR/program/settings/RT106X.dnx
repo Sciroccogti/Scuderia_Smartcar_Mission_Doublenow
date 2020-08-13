@@ -13,22 +13,22 @@
     </Stack>
     <PlDriver>
         <FirstRun>0</FirstRun>
-        <MemConfigValue>D:\IAR 8.32.4\arm\CONFIG\debugger\NXP\MIMXRT1064xxx6A.ddf</MemConfigValue>
+        <MemConfigValue>E:\iar新\iar软件\arm\CONFIG\debugger\NXP\MIMXRT1064xxx6A.ddf</MemConfigValue>
     </PlDriver>
     <Jet>
         <JetConnSerialNo>SEEKFREE CMSIS-DAP V2:0</JetConnSerialNo>
         <JetConnFoundProbes>SEEKFREE CMSIS-DAP V1:SF1414824529-202:SEEKFREE CMSIS-DAP V2:0:</JetConnFoundProbes>
         <PrevWtdReset>System</PrevWtdReset>
+        <OnlineReset>System</OnlineReset>
         <DisableInterrupts>0</DisableInterrupts>
         <LeaveRunning>1</LeaveRunning>
         <MultiCoreRunAll>0</MultiCoreRunAll>
-        <OnlineReset>System</OnlineReset>
     </Jet>
     <ArmDriver>
         <EnableCache>1</EnableCache>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>2877129005</Checksum>
+        <Checksum>3115195792</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -167,12 +167,6 @@
         <EventLSU>0</EventLSU>
         <EventSLEEP>0</EventSLEEP>
     </SWOTraceWindow>
-    <DisassembleMode>
-        <mode>0</mode>
-    </DisassembleMode>
-    <Breakpoints2>
-        <Count>0</Count>
-    </Breakpoints2>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -182,6 +176,12 @@
         <LogFile>_ ""</LogFile>
         <Category>_ 0</Category>
     </LogFile>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints2>
+        <Count>0</Count>
+    </Breakpoints2>
     <Aliases>
         <Count>0</Count>
         <SuppressDialog>0</SuppressDialog>

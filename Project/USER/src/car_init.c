@@ -7,7 +7,7 @@ void car_init() {
     DisableGlobalIRQ();
 
     // 电磁铁
-    // gpio_init(C9, GPO, 1, SPEED_200MHZ | DSE_R0_7 | PULLUP_100K | PULL_EN);
+    gpio_init(D4, GPO, 1, SPEED_200MHZ | DSE_R0_7 | PULLUP_100K | PULL_EN);
     
     // PWM enable
     gpio_init(D12, GPO, 1, GPIO_PIN_CONFIG);
