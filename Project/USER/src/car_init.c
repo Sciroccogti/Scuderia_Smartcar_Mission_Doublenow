@@ -23,8 +23,8 @@ void car_init() {
     gpio_init(B23, GPI, 1, GPIO_PULLDOWN_CONFIG); // 上
     gpio_init(B21, GPI, 1, GPIO_PULLDOWN_CONFIG); // 下
     gpio_init(B19, GPI, 1, GPIO_PULLDOWN_CONFIG); // 左
-    gpio_init(B10, GPI, 1, GPIO_PULLDOWN_CONFIG); // 右
-    gpio_init(B9, GPI, 1, GPIO_PULLDOWN_CONFIG); // 中
+    gpio_init(B18, GPI, 1, GPIO_PULLDOWN_CONFIG); // 右
+    gpio_init(B17, GPI, 1, GPIO_PULLDOWN_CONFIG); // 中
     // OLED初始化
     // oled_init();
     lcd_init();
@@ -93,14 +93,26 @@ void car_init() {
     NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
     uart_rx_irq(USART_8, 1);
 
-
-    // //配置串口接收的缓冲区及缓冲区长度
+    //配置串口接收的缓冲区及缓冲区长度
     sonic_receivexfer.dataSize = 1;
     sonic_receivexfer.data = &sonic_rx_buffer;
 
-    // //设置中断函数及其参数
+    //设置中断函数及其参数
     uart_set_handle(USART_8, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
                     sonic_receivexfer.data, 1);
+
+    // // 超声波串口   波特率为115200
+    // uart_init(USART_4, 115200, UART4_TX_C16, UART4_RX_C17);
+    // NVIC_SetPriority(LPUART4_IRQn, 15);  //设置串口中断优先级
+    // uart_rx_irq(USART_4, 1);
+
+    // //配置串口接收的缓冲区及缓冲区长度
+    // sonic_receivexfer.dataSize = 1;
+    // sonic_receivexfer.data = &sonic_rx_buffer;
+
+    // //设置中断函数及其参数
+    // uart_set_handle(USART_4, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
+    //                 sonic_receivexfer.data, 1);
 
     // 蓝牙串口   波特率为115200 TX为D16 RX为D17
     // uart_init(USART_8, 115200, UART8_TX_B12, UART8_RX_B13);
