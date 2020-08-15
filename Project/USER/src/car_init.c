@@ -74,12 +74,12 @@ void car_init() {
     //定时器初始化
     pit_init();                    //初始化pit外设
     pit_interrupt_ms(PIT_CH0, 5);  //初始化pit通道0 周期
-    NVIC_SetPriority(PIT_IRQn, 0);  ///设置中断优先级 范围0-15
+    NVIC_SetPriority(PIT_IRQn, 1);  ///设置中断优先级 范围0-15
     // 越小优先级越高 四路PIT共用一个PIT中断函数
 
     // 超声波串口   波特率为115200 TX为D16 RX为D17
     uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
-    NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
+    NVIC_SetPriority(LPUART8_IRQn, 0);  //设置串口中断优先级
     uart_rx_irq(USART_8, 1);
 
     //配置串口接收的缓冲区及缓冲区长度
