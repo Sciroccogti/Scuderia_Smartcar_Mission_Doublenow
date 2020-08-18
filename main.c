@@ -244,9 +244,9 @@ int main(void) {
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.45;  // 1.25
-                Expect_I = 0.001;
+                Expect_I = 0.0015;
                 Expect_D = 0.8;
-                Kdirection = 0.8;
+                Kdirection = 0.2;
             }
         }
     }

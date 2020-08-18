@@ -26,7 +26,7 @@ float TurnTime = 0;      //进岛转向时间
 float FreezingTime = 0;  //进岛判定冻结时间
 float DownTime = 100;    //下坡时间
 int DownFlagI = 0;
-int8 TurnFlag;
+
 uint8 garage_count = 1;  // 出车库计数器
 
 //以下为可能需要调整的参数
