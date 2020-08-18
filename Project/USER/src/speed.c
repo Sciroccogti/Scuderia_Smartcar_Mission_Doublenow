@@ -44,7 +44,7 @@ int32 g_nLeftPWM = 0, g_nRighPWM = 0;
 float g_fSpeedControlOut = 100;  //速度输出
 float g_fSpeedControlOut_I=0;
 int32 MaxPWM = 400;
-extern int8 TurnFlag = OFF; // 转向标志
+int8 TurnFlag = OFF; // 转向标志
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
 

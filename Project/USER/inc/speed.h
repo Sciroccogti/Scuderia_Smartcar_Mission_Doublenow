@@ -32,6 +32,7 @@ extern float Expect_D;
 //extern float TurnExpect_D;
 
 extern int16 TurnValue;//弯道判定参数
+extern int8 TurnFlag;
 extern int16 BasePWM ;
 extern int16 TurnBasePWM ;
 
