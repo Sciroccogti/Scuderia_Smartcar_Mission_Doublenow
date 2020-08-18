@@ -44,7 +44,7 @@ int32 g_nLeftPWM = 0, g_nRighPWM = 0;
 float g_fSpeedControlOut = 100;  //速度输出
 float g_fSpeedControlOut_I=0;
 int32 MaxPWM = 400;
-int8 TurnFlag = OFF; // 转向标志
+extern int8 TurnFlag = OFF; // 转向标志
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
 
@@ -61,7 +61,7 @@ float Expect_D;
 // float TurnExpect_P = 0.25;
 // float TurnExpect_D = 1.5;
 
-int16 TurnValue = 800;  //弯道判定参数
+int16 TurnValue = 600;  //弯道判定参数
 int16 BasePWM = 0;
 int16 TurnBasePWM = 0;
 

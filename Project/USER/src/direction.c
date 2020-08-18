@@ -26,6 +26,7 @@ float TurnTime = 0;      //进岛转向时间
 float FreezingTime = 0;  //进岛判定冻结时间
 float DownTime = 100;    //下坡时间
 int DownFlagI = 0;
+int8 TurnFlag;
 uint8 garage_count = 1;  // 出车库计数器
 
 //以下为可能需要调整的参数
@@ -157,6 +158,7 @@ void DirectionControl(void) {
             // gpio_set(D13, 1);
             TurnTime = TurnTimeDuring;
             FreezingTime = FreezingTimeDuring;
+            TurnFlag = ON;
         }
     } else if ((g_ValueOfAD[0] > LeaveAD0) && (g_ValueOfAD[1] > LeaveAD1) &&
                ((g_ValueOfAD[2] > LeaveAD2) || (g_ValueOfAD[3] > LeaveAD3)) &&
@@ -167,6 +169,7 @@ void DirectionControl(void) {
             Leave = OFF;
             // gpio_set(D13, 0);
             FreezingTime = FreezingTimeDuring;
+            TurnFlag = OFF;
         }
     }
 
