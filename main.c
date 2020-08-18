@@ -17,7 +17,7 @@ uint8 page = 0;
 uint8 SW1, SW2, SW3, SW4;
 uint8 UpFlag = 1, DownFlag = 1, LeftFlag = 1, RightFlag = 1, MidFlag = 1;
 
-int mode = 0;
+//int mode = 1;
 
 void display() {
     // need adc_init(ADC_1,ADC1_CH3_B14,ADC_8BIT); //初始化B14为ADC功能
@@ -218,6 +218,7 @@ int main(void) {
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.5;  // 1.25
+                Expect_I = (g_fSpeedError > 1500 ? 0.0015 : 0);//限制只有上坡的时候才会用到I，I的值为0.0015
                 Expect_D = 0.9;
 
                 Kdirection = 1;

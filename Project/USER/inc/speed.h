@@ -40,6 +40,7 @@ extern uint8 GarageDirection;
 
 extern float Kspeed;  //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
 extern float Kdirection; 
+extern int mode;
 
 /***********函数声明***********/
 void MotorInit(void);
