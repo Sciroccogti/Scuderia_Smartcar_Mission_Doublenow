@@ -14,6 +14,7 @@ extern float g_fLeftRealSpeed;
 extern float g_fRighRealSpeed;
 extern float g_fSpeedFilter;
 extern float g_fSpeedControlOut;
+extern float g_fSpeedControlOut_I;
 extern int32 g_nLeftPWM, g_nRighPWM;
 extern float g_fExpectSpeed;
 extern int32 MaxPWM;
@@ -25,6 +26,7 @@ extern float DownSpeed ;
 extern int outPWM1, outPWM2, diffPWM; // 出车库直行速度 和 转向偏差
 
 extern float Expect_P;
+extern float Expect_I;
 extern float Expect_D;
 //extern float TurnExpect_P;
 //extern float TurnExpect_D;

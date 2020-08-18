@@ -42,7 +42,8 @@ int32 g_nLeftpulse = 0, g_nRighpulse = 0;
 int32 nLeftPWM = 0, nRighPWM = 0;
 int32 g_nLeftPWM = 0, g_nRighPWM = 0;
 float g_fSpeedControlOut = 100;  //速度输出
-int32 MaxPWM = 650;
+float g_fSpeedControlOut_I=0;
+int32 MaxPWM = 400;
 int8 TurnFlag = OFF; // 转向标志
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
@@ -51,10 +52,11 @@ float StraightExpectSpeed;  //直行期望速度
 float TurnExpectSpeed;      //弯道期望速度
 float SpeedUpSpeed;         //加速期望速度
 float DownSpeed;            //下坡期望速度
-int outPWM1 = 150;
+int outPWM1 = 0;//150
 int outPWM2 = 000, diffPWM = 300;  // 出车库直行速度 和 转向偏差
 
 float Expect_P;
+float Expect_I;
 float Expect_D;
 // float TurnExpect_P = 0.25;
 // float TurnExpect_D = 1.5;
@@ -66,9 +68,9 @@ int16 TurnBasePWM = 0;
 // 出车库方向，1为右转，0为左转
 uint8 GarageDirection = 1;
 
-float Kspeed = 1.2;
+float Kspeed = 1.2;//1.2
 //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
-float Kdirection = 0.8;
+float Kdirection = 0.8;//0.8
 
 /**
  * @file		PWM输出
@@ -77,6 +79,7 @@ float Kdirection = 0.8;
 
 void PWMOut(void) {
     if (TurnFlag == OFF) {
+        Kspeed = Kspeed*1.001;
         g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 -
                              Kdirection * g_fDirectionControlOut);
         g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 +
@@ -84,6 +87,9 @@ void PWMOut(void) {
         g_nLeftPWM += BasePWM;
         g_nRighPWM += BasePWM;
     } else {
+        if (1.3>Kspeed>1.1)
+        {
+            Kspeed = Kspeed*0.999;//0:0.999
         if (g_ValueOfAD[0] - g_ValueOfAD[1] > 0) {
             g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
                                  Kdirection * g_fDirectionControlOut);
@@ -97,7 +103,42 @@ void PWMOut(void) {
         }
         g_nLeftPWM += TurnBasePWM;
         g_nRighPWM += TurnBasePWM;
-    }
+        }
+        else if (Kspeed>=1.3)
+        {
+            Kspeed = Kspeed*0.995;//0:0.999
+        if (g_ValueOfAD[0] - g_ValueOfAD[1] > 0) {
+            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
+                                 Kdirection * g_fDirectionControlOut);
+            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
+                                 Kdirection * g_fDirectionControlOut);
+        } else {
+            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
+                                 Kdirection * g_fDirectionControlOut);
+            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
+                                 Kdirection * g_fDirectionControlOut);
+        }
+        g_nLeftPWM += TurnBasePWM;
+        g_nRighPWM += TurnBasePWM;
+        }
+        else
+        {
+             Kspeed = Kspeed*1.001;//0:1.001
+        if (g_ValueOfAD[0] - g_ValueOfAD[1] > 0) {
+            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
+                                 Kdirection * g_fDirectionControlOut);
+            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
+                                 Kdirection * g_fDirectionControlOut);
+        } else {
+            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
+                                 Kdirection * g_fDirectionControlOut);
+            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
+                                 Kdirection * g_fDirectionControlOut);
+        }
+        g_nLeftPWM += TurnBasePWM;
+        g_nRighPWM += TurnBasePWM;
+        }
+        }
 
     if (Flag_Stop == OFF)  //如果Flag_Stop == OFF电机输出0
     {
@@ -200,14 +241,21 @@ void CalSpeedError(void) {
  */
 void SpeedControl(void) {
     CalSpeedError();  //计算速度偏差
-
     if (g_ValueOfAD[0] - g_ValueOfAD[1] > TurnValue ||
         g_ValueOfAD[1] - g_ValueOfAD[0] > TurnValue)
+    {
+        g_fSpeedControlOut_I += g_fSpeedErrorTemp[0];
         g_fSpeedControlOut =
             Expect_P * g_fSpeedError +
+            Expect_I * g_fSpeedControlOut_I+
             Expect_D * (g_fSpeedErrorTemp[0] - g_fSpeedErrorTemp[1]);
+    }
     else
+    {
+        g_fSpeedControlOut_I += g_fSpeedErrorTemp[0];
         g_fSpeedControlOut =
             Expect_P * g_fSpeedError +
+            Expect_I * g_fSpeedControlOut_I+
             Expect_D * (g_fSpeedErrorTemp[0] - g_fSpeedErrorTemp[1]);
+    }
 }
