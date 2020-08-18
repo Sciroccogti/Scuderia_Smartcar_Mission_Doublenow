@@ -176,7 +176,7 @@ int main(void) {
         switch (mode) {
             case 2: {
                 StraightExpectSpeed = 3500;  //直行期望速度
-                TurnExpectSpeed = 2200;      //弯道期望速度2200
+                TurnExpectSpeed = 2200;      //弯道期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -193,7 +193,6 @@ int main(void) {
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.6;  // 1.25
-                Expect_I = 0.001;
                 Expect_D = 0.9;
 
                 Kdirection = 1;
@@ -227,27 +226,26 @@ int main(void) {
             } break;
             case 0:
             default: {                       // 最稳
-                StraightExpectSpeed = 1500;  //直行期望速度1500
-                TurnExpectSpeed = 1300;      //弯道期望速度1300 
-                DownSpeed = 1350;            //下坡期望速度1350
+                StraightExpectSpeed = 1500;  //直行期望速度
+                TurnExpectSpeed = 1000;      //弯道期望速度
+                DownSpeed = 1350;            //下坡期望速度
                 // outPWM1 = 200;
                 // outPWM2 = 300;
                 // diffPWM = 700;
 
-                g_dirControl_P = 3000;  //方向控制P3000
-                g_dirControl_D = 4000;  //方向控制D 3200 4000
+                g_dirControl_P = 3000;  //方向控制P
+                g_dirControl_D = 3200;  //方向控制D
 
-                Turn_dirControl_P = 3000;  //进岛方向控制P 3000
-                Turn_dirControl_D = 6000;  //进岛方向控制D 6000
+                Turn_dirControl_P = 3000;  //进岛方向控制P
+                Turn_dirControl_D = 6000;  //进岛方向控制D
 
                 TurnTimeDuring = 300000 / (StraightExpectSpeed);
-                FreezingTimeDuring = 350;  //冻结时间常量 350
-                DownTimeDuring = 175;      //下坡时间常量 175
+                FreezingTimeDuring = 350;  //冻结时间常量
+                DownTimeDuring = 175;      //下坡时间常量
 
-                Expect_P = 0.45;  // 1.25,0.45
-                Expect_I = 0.005; //0.005
-                Expect_D = 0.8; //0.8
-                Kdirection = 0.2; //0.2
+                Expect_P = 0.45;  // 1.25
+                Expect_D = 0.8;
+                Kdirection = 0.8;
             }
         }
     }
