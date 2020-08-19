@@ -47,7 +47,7 @@ int32 MaxPWM = 400;
 int8 TurnFlag = OFF; // 转向标志
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
-int mode = 2;
+int mode = 3;
 
 float StraightExpectSpeed;  //直行期望速度
 float TurnExpectSpeed;      //弯道期望速度
@@ -79,75 +79,7 @@ float Kdirection = 0.8;//0.8
  */
 
 void PWMOut(void) {
-    switch(mode){
-        case 0:
-        {
     if (TurnFlag == OFF) {
-        Kspeed = Kspeed*1.001;
-        g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 -
-                             Kdirection * g_fDirectionControlOut);
-        g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 +
-                             Kdirection * g_fDirectionControlOut);
-        g_nLeftPWM += BasePWM;
-        g_nRighPWM += BasePWM;
-    } else {
-        if (1.3>Kspeed>1.1)
-        {
-            Kspeed = Kspeed*0.999;//0:0.999
-        if (g_ValueOfAD[0] - g_ValueOfAD[1] > 0) {
-            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
-                                 Kdirection * g_fDirectionControlOut);
-            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
-                                 Kdirection * g_fDirectionControlOut);
-        } else {
-            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
-                                 Kdirection * g_fDirectionControlOut);
-            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
-                                 Kdirection * g_fDirectionControlOut);
-        }
-        g_nLeftPWM += TurnBasePWM;
-        g_nRighPWM += TurnBasePWM;
-        }
-        else if (Kspeed>=1.3)
-        {
-            Kspeed = Kspeed*0.995;//0:0.999
-        if (g_ValueOfAD[0] - g_ValueOfAD[1] > 0) {
-            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
-                                 Kdirection * g_fDirectionControlOut);
-            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
-                                 Kdirection * g_fDirectionControlOut);
-        } else {
-            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
-                                 Kdirection * g_fDirectionControlOut);
-            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
-                                 Kdirection * g_fDirectionControlOut);
-        }
-        g_nLeftPWM += TurnBasePWM;
-        g_nRighPWM += TurnBasePWM;
-        }
-        else
-        {
-             Kspeed = Kspeed*1.001;//0:1.001
-        if (g_ValueOfAD[0] - g_ValueOfAD[1] > 0) {
-            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
-                                 Kdirection * g_fDirectionControlOut);
-            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
-                                 Kdirection * g_fDirectionControlOut);
-        } else {
-            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
-                                 Kdirection * g_fDirectionControlOut);
-            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
-                                 Kdirection * g_fDirectionControlOut);
-        }
-        g_nLeftPWM += TurnBasePWM;
-        g_nRighPWM += TurnBasePWM;
-        }
-        }
-        }break;
-    
-        case 1:
-        {
-            if (TurnFlag == OFF) {
         g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 -
                              Kdirection * g_fDirectionControlOut);
         g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 +
@@ -169,36 +101,7 @@ void PWMOut(void) {
         g_nLeftPWM += TurnBasePWM;
         g_nRighPWM += TurnBasePWM;
     }
-        }
-        break;
-        case 2:
-        default:
-        {
-             if (TurnFlag == OFF) {
-        g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 -
-                             Kdirection * g_fDirectionControlOut);
-        g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 +
-                             Kdirection * g_fDirectionControlOut);
-        g_nLeftPWM += BasePWM;
-        g_nRighPWM += BasePWM;
-    } else {
-        if (g_ValueOfAD[0] - g_ValueOfAD[1] > 0) {
-            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
-                                 Kdirection * g_fDirectionControlOut);
-            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
-                                 Kdirection * g_fDirectionControlOut);
-        } else {
-            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
-                                 Kdirection * g_fDirectionControlOut);
-            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
-                                 Kdirection * g_fDirectionControlOut);
-        }
-        g_nLeftPWM += TurnBasePWM;
-        g_nRighPWM += TurnBasePWM;
-    }
-        }
-        }
-
+       
     if (Flag_Stop == OFF)  //如果Flag_Stop == OFF电机输出0
     {
         g_nLeftPWM = 0;

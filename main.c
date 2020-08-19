@@ -175,8 +175,8 @@ int main(void) {
 
         switch (mode) {
              case 3: {
-                StraightExpectSpeed = 3500;  //直行期望速度
-                TurnExpectSpeed = 2200;      //弯道期望速度
+                StraightExpectSpeed = 4000;  //直行期望速度
+                TurnExpectSpeed = 3400;      //弯道期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -185,16 +185,17 @@ int main(void) {
                 g_dirControl_P = 3000;  //方向控制P
                 g_dirControl_D = 3200;  //方向控制D
 
-                Turn_dirControl_P = 3000;  //进岛方向控制P
+                Turn_dirControl_P = 3000;  //进岛方向控制P 3000
                 Turn_dirControl_D = 6000;  //进岛方向控制D
 
-                TurnTimeDuring = 300000 / (StraightExpectSpeed);
+                TurnTimeDuring = 300000 / (g_fRealSpeed);
                 FreezingTimeDuring = 350;  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
-                Expect_P = 0.6;  // 1.25
-                Expect_I = (g_fSpeedError > 2400 ||g_fSpeedError < -2400? 0.002 : 0);
-                Expect_D = 0.9;
+                Expect_P = 0.8;  // 1.25
+   //             Expect_I = (g_fSpeedError > 2400 ||g_fSpeedError < -2400? 0.002 : 0);
+                Expect_I = 0;
+                Expect_D = 1.1;
 
                 Kdirection = 1;
 
@@ -202,7 +203,7 @@ int main(void) {
             } break;
             case 2: {
                 StraightExpectSpeed = 3500;  //直行期望速度
-                TurnExpectSpeed = 2200;      //弯道期望速度
+                TurnExpectSpeed = 3100;      //弯道期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -214,12 +215,12 @@ int main(void) {
                 Turn_dirControl_P = 3000;  //进岛方向控制P
                 Turn_dirControl_D = 6000;  //进岛方向控制D
 
-                TurnTimeDuring = 300000 / (StraightExpectSpeed);
+                TurnTimeDuring = 300000 / (g_fRealSpeed);
                 FreezingTimeDuring = 350;  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.6;  // 1.25
-                Expect_I = (g_fSpeedError > 2400 ||g_fSpeedError < -2400? 0.002 : 0);
+                Expect_I = (g_fSpeedError > 3000 ||g_fSpeedError < -3000? 0.002 : 0);
                 Expect_D = 0.9;
 
                 Kdirection = 1;
