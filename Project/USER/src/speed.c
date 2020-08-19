@@ -47,7 +47,7 @@ int32 MaxPWM = 400;
 int8 TurnFlag = OFF; // 转向标志
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
-int mode = 1;
+int mode = 2;
 
 float StraightExpectSpeed;  //直行期望速度
 float TurnExpectSpeed;      //弯道期望速度
@@ -146,9 +146,35 @@ void PWMOut(void) {
         }break;
     
         case 1:
-        default:
         {
             if (TurnFlag == OFF) {
+        g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 -
+                             Kdirection * g_fDirectionControlOut);
+        g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 +
+                             Kdirection * g_fDirectionControlOut);
+        g_nLeftPWM += BasePWM;
+        g_nRighPWM += BasePWM;
+    } else {
+        if (g_ValueOfAD[0] - g_ValueOfAD[1] > 0) {
+            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
+                                 Kdirection * g_fDirectionControlOut);
+            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
+                                 Kdirection * g_fDirectionControlOut);
+        } else {
+            g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 -
+                                 Kdirection * g_fDirectionControlOut);
+            g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut * 0.5 +
+                                 Kdirection * g_fDirectionControlOut);
+        }
+        g_nLeftPWM += TurnBasePWM;
+        g_nRighPWM += TurnBasePWM;
+    }
+        }
+        break;
+        case 2:
+        default:
+        {
+             if (TurnFlag == OFF) {
         g_nLeftPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 -
                              Kdirection * g_fDirectionControlOut);
         g_nRighPWM = (int32)(Kspeed * g_fSpeedControlOut / 2 +

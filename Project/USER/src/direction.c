@@ -156,7 +156,7 @@ void DirectionControl(void) {
             Flag_Round = ON;
             Leave = ON;
             // gpio_set(D13, 1);
-            TurnTime = TurnTimeDuring;
+            TurnTime = 2*TurnTimeDuring;
             FreezingTime = FreezingTimeDuring;
             TurnFlag = ON;
         }

@@ -174,6 +174,32 @@ int main(void) {
         }
 
         switch (mode) {
+             case 3: {
+                StraightExpectSpeed = 3500;  //直行期望速度
+                TurnExpectSpeed = 2200;      //弯道期望速度
+                DownSpeed = 2650;            //下坡期望速度
+                // outPWM1 = 250;
+                // outPWM2 = 300;
+                // diffPWM = 700;
+
+                g_dirControl_P = 3000;  //方向控制P
+                g_dirControl_D = 3200;  //方向控制D
+
+                Turn_dirControl_P = 3000;  //进岛方向控制P
+                Turn_dirControl_D = 6000;  //进岛方向控制D
+
+                TurnTimeDuring = 300000 / (StraightExpectSpeed);
+                FreezingTimeDuring = 350;  //冻结时间常量
+                DownTimeDuring = 175;      //下坡时间常量
+
+                Expect_P = 0.6;  // 1.25
+                Expect_I = (g_fSpeedError > 2400 ||g_fSpeedError < -2400? 0.002 : 0);
+                Expect_D = 0.9;
+
+                Kdirection = 1;
+
+                TurnValue = (int)(275 * Environment);
+            } break;
             case 2: {
                 StraightExpectSpeed = 3500;  //直行期望速度
                 TurnExpectSpeed = 2200;      //弯道期望速度
@@ -193,6 +219,7 @@ int main(void) {
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.6;  // 1.25
+                Expect_I = (g_fSpeedError > 2400 ||g_fSpeedError < -2400? 0.002 : 0);
                 Expect_D = 0.9;
 
                 Kdirection = 1;
@@ -218,7 +245,7 @@ int main(void) {
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.5;  // 1.25
-                Expect_I = (g_fSpeedError > 1500 ? 0.0015 : 0);//限制只有上坡的时候才会用到I，I的值为0.0015
+                Expect_I = (g_fSpeedError > 2000 ? 0.002 : 0);//限制只有上坡的时候才会用到I，I的值为0.0015
                 Expect_D = 0.9;
 
                 Kdirection = 1;
