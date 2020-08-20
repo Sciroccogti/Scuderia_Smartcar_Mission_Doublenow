@@ -29,12 +29,15 @@ int DownFlagI = 0;
 
 uint8 garage_count = 1;  // 出车库计数器
 
+
+
 //以下为可能需要调整的参数
 
 float g_dirControl_P;     //方向控制P
 float g_dirControl_D;     //方向控制D
 float Turn_dirControl_P;  //进岛方向控制P
 float Turn_dirControl_D;  //进岛方向控制D
+
 
 float TurnTimeDuring;  //转向时间常量，若要修改转向时间，就修改这个
 float FreezingTimeDuring;  //冻结时间常量
@@ -214,14 +217,16 @@ void DirectionControl(void) {
 
     //方向算法（位置式PD）
     if (Flag_Round == ON) {  //&& Round_Countdown) {
-        g_fDirectionControlOut =
+        g_fDirectionControlOut = 
             (g_fDirectionError[1] * Turn_dirControl_P +
-             g_fDirectionError_dot[1] * Turn_dirControl_D);  //依据垂直电感转向
+             g_fDirectionError_dot[1] * Turn_dirControl_D
+             );  //依据垂直电感转向
         gpio_set(D13, 1);
     } else {
         g_fDirectionControlOut =
             (g_fDirectionError[0] * g_dirControl_P +
-             g_fDirectionError_dot[0] * g_dirControl_D);  //依据水平电感转向
+             g_fDirectionError_dot[0] * g_dirControl_D
+            );  //依据水平电感转向
         gpio_set(D13, 0);
     }
 }
