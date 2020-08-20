@@ -26,15 +26,15 @@ int32 RighDead = 0;
 float Ratio_Encoder_Left =
     200 /
     (1175 *
-     0.02);  // 左轮速度=counter*左轮周长(mm)/(左轮转一圈对应的脉冲数*程序周期)
+     0.02);  // 左轮速度=counter*左轮周长(mm)/(左轮�?一圈�?�应的脉冲数*程序周期)
 float Ratio_Encoder_Righ =
     200 /
     (1175 *
-     0.02);  // 右轮速度=counter*右轮周长(mm)/(右轮转一圈对应的脉冲数*程序周期)
+     0.02);  // 右轮速度=counter*右轮周长(mm)/(右轮�?一圈�?�应的脉冲数*程序周期)
 extern float g_fRealSpeed = 0;  //真实速度
 float g_fLeftRealSpeed;
 float g_fRighRealSpeed;
-float g_fSpeedFilter = 0;     //阶梯滤波速度
+float g_fSpeedFilter = 0;     //阶�??滤波速度
 float g_fExpectSpeed = 1300;  //期望速度
 float g_fSpeedError;          //速度偏差
 float g_fSpeedErrorTemp[5] = {0};
@@ -45,17 +45,17 @@ float g_fSpeedControlOut = 100;  //速度输出
 float g_fSpeedControlOut_I=0;
 
 int32 MaxPWM = 400;
-int8 TurnFlag = OFF; // 转向标志
+int8 TurnFlag = OFF; // �?向标�?
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
 int mode = 0;
 
-float StraightExpectSpeed;  //直行期望速度
-float TurnExpectSpeed;      //弯道期望速度
+float StraightExpectSpeed;  //直�?�期望速度
+float TurnExpectSpeed;      //�?道期望速度
 float SpeedUpSpeed;         //加速期望速度
 float DownSpeed;            //下坡期望速度
-int outPWM1 = 0;//150
-int outPWM2 = 000, diffPWM = 300;  // 出车库直行速度 和 转向偏差
+int outPWM1 = 150;//150
+int outPWM2 = 000, diffPWM = 300;  // 出车库直行速度 �? �?向偏�?
 
 float Expect_P;
 float Expect_I;
@@ -63,15 +63,15 @@ float Expect_D;
 // float TurnExpect_P = 0.25;
 // float TurnExpect_D = 1.5;
 
-int16 TurnValue = 600;  //弯道判定参数
+int16 TurnValue = 700;  //�?道判定参�?
 int16 BasePWM = 0;
 int16 TurnBasePWM = 0;
 
-// 出车库方向，1为右转，0为左转
+// 出车库方向，1为右�?�?0为左�?
 uint8 GarageDirection = 0;
 
 float Kspeed = 1.2;//1.2
-//速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
+//速度和方向控制的比例系数，�?�注意控制Kspeed，不然速度�?�?控制会不平滑
 float Kdirection = 0.8;//0.8
 
 /**
@@ -107,10 +107,10 @@ void PWMOut(void) {
     {
         g_nLeftPWM = 0;
         g_nRighPWM = 0;
-    } else if (garage_count == 0)  // 未出车库
+    } else if (garage_count == 0)  // �?出车�?
     {
         g_nLeftPWM = g_nRighPWM = outPWM1;
-    } else if (garage_count == 1)  // 车库口转向
+    } else if (garage_count == 1)  // 车库口转�?
     {
         g_nLeftPWM = outPWM2 + diffPWM * (-1 + 2 * GarageDirection);
         g_nRighPWM = outPWM2 - diffPWM * (-1 + 2 * GarageDirection);
@@ -157,14 +157,14 @@ void CalSpeedError(void) {
 
     g_fLeftRealSpeed = g_nLeftpulse * Ratio_Encoder_Left;
     g_fLeftRealSpeed =
-        (g_fLeftRealSpeed > 3400 ? 3400 : g_fLeftRealSpeed);  //滤左编码器的噪声
+        (g_fLeftRealSpeed > 3400 ? 3400 : g_fLeftRealSpeed);  //滤左编码器的�?�?
     g_fRighRealSpeed = g_nRighpulse * Ratio_Encoder_Righ;
     g_fRighRealSpeed =
-        (g_fRighRealSpeed > 3400 ? 3400 : g_fRighRealSpeed);  //滤右编码器的噪声
+        (g_fRighRealSpeed > 3400 ? 3400 : g_fRighRealSpeed);  //滤右编码器的�?�?
 
     g_fRealSpeed = (g_fLeftRealSpeed + g_fRighRealSpeed) * 0.5;  //真实速度
 
-    //速度采集梯度平滑，每次采集最大变化200
+    //速度采集�?度平滑，每�?�采集最大变�?200
     fSpeedOld = g_fSpeedFilter;
     fSpeedNew = g_fRealSpeed;
 
@@ -199,7 +199,7 @@ void CalSpeedError(void) {
 
 /**
  * @file		速度控制
- * @note      	速度梯度平滑
+ * @note      	速度�?度平�?
  * @date		2019
  */
 void SpeedControl(void) {

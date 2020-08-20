@@ -27,7 +27,7 @@ float FreezingTime = 0;  //进岛判定冻结时间
 float DownTime = 100;    //下坡时间
 int DownFlagI = 0;
 
-uint8 garage_count = 1;  // 出车库计数器
+uint8 garage_count = 0;  // 出车库计数器
 
 
 
@@ -83,7 +83,7 @@ void DirectionControl(void) {
 
     // 以下为出车库处理
     if ((g_ValueOfAD[2] + g_ValueOfAD[3] < GarageAD23) &&
-        (g_ValueOfAD[2] + g_ValueOfAD[3] > 25) &&
+        (g_ValueOfAD[2] + g_ValueOfAD[3] > 2200) &&
         !garage_count)  //到达电感阈值且未出车库，开始转向
     {
         garage_count++;
