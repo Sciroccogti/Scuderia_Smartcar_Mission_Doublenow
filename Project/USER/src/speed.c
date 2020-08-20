@@ -63,7 +63,7 @@ float Expect_D;
 // float TurnExpect_P = 0.25;
 // float TurnExpect_D = 1.5;
 
-int16 TurnValue = 700;  //�?道判定参�?
+int16 TurnValue = 800;  //�?道判定参�?
 int16 BasePWM = 0;
 int16 TurnBasePWM = 0;
 
@@ -157,10 +157,10 @@ void CalSpeedError(void) {
 
     g_fLeftRealSpeed = g_nLeftpulse * Ratio_Encoder_Left;
     g_fLeftRealSpeed =
-        (g_fLeftRealSpeed > 3400 ? 3400 : g_fLeftRealSpeed);  //滤左编码器的�?�?
+        (g_fLeftRealSpeed > 9000 ? 9000 : g_fLeftRealSpeed);  //滤左编码器的�?�?
     g_fRighRealSpeed = g_nRighpulse * Ratio_Encoder_Righ;
     g_fRighRealSpeed =
-        (g_fRighRealSpeed > 3400 ? 3400 : g_fRighRealSpeed);  //滤右编码器的�?�?
+        (g_fRighRealSpeed < -9000 ? -9000 : g_fRighRealSpeed);  //滤右编码器的�?�?
 
     g_fRealSpeed = (g_fLeftRealSpeed + g_fRighRealSpeed) * 0.5;  //真实速度
 
@@ -181,9 +181,10 @@ void CalSpeedError(void) {
     else {
         TurnFlag = OFF;
     }
-
+    gpio_set(D13, 0);
     if (DownTime) {
         g_fExpectSpeed = DownSpeed;
+        gpio_set(D13, 1);
     } else if (ON == TurnFlag)
         g_fExpectSpeed = TurnExpectSpeed;
     else
