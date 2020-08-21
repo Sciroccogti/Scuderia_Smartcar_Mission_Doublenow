@@ -48,7 +48,7 @@ int32 MaxPWM = 400;
 int8 TurnFlag = OFF; // �?向标�?
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
-int mode = 0;
+int mode = 3;
 
 float StraightExpectSpeed;  //直行期望速度
 float TurnExpectSpeed;      //弯道期望速度
