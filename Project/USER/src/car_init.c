@@ -66,9 +66,9 @@ void car_init() {
     //初始化 QTIMER_1 A相使用QTIMER1_TIMER2_C2 B相使用QTIMER1_TIMER3_C24
     qtimer_quad_init(QTIMER_1, QTIMER1_TIMER2_C2, QTIMER1_TIMER3_C24);
     // 摄像头初始化
-    // scc8660_csi_init();
+    scc8660_csi_init();
     //延时0.5s
-    // systick_delay_ms(500);
+    systick_delay_ms(500);
     gpio_set(B9, 1);
 
     //定时器初始化
@@ -77,18 +77,18 @@ void car_init() {
     NVIC_SetPriority(PIT_IRQn, 0);  ///设置中断优先级 范围0-15
     // 越小优先级越高 四路PIT共用一个PIT中断函数
 
-    // 超声波串口   波特率为115200 TX为D16 RX为D17
-    uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
-    NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
-    uart_rx_irq(USART_8, 1);
+    // // 超声波串口   波特率为115200 TX为D16 RX为D17
+    // uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
+    // NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
+    // uart_rx_irq(USART_8, 1);
 
-    //配置串口接收的缓冲区及缓冲区长度
-    sonic_receivexfer.dataSize = 1;
-    sonic_receivexfer.data = &sonic_rx_buffer;
+    // //配置串口接收的缓冲区及缓冲区长度
+    // sonic_receivexfer.dataSize = 1;
+    // sonic_receivexfer.data = &sonic_rx_buffer;
 
-    //设置中断函数及其参数
-    uart_set_handle(USART_8, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
-                    sonic_receivexfer.data, 1);
+    // //设置中断函数及其参数
+    // uart_set_handle(USART_8, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
+    //                 sonic_receivexfer.data, 1);
 
     // // 超声波串口   波特率为115200
     // uart_init(USART_4, 115200, UART4_TX_C16, UART4_RX_C17);
