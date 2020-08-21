@@ -224,7 +224,7 @@ int main(void)
             Expect_I = (g_fSpeedError > 3000 && g_fSpeedError < 3700 || g_fSpeedError < -300 ? 0.02 : 0);
             Expect_D = 0.8;
 
-            Kdirection = 1.3;
+            Kdirection = TurnFlag ? 1.5 : 1;
 
             TurnValue = 250;
 

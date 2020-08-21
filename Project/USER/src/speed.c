@@ -45,7 +45,7 @@ float g_fSpeedControlOut = 100;  //速度输出
 float g_fSpeedControlOut_I=0;
 
 int32 MaxPWM = 400;
-int8 TurnFlag = OFF; // �?向标�?
+int8 TurnFlag = OFF; // 转向标志
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
 int mode = 3;
@@ -70,7 +70,7 @@ int16 TurnBasePWM = 0;
 // 出车库方向，1为右转，0为左转
 uint8 GarageDirection = 0;
 
-float Kspeed = 1.2;//1.2
+float Kspeed = 1;//1.2
 //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
 float Kdirection = 0.8;//0.8
 
