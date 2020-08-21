@@ -58,7 +58,7 @@ int16 GarageAD23 = 1500;
 int16 GarageAD0 = 1000, GarageAD1 = 1000;
 
 // 受环境影响的电感系数  把左右水平电感控制在 800左右（参考）
-float Environment = 0.85;
+float Environment = 0.9;
 
 /**
  * @file		方向控制
@@ -172,7 +172,7 @@ void DirectionControl(void) {
             Leave = OFF;
             // gpio_set(D13, 0);
             FreezingTime = FreezingTimeDuring;
-            TurnFlag = OFF;
+            //TurnFlag = OFF;
         }
     }
 

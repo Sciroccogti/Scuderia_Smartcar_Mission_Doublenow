@@ -214,19 +214,19 @@ int main(void)
             Turn_dirControl_P = 3000; //进岛方向控制P
             Turn_dirControl_D = 6000; //进岛方向控制D
 
-            TurnTimeDuring = 320000 / (g_fRealSpeed);
+            TurnTimeDuring = 250000 / (g_fRealSpeed);
             FreezingTimeDuring = 350; //冻结时间常量
             DownTimeDuring = 175;     //下坡时间常量
 
             //TurnValue = 800;
 
-            Expect_P = (g_fSpeedError > 0) ? 0.8 : ( (g_fSpeedError > -100) ? 0.4 : 25); // 1.25
-            Expect_I = (g_fSpeedError > 3000 || g_fSpeedError < -300 ? 0.2 : 0);
+            Expect_P = (g_fSpeedError > 0) ? 0.8 : ( (g_fSpeedError > -400) ? 0.4 : 25); // 1.25
+            Expect_I = (g_fSpeedError > 3000 && g_fSpeedError < 3700 || g_fSpeedError < -300 ? 0.02 : 0);
             Expect_D = 0.8;
 
-            Kdirection = 1.2;
+            Kdirection = 1.3;
 
-            TurnValue = 190;
+            TurnValue = 250;
 
 //            Expect_P = 0.8; // 1.25  0.8
 //                            //             Expect_I = (g_fSpeedError > 2400 ||g_fSpeedError < -2400? 0.002 : 0);
@@ -265,7 +265,7 @@ int main(void)
 
             Kdirection = 1.2;
 
-            TurnValue = (int)(275 * Environment);
+            TurnValue = 247;
         }
         break;
         case 1:
@@ -287,13 +287,13 @@ int main(void)
             FreezingTimeDuring = 350; //冻结时间常量
             DownTimeDuring = 175;     //下坡时间常量
 
-            Expect_P = 0.6;                                // 1.25
-            Expect_I = (g_fSpeedError > 2000 ? 0.002 : 0); //限制只有上坡的时候才会用到I，I的值为0.0015
-            Expect_D = 0.8;
+            Expect_P = 0.8;                                // 1.25
+            Expect_I = 0; //(g_fSpeedError > 2000 ? 0.002 : 0); //限制只有上坡的时候才会用到I，I的值为0.0015
+            Expect_D = 0.5;
 
             Kdirection = 1;
 
-            TurnValue = (int)(300 * Environment);
+            TurnValue = 247;
         }
         break;
         case 0:
@@ -320,6 +320,7 @@ int main(void)
             Expect_I = 0.0015;
             Expect_D = 0.8;
             Kdirection = 0.8;
+            TurnValue = 247;
         }
         }
     }
