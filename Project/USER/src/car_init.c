@@ -23,8 +23,8 @@ void car_init() {
     gpio_init(B23, GPI, 1, GPIO_PULLDOWN_CONFIG); // 上
     gpio_init(B21, GPI, 1, GPIO_PULLDOWN_CONFIG); // 下
     gpio_init(B19, GPI, 1, GPIO_PULLDOWN_CONFIG); // 左
-    gpio_init(B18, GPI, 1, GPIO_PULLDOWN_CONFIG); // 右
-    gpio_init(B17, GPI, 1, GPIO_PULLDOWN_CONFIG); // 中
+    gpio_init(B9, GPI, 1, GPIO_PULLDOWN_CONFIG); // 右
+    gpio_init(B10, GPI, 1, GPIO_PULLDOWN_CONFIG); // 中
     // OLED初始化
     // oled_init();
     lcd_init();

@@ -99,7 +99,7 @@ void display()
     lcd_showstr(0, 6, Garage);
     lcd_showstr(80, 6, Garagedirection);
     lcd_showint8(0, 7, mode);
-    lcd_showfloat(80, 7, TurnTime, 6, 0);
+    lcd_showfloat(80, 7, Environment, 4, 2);
     // } else {
     //     if (scc8660_csi_finish_flag)  //图像采集完成
     //     {
@@ -188,6 +188,15 @@ int main(void)
             mode--;
         }
 
+        if (gpio_get(B19))
+        {
+            Environment += 0.01;
+        }
+        if (gpio_get(B10))
+        {
+            Environment -= 0.01;
+        }
+
         switch (mode)
         {
         case 3:
@@ -211,13 +220,13 @@ int main(void)
 
             //TurnValue = 800;
 
-            Expect_P = (g_fSpeedError > -50) ? 0.8 : 27; // 1.25
+            Expect_P = (g_fSpeedError > 0) ? 0.8 : ( (g_fSpeedError > -100) ? 0.4 : 25); // 1.25
             Expect_I = (g_fSpeedError > 3000 || g_fSpeedError < -300 ? 0.2 : 0);
             Expect_D = 0.8;
 
             Kdirection = 1.2;
 
-            TurnValue = (int)(215 * Environment);
+            TurnValue = 190;
 
 //            Expect_P = 0.8; // 1.25  0.8
 //                            //             Expect_I = (g_fSpeedError > 2400 ||g_fSpeedError < -2400? 0.002 : 0);
@@ -232,7 +241,7 @@ int main(void)
         case 2:
         {
             StraightExpectSpeed = 3500; //直行期望速度
-            TurnExpectSpeed = 2800;     //弯道期望速度
+            TurnExpectSpeed = 3300;     //弯道期望速度
             DownSpeed = 2650;           //下坡期望速度
             // outPWM1 = 250;
             // outPWM2 = 300;
@@ -248,13 +257,13 @@ int main(void)
             FreezingTimeDuring = 350; //冻结时间常量
             DownTimeDuring = 175;     //下坡时间常量
 
-            TurnValue = 800;
+            //TurnValue = 800;
 
             Expect_P = (g_fSpeedError > 0) ? 0.8 : 4; // 1.25
             Expect_I = (g_fSpeedError > 3000 || g_fSpeedError < -200 ? 0.1 : 0);
             Expect_D = 0.8;
 
-            Kdirection = 1;
+            Kdirection = 1.2;
 
             TurnValue = (int)(275 * Environment);
         }
@@ -310,7 +319,7 @@ int main(void)
             Expect_P = 0.45; // 1.25
             Expect_I = 0.0015;
             Expect_D = 0.8;
-            Kdirection = 0.2;
+            Kdirection = 0.8;
         }
         }
     }
