@@ -21,6 +21,7 @@ extern int32 MaxPWM;
 
 extern float StraightExpectSpeed;     //直行期望速度
 extern float TurnExpectSpeed;         //弯道期望速度
+extern float RoundExpectSpeed;         //环岛期望速度
 extern float SpeedUpSpeed;
 extern float DownSpeed ;
 extern int outPWM1, outPWM2, diffPWM; // 出车库直行速度 和 转向偏差

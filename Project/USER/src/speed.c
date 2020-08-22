@@ -52,6 +52,7 @@ int mode = 0;
 
 float StraightExpectSpeed;  //直行期望速度
 float TurnExpectSpeed;      //弯道期望速度
+float RoundExpectSpeed;     //环岛期望速度
 float SpeedUpSpeed;         //加速期望速度
 float DownSpeed;            //下坡期望速度
 int outPWM1 = 150;//150
@@ -185,7 +186,9 @@ void CalSpeedError(void) {
     if (DownTime) {
         g_fExpectSpeed = DownSpeed;
         gpio_set(D13, 1);
-    } else if (ON == TurnFlag)
+    } else if (ON == Flag_Round)
+        g_fExpectSpeed = RoundExpectSpeed;
+     else if (ON == TurnFlag)
         g_fExpectSpeed = TurnExpectSpeed;
     else
         g_fExpectSpeed = StraightExpectSpeed;

@@ -200,19 +200,20 @@ int main(void) {
                 garage_count = WAIT;
             }
 
-            if (gpio_get(B19)) {
-                Environment += 0.01;
-            }
+            // if (gpio_get(B19)) {
+            //     Environment += 0.01;
+            // }
 
-            if (gpio_get(B10)) {
-                Environment -= 0.01;
-            }
+            // if (gpio_get(B10)) {
+            //     Environment -= 0.01;
+            // }
         }
 
         switch (mode) {
             case 4: {
                 StraightExpectSpeed = 3800;  //直行期望速度
                 TurnExpectSpeed = 3300;      //弯道期望速度 3400
+                RoundExpectSpeed = 1500;     //环岛期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -258,6 +259,7 @@ int main(void) {
             case 3: {
                 StraightExpectSpeed = 3500;  //直行期望速度
                 TurnExpectSpeed = 3300;      //弯道期望速度
+                RoundExpectSpeed = 1500;     //环岛期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -287,6 +289,7 @@ int main(void) {
             case 2: {
                 StraightExpectSpeed = 2800;  //直行期望速度
                 TurnExpectSpeed = 2500;      //弯道期望速度
+                RoundExpectSpeed = 1500;     //环岛期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -295,19 +298,19 @@ int main(void) {
                 g_dirControl_P = 3000;  //方向控制P
                 g_dirControl_D = 2400;  //方向控制D
 
-                Turn_dirControl_P = 500;   //进岛方向控制P
-                Turn_dirControl_D = 1000;  //进岛方向控制D
+                Turn_dirControl_P = 400;   //进岛方向控制P
+                Turn_dirControl_D = 4000;  //进岛方向控制D
 
-                TurnTimeDuring = 200000 / (g_fRealSpeed);
+                TurnTimeDuring = 230000 / (g_fRealSpeed);
                 FreezingTimeDuring = 350;  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
-                Expect_P = 0.6;  // 1.25
+                Expect_P = 0.7;  // 1.25
                 Expect_I = 0;    //(g_fSpeedError > 2000 ? 0.002 : 0);
                                ////限制只有上坡的时候才会用到I，I的值为0.0015
                 Expect_D = 0.5;
 
-                Kdirection = 1;
+                Kdirection = 0.8;
 
                 TurnValue = 250;
             } 
@@ -315,6 +318,7 @@ int main(void) {
             case 1: {
                 StraightExpectSpeed = 2000;  //直行期望速度
                 TurnExpectSpeed = 1700;      //弯道期望速度
+                RoundExpectSpeed = TurnExpectSpeed;     //环岛期望速度
                 DownSpeed = 1900;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -343,6 +347,7 @@ int main(void) {
             default: {                       // 最稳
                 StraightExpectSpeed = 1500;  //直行期望速度
                 TurnExpectSpeed = 1000;      //弯道期望速度
+                RoundExpectSpeed = TurnExpectSpeed;     //环岛期望速度
                 DownSpeed = 1350;            //下坡期望速度
                 // outPWM1 = 200;
                 // outPWM2 = 300;
@@ -351,7 +356,7 @@ int main(void) {
                 g_dirControl_P = 3000;  //方向控制P
                 g_dirControl_D = 2400;  //方向控制D
 
-                Turn_dirControl_P = 400;   //进岛方向控制P,300 or 3000
+                Turn_dirControl_P = 300;   //进岛方向控制P
                 Turn_dirControl_D = 3000;  //进岛方向控制D
 
                 TurnTimeDuring = 250000 / (g_fRealSpeed);
