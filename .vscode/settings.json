@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.tcc": "c",
+        "string": "c",
+        "vector": "c",
+        "fstream": "c",
+        "limits": "c",
+        "sstream": "c",
+        "utility": "c"
+    }
+}

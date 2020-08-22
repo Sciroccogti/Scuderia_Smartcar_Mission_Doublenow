@@ -220,9 +220,9 @@ int main(void)
 
             //TurnValue = 800;
 
-            Expect_P = (g_fSpeedError > 0) ? 0.8 : ( (g_fSpeedError > -400) ? 0.4 : 25); // 1.25
+            Expect_P = (g_fSpeedError > 0) ? 0.8 : ( (g_fSpeedError > -400) ? 0.4 : 8); // 1.25
             Expect_I = (g_fSpeedError > 3000 && g_fSpeedError < 3700 || g_fSpeedError < -300 ? 0.02 : 0);
-            Expect_D = 0.8;
+            Expect_D = (g_fSpeedError < -200) ? 1 : 0.2;
 
             Kdirection = TurnFlag ? 1.5 : 1;
 
