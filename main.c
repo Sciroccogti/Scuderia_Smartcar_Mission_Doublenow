@@ -62,12 +62,25 @@ void display() {
         sprintf(DirOut, "DO:%05d", (int)g_fDirectionControlOut);
         sprintf(Sonic, "sonic:%04dmm", distance);    // 超声波
 
-        if (garage_count == 0){
-            sprintf(Garage, "in gar");  // 车库内
-        } else if(garage_count == 1){
+        switch (garage_count)
+        {
+        case TUNE_AD:
+            sprintf(Garage, "tune ad ");  // 调节AD
+            break;
+        case WAIT:
+            sprintf(Garage, "wait    ");  // 等候发车
+            break;
+        case IN_GAR:
+            sprintf(Garage, "in gar  ");  // 车库内
+            break;
+        case GAR_TURN:
             sprintf(Garage, "gar turn"); // 出车库中
-        } else {
-            sprintf(Garage, "out gar"); // 已出车库
+            break;
+        case OUT_GAR:
+            sprintf(Garage, "out gar "); // 已出车库
+            break;
+        default:
+            break;
         }
 
         if (GarageDirection) {
@@ -91,6 +104,7 @@ void display() {
         lcd_showstr(80, 6, Garagedirection);
         lcd_showint8(0, 7, mode);
         lcd_showfloat(80, 7, TurnTime, 6, 0);
+        lcd_showfloat(80, 7, Environment, 4, 2);
     // } else {
     //     if (scc8660_csi_finish_flag)  //图像采集完成
     //     {
@@ -159,8 +173,8 @@ int main(void) {
         display();
         BlueTooth();
         GarageDirection = gpio_get(C31);
-        TurnAD0 = 2900, TurnAD1 = 2900, TurnAD2 = 3400,
-        TurnAD3 = 3400;  //水平左右，垂直左右电感，判断是否到达环岛的阈值
+        TurnAD0 = 2900, TurnAD1 = 2900; // 水平左右
+        TurnAD2 = 2100,TurnAD3 = 2100;  // 垂直左右电感，判断是否到达环岛的阈值
         LeaveAD0 = 2600, LeaveAD1 = 2600, LeaveAD2 = 2000, LeaveAD3 = 2000;
         DownAD0 = 4000, DownAD1 = 4000, DownAD2 = 2400,
         DownAD3 = 2400;  //下坡判定电感值
@@ -172,6 +186,21 @@ int main(void) {
         } else if (gpio_get(B21)){
             mode--;
         }
+
+        if(garage_count == WAIT){
+            if (gpio_get(B10)){ // 按下右键
+                garage_count = IN_GAR;
+                gpio_set(D12, 1); // 开启电机
+            }
+        }
+
+        if(garage_count == TUNE_AD){
+            if (gpio_get(B10)) {// 按下右键
+                Environment = (g_ValueOfAD[0] + g_ValueOfAD[1]) / 3200.0;
+                garage_count = WAIT;
+            }
+        }
+
 
         switch (mode) {
             case 2: {
@@ -234,17 +263,17 @@ int main(void) {
                 // diffPWM = 700;
 
                 g_dirControl_P = 3000;  //方向控制P
-                g_dirControl_D = 3200;  //方向控制D
+                g_dirControl_D = 2400;  //方向控制D
 
                 Turn_dirControl_P = 3000;  //进岛方向控制P
-                Turn_dirControl_D = 6000;  //进岛方向控制D
+                Turn_dirControl_D = 8000;  //进岛方向控制D
 
-                TurnTimeDuring = 300000 / (StraightExpectSpeed);
+                TurnTimeDuring = 250000 / (g_fRealSpeed);
                 FreezingTimeDuring = 350;  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
-                Expect_P = 0.45;  // 1.25
-                Expect_D = 0.8;
+                Expect_P = 0.4;  // 1.25
+                Expect_D = 0.5;
                 Kdirection = 0.2;
             }
         }
