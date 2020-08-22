@@ -56,9 +56,9 @@ void PIT_IRQHandler(void) {
         // } else
         //     STOPi--;
         //Ball release & full stop
-        const float ball_height_mm = 120;
+        const float ball_height_mm = 60;
         float drop_time = sqrt(2 * ball_height_mm / 10000);
-        const float box_length = 50;
+        const float box_length = 60;
         if (distance - 100 < drop_time * g_fRealSpeed - box_length){
             k++;
             gpio_set(D4, 0);

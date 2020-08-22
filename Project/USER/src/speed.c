@@ -48,7 +48,7 @@ int32 MaxPWM = 400;
 int8 TurnFlag = OFF; // 转向标志
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
-int mode = 3;
+int mode = 0;
 
 float StraightExpectSpeed;  //直行期望速度
 float TurnExpectSpeed;      //弯道期望速度
@@ -157,10 +157,10 @@ void CalSpeedError(void) {
 
     g_fLeftRealSpeed = g_nLeftpulse * Ratio_Encoder_Left;
     g_fLeftRealSpeed =
-        (g_fLeftRealSpeed > 9000 ? 9000 : g_fLeftRealSpeed);  //滤左编码器的噪声
+        (g_fLeftRealSpeed > 4000 ? 4000 : g_fLeftRealSpeed);  //滤左编码器的噪声
     g_fRighRealSpeed = g_nRighpulse * Ratio_Encoder_Righ;
     g_fRighRealSpeed =
-        (g_fRighRealSpeed > 9000 ? 9000 : g_fRighRealSpeed);  //滤右编码器的噪声
+        (g_fRighRealSpeed > 4000 ? 4000 : g_fRighRealSpeed);  //滤右编码器的噪声
 
     g_fRealSpeed = (g_fLeftRealSpeed + g_fRighRealSpeed) * 0.5;  //真实速度
 
