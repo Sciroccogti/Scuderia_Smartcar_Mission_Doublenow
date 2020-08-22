@@ -1,8 +1,6 @@
 #include "myheader.h"
 #define GPIO_PULLDOWN_CONFIG SPEED_100MHZ | DSE_R0 | PULLDOWN_100K | PULL_EN
 
-
-// TODO: 上电时序
 void car_init() {
     DisableGlobalIRQ();
 
@@ -10,7 +8,7 @@ void car_init() {
     gpio_init(D4, GPO, 1, SPEED_200MHZ | DSE_R0_7 | PULLUP_100K | PULL_EN);
     
     // PWM enable
-    gpio_init(D12, GPO, 1, GPIO_PIN_CONFIG);
+    gpio_init(D12, GPO, 0, GPIO_PIN_CONFIG);
 
     // ADC初始化
     // adc_init(AD1,ADC_12BIT);
@@ -23,8 +21,8 @@ void car_init() {
     gpio_init(B23, GPI, 1, GPIO_PULLDOWN_CONFIG); // 上
     gpio_init(B21, GPI, 1, GPIO_PULLDOWN_CONFIG); // 下
     gpio_init(B19, GPI, 1, GPIO_PULLDOWN_CONFIG); // 左
-    gpio_init(B9, GPI, 1, GPIO_PULLDOWN_CONFIG); // 右
-    gpio_init(B10, GPI, 1, GPIO_PULLDOWN_CONFIG); // 中
+    gpio_init(B10, GPI, 1, GPIO_PULLDOWN_CONFIG); // 右
+    gpio_init(B9, GPI, 1, GPIO_PULLDOWN_CONFIG); // 中
     // OLED初始化
     // oled_init();
     lcd_init();

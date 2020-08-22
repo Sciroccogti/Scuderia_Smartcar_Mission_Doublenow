@@ -38,5 +38,10 @@
 #define RMOTOR_F PWM2_MODULE3_CHB_D3 // Right Forward
 #define RMOTOR_B PWM2_MODULE3_CHA_D2 // Right Backward
 
+#define TUNE_AD 0 // 调节电感
+#define WAIT 1 // 等待发车
+#define IN_GAR 2 // 车库内
+#define GAR_TURN 3 // 转出车库
+#define OUT_GAR 4 // 已出车库
 
 #endif

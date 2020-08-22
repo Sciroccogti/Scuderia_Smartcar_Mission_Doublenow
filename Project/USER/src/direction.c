@@ -78,21 +78,21 @@ void DirectionControl(void) {
 
     Read_ADC();  //获取电感值
 
-    if (g_ValueOfAD[0] < 300 && g_ValueOfAD[1] < 300 && garage_count > 1)
+    if (g_ValueOfAD[0] < 100 && g_ValueOfAD[1] < 100 && garage_count >= GAR_TURN)
         Flag_Stop = OFF;  //冲出赛道停车保护
 
     // 以下为出车库处理
     if ((g_ValueOfAD[2] + g_ValueOfAD[3] < GarageAD23) &&
         (g_ValueOfAD[2] + g_ValueOfAD[3] > 25) &&
-        !garage_count)  //到达电感阈值且未出车库，开始转向
+        garage_count == IN_GAR)  //到达电感阈值且未出车库，开始转向
     {
-        garage_count++;
+        garage_count = GAR_TURN;
     }
 
     if ((g_ValueOfAD[0] > GarageAD0 && g_ValueOfAD[1] > GarageAD1) &&
-        garage_count == 1)  //到达电感阈值且已出车库，结束转向
+        garage_count == GAR_TURN)  //到达电感阈值且已出车库，结束转向
     {
-        garage_count++;
+        garage_count = OUT_GAR;
     }
 
     g_ValueOfAD[0] =

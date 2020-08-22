@@ -107,10 +107,10 @@ void PWMOut(void) {
     {
         g_nLeftPWM = 0;
         g_nRighPWM = 0;
-    } else if (garage_count == 0)  // 未出车库
+    } else if (garage_count == IN_GAR)  // 未出车库
     {
         g_nLeftPWM = g_nRighPWM = outPWM1;
-    } else if (garage_count == 1)  // 车库口转向
+    } else if (garage_count == GAR_TURN)  // 车库口转向
     {
         g_nLeftPWM = outPWM2 + diffPWM * (-1 + 2 * GarageDirection);
         g_nRighPWM = outPWM2 - diffPWM * (-1 + 2 * GarageDirection);
