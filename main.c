@@ -173,9 +173,9 @@ int main(void) {
         display();
         BlueTooth();
         GarageDirection = gpio_get(C31);
-        TurnAD0 = 2900, TurnAD1 = 2900;  // 水平左右
-        TurnAD2 = 2100, TurnAD3 = 2100;  // 垂直左右电感，判断是否到达环岛的阈值
-        LeaveAD0 = 2600, LeaveAD1 = 2600, LeaveAD2 = 2000, LeaveAD3 = 2000;
+        TurnAD0 = 3850, TurnAD1 = 3500;  // 水平左右
+        TurnAD2 = 3400, TurnAD3 = 3400;  // 垂直左右电感，判断是否到达环岛的阈值
+        LeaveAD0 = 3800, LeaveAD1 = 3800, LeaveAD2 = 3800, LeaveAD3 = 3800;
         DownAD0 = 4000, DownAD1 = 4000, DownAD2 = 2400,
         DownAD3 = 2400;  //下坡判定电感值
 
@@ -188,25 +188,25 @@ int main(void) {
         }
 
         if (garage_count == WAIT) {
-            if (gpio_get(B10)) {  // 按下右键
+            if (gpio_get(B9)) {  // 按下中键
                 garage_count = IN_GAR;
                 gpio_set(D12, 1);  // 开启电机
             }
         }
 
         if (garage_count == TUNE_AD) {
-            if (gpio_get(B10)) {  // 按下右键
-                Environment = (g_ValueOfAD[0] + g_ValueOfAD[1]) / 3200.0;
+            if (gpio_get(B9)) {  // 按下中键
+                Environment = 3800.0 / (g_ValueOfAD[0] + g_ValueOfAD[1]) ;
                 garage_count = WAIT;
             }
 
-            // if (gpio_get(B19)) {
-            //     Environment += 0.01;
-            // }
+            if (gpio_get(B19)) {
+                Environment += 0.01;
+            }
 
-            // if (gpio_get(B10)) {
-            //     Environment -= 0.01;
-            // }
+            if (gpio_get(B10)) {
+                Environment -= 0.01;
+            }
         }
 
         switch (mode) {
@@ -226,7 +226,7 @@ int main(void) {
                 Turn_dirControl_D = 6000;  //进岛方向控制D
 
                 TurnTimeDuring = 250000 / (g_fRealSpeed);
-                FreezingTimeDuring = 350;  //冻结时间常量
+                FreezingTimeDuring = 550;  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
                 // TurnValue = 800;
@@ -287,9 +287,9 @@ int main(void) {
                 TurnValue = 247;
             } break;
             case 2: {
-                StraightExpectSpeed = 2800;  //直行期望速度
-                TurnExpectSpeed = 2500;      //弯道期望速度
-                RoundExpectSpeed = 1500;     //环岛期望速度
+                StraightExpectSpeed = 3000;  //直行期望速度
+                TurnExpectSpeed = 2800;      //弯道期望速度
+                RoundExpectSpeed = 1800;     //环岛期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -302,15 +302,15 @@ int main(void) {
                 Turn_dirControl_D = 4000;  //进岛方向控制D
 
                 TurnTimeDuring = 230000 / (g_fRealSpeed);
-                FreezingTimeDuring = 350;  //冻结时间常量
+                FreezingTimeDuring = 230000 / (g_fRealSpeed);  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
-                Expect_P = 0.7;  // 1.25
+                Expect_P = 0.9;  // 1.25
                 Expect_I = 0;    //(g_fSpeedError > 2000 ? 0.002 : 0);
                                ////限制只有上坡的时候才会用到I，I的值为0.0015
-                Expect_D = 0.5;
+                Expect_D = 0.45;
 
-                Kdirection = 0.8;
+                Kdirection = 0.95;
 
                 TurnValue = 250;
             } 
@@ -331,7 +331,7 @@ int main(void) {
                 Turn_dirControl_D = 3000;  //进岛方向控制D
 
                 TurnTimeDuring = 200000 / (g_fRealSpeed);
-                FreezingTimeDuring = 350;  //冻结时间常量
+                FreezingTimeDuring = 600;  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.5;  // 1.25
@@ -360,7 +360,7 @@ int main(void) {
                 Turn_dirControl_D = 3000;  //进岛方向控制D
 
                 TurnTimeDuring = 250000 / (g_fRealSpeed);
-                FreezingTimeDuring = 350;  //冻结时间常量
+                FreezingTimeDuring = 750;  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
                 Expect_P = 0.4;  // 1.25

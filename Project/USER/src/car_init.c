@@ -39,7 +39,7 @@ void car_init() {
     gpio_init(D13, GPO, 0, GPIO_PIN_CONFIG);
 
     // LED初始化
-    gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG);  // 核心板蓝色
+    // gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG);  // 核心板蓝色
 
     //拨码开关或备用接口初始化(复用为拨码开关或备用接口);
     gpio_init(C31, GPI, 1, GPIO_PULLDOWN_CONFIG); // 1

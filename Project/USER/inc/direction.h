@@ -12,11 +12,12 @@ extern float g_fDirectionControlOut;
 extern int16 g_ValueOfAD[4];
 extern int16 g_ValueOfADFilter[4];
 extern float Environment;
+extern float Environmentv;
 extern float g_dirControl_P;		//方向控制P
 extern float g_dirControl_D;	//方向控制D
 extern float Turn_dirControl_P;		//进岛方向控制P
 extern float Turn_dirControl_D;	//进岛方向控制D
-
+extern uint8 Leave;
 
 extern float DownTime;
 extern float DownTimeDuring;

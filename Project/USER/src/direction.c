@@ -20,7 +20,8 @@ float g_fDirectionError_dot[2];
 float g_fDirectionControlOut;      //方向控制输出
 int16 g_ValueOfAD[4] = {0};        //获取的电感值
 int16 g_ValueOfADFilter[4] = {0};  //阶梯滤波的电感值（未使用）
-uint8 Flag_RoundSpeed = OFF;  //进入环岛的标志（在环岛里为ON）
+uint8 Flag_Round = OFF;  //进入环岛的标志（在环岛里为ON）
+uint8 Flag_RoundSpeed = OFF;
 uint8 Leave = OFF;       //出岛标志(出岛为ON)
 float TurnTime = 0;      //进岛转向时间
 float FreezingTime = 0;  //进岛判定冻结时间
@@ -58,7 +59,8 @@ int16 GarageAD23 = 1500;
 int16 GarageAD0 = 1000, GarageAD1 = 1000;
 
 // 受环境影响的电感系数  把左右水平电感控制在 800左右（参考）
-float Environment = 0.9;
+float Environment = 1;
+float Environmentv = 1;
 
 /**
  * @file		方向控制
@@ -101,7 +103,7 @@ void DirectionControl(void) {
     g_ValueOfAD[2] = (g_ValueOfAD[2] < 10 ? 10 : g_ValueOfAD[2]);
     // g_ValueOfAD[3]*=1.4;
     g_ValueOfAD[3] = (g_ValueOfAD[3] < 10 ? 10 : g_ValueOfAD[3]);
-    for (int ADi = 0; ADi < 4; ADi++) g_ValueOfAD[ADi] *= Environment;
+    for (int ADi = 0; ADi < 2; ADi++) g_ValueOfAD[ADi] *= Environment;
 
     g_fDirectionError[0] =
         (float)(g_ValueOfAD[0] - g_ValueOfAD[1]) /
@@ -156,16 +158,17 @@ void DirectionControl(void) {
     {
         if (Leave == OFF)  //离岛标志为off，进岛，亮绿灯，冻结时间
         {
+            Flag_Round = ON;
             Flag_RoundSpeed = ON;
             Leave = ON;
-            // gpio_set(D13, 1);
+            gpio_set(D13, 1);
             TurnTime = TurnTimeDuring;
             FreezingTime = FreezingTimeDuring;
             TurnFlag = ON;
         }
-    } else if ((g_ValueOfAD[0] > LeaveAD0) && (g_ValueOfAD[1] > LeaveAD1) &&
+    } else if (g_ValueOfAD[0] + g_ValueOfAD[1] > LeaveAD0 + LeaveAD1 &&
                ((g_ValueOfAD[2] > LeaveAD2) || (g_ValueOfAD[3] > LeaveAD3)) &&
-               !FreezingTime) {
+               FreezingTime <= 0) {
         if (Leave ==
             ON)  //离岛标志，亮红灯，不改变方向控制，冻结一次进岛判定时间
         {
@@ -175,9 +178,6 @@ void DirectionControl(void) {
             FreezingTime = FreezingTimeDuring;
             //TurnFlag = OFF;
         }
-    } else
-    {
-        Flag_RoundSpeed = OFF;
     }
     
 
@@ -201,13 +201,17 @@ void DirectionControl(void) {
         }
     }
 
-    if (FreezingTime)  //冻结时间倒数
+    if (FreezingTime > 0)  //冻结时间倒数
     {
         FreezingTime--;
-        if (!FreezingTime)  //冻结时间结束，灭灯
+        Flag_RoundSpeed = ON;
+        gpio_set(D13, 1);
+        if (FreezingTime <= 0)  //冻结时间结束，灭灯
         {
             // gpio_set(E6, 0);
             // gpio_set(H0, 0);
+            Flag_RoundSpeed = OFF;
+            gpio_set(D13, 0);
         }
     }
 
@@ -216,12 +220,13 @@ void DirectionControl(void) {
         TurnTime--;
         if (TurnTime <= 0)  //转向时间结束，Flag倒下
         {
+            Flag_Round = OFF;
             Flag_RoundSpeed = OFF;
         }
     }
 
     //方向算法（位置式PD）
-    if (Flag_RoundSpeed == ON) {  //&& Round_Countdown) {
+    if (Flag_Round == ON) {  //&& Round_Countdown) {
         g_fDirectionControlOut = 
             (g_fDirectionError[1] * Turn_dirControl_P +
              g_fDirectionError_dot[1] * Turn_dirControl_D
