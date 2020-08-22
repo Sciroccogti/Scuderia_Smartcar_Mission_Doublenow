@@ -324,7 +324,7 @@ int main(void) {
                 g_dirControl_D = 2400;  //方向控制D
 
                 Turn_dirControl_P = 400;   //进岛方向控制P
-                Turn_dirControl_D = 1000;  //进岛方向控制D
+                Turn_dirControl_D = 3000;  //进岛方向控制D
 
                 TurnTimeDuring = 200000 / (g_fRealSpeed);
                 FreezingTimeDuring = 350;  //冻结时间常量
@@ -352,7 +352,7 @@ int main(void) {
                 g_dirControl_D = 2400;  //方向控制D
 
                 Turn_dirControl_P = 400;   //进岛方向控制P,300 or 3000
-                Turn_dirControl_D = 1000;  //进岛方向控制D
+                Turn_dirControl_D = 3000;  //进岛方向控制D
 
                 TurnTimeDuring = 250000 / (g_fRealSpeed);
                 FreezingTimeDuring = 350;  //冻结时间常量
