@@ -24,9 +24,12 @@ uint8 Flag_Round = OFF;  //进入环岛的标志（在环岛里为ON）
 uint8 Leave = OFF;       //出岛标志(出岛为ON)
 float TurnTime = 0;      //进岛转向时间
 float FreezingTime = 0;  //进岛判定冻结时间
-float DownTime = 100;    //下坡时间
+float DownTime = 0;    //下坡时间
 int DownFlagI = 0;
+
 uint8 garage_count = 0;  // 出车库计数器
+
+
 
 //以下为可能需要调整的参数
 
@@ -34,6 +37,7 @@ float g_dirControl_P;     //方向控制P
 float g_dirControl_D;     //方向控制D
 float Turn_dirControl_P;  //进岛方向控制P
 float Turn_dirControl_D;  //进岛方向控制D
+
 
 float TurnTimeDuring;  //转向时间常量，若要修改转向时间，就修改这个
 float FreezingTimeDuring;  //冻结时间常量
@@ -157,6 +161,7 @@ void DirectionControl(void) {
             // gpio_set(D13, 1);
             TurnTime = TurnTimeDuring;
             FreezingTime = FreezingTimeDuring;
+            TurnFlag = ON;
         }
     } else if ((g_ValueOfAD[0] > LeaveAD0) && (g_ValueOfAD[1] > LeaveAD1) &&
                ((g_ValueOfAD[2] > LeaveAD2) || (g_ValueOfAD[3] > LeaveAD3)) &&
@@ -167,6 +172,7 @@ void DirectionControl(void) {
             Leave = OFF;
             // gpio_set(D13, 0);
             FreezingTime = FreezingTimeDuring;
+            //TurnFlag = OFF;
         }
     }
 
@@ -177,7 +183,7 @@ void DirectionControl(void) {
         DownTime = DownTimeDuring;
     }
 
-    if (DownTime) {
+    if (DownTime > 0) {
         if (DownFlagI)
             DownFlagI--;
         else {
@@ -211,14 +217,16 @@ void DirectionControl(void) {
 
     //方向算法（位置式PD）
     if (Flag_Round == ON) {  //&& Round_Countdown) {
-        g_fDirectionControlOut =
+        g_fDirectionControlOut = 
             (g_fDirectionError[1] * Turn_dirControl_P +
-             g_fDirectionError_dot[1] * Turn_dirControl_D);  //依据垂直电感转向
+             g_fDirectionError_dot[1] * Turn_dirControl_D
+             );  //依据垂直电感转向
         gpio_set(D13, 1);
     } else {
         g_fDirectionControlOut =
             (g_fDirectionError[0] * g_dirControl_P +
-             g_fDirectionError_dot[0] * g_dirControl_D);  //依据水平电感转向
+             g_fDirectionError_dot[0] * g_dirControl_D
+            );  //依据水平电感转向
         gpio_set(D13, 0);
     }
 }

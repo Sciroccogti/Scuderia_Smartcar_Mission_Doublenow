@@ -114,5 +114,6 @@ void car_init() {
     // //设置中断函数及其参数
     // uart_set_handle(USART_8, &bluetooth_g_lpuartHandle, bluetooth_callback, NULL, 0,
     //                 bluetooth_receivexfer.data, 1);
+    systick_delay_ms(500);
     EnableGlobalIRQ(0);  //使能中断
 }

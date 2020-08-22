@@ -17,6 +17,7 @@ extern float g_dirControl_D;	//方向控制D
 extern float Turn_dirControl_P;		//进岛方向控制P
 extern float Turn_dirControl_D;	//进岛方向控制D
 
+
 extern float DownTime;
 extern float DownTimeDuring;
 extern float TurnTimeDuring; //转向时间常量，若要修改转向时间，就修改这个
