@@ -29,7 +29,7 @@ extern int16 LeaveAD0,LeaveAD1,LeaveAD2,LeaveAD3;//离开环岛的阈值放松
 extern int16 DownAD0 ,DownAD1,DownAD2,DownAD3;//下坡判定电感值
 extern int16 GarageAD23; // 车库电感2,3之和
 extern int16 GarageAD0, GarageAD1; // 车库电感0,1
-extern uint8 Flag_Round;
+extern uint8 Flag_RoundSpeed;
 extern uint8 garage_count;  // 出车库计数器
 
 
