@@ -103,7 +103,7 @@ void display() {
     lcd_showstr(80, 6, Garagedirection);
     lcd_showint8(0, 7, mode);
     lcd_showfloat(80, 7, TurnTime, 6, 0);
-    lcd_showfloat(80, 7, Environment, 4, 2);
+    lcd_showfloat(80, 7, Environment, 4, 4);
     // } else {
     //     if (scc8660_csi_finish_flag)  //图像采集完成
     //     {
@@ -173,9 +173,9 @@ int main(void) {
         display();
         BlueTooth();
         GarageDirection = gpio_get(C31);
-        TurnAD0 = 3850, TurnAD1 = 3500;  // 水平左右
+        TurnAD0 = 3800, TurnAD1 = 3500;  // 水平左右
         TurnAD2 = 3400, TurnAD3 = 3400;  // 垂直左右电感，判断是否到达环岛的阈值
-        LeaveAD0 = 3800, LeaveAD1 = 3800, LeaveAD2 = 3800, LeaveAD3 = 3800;
+        LeaveAD0 = 3800, LeaveAD1 = 3800, LeaveAD2 = 3700, LeaveAD3 = 3700;
         DownAD0 = 4000, DownAD1 = 4000, DownAD2 = 2400,
         DownAD3 = 2400;  //下坡判定电感值
 
@@ -213,7 +213,7 @@ int main(void) {
             case 4: {
                 StraightExpectSpeed = 3800;  //直行期望速度
                 TurnExpectSpeed = 3300;      //弯道期望速度 3400
-                RoundExpectSpeed = 1500;     //环岛期望速度
+                RoundExpectSpeed = 2000;     //环岛期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -288,8 +288,8 @@ int main(void) {
             } break;
             case 2: {
                 StraightExpectSpeed = 3000;  //直行期望速度
-                TurnExpectSpeed = 2800;      //弯道期望速度
-                RoundExpectSpeed = 1800;     //环岛期望速度
+                TurnExpectSpeed = 2600;      //弯道期望速度
+                RoundExpectSpeed = 1900;     //环岛期望速度
                 DownSpeed = 2650;            //下坡期望速度
                 // outPWM1 = 250;
                 // outPWM2 = 300;
@@ -301,18 +301,18 @@ int main(void) {
                 Turn_dirControl_P = 400;   //进岛方向控制P
                 Turn_dirControl_D = 4000;  //进岛方向控制D
 
-                TurnTimeDuring = 230000 / (g_fRealSpeed);
+                TurnTimeDuring = 250000 / (g_fRealSpeed);
                 FreezingTimeDuring = 230000 / (g_fRealSpeed);  //冻结时间常量
                 DownTimeDuring = 175;      //下坡时间常量
 
-                Expect_P = 0.9;  // 1.25
+                Expect_P = (g_fSpeedError > -200) ? 0.8 : 2;;  // 1.25
                 Expect_I = 0;    //(g_fSpeedError > 2000 ? 0.002 : 0);
                                ////限制只有上坡的时候才会用到I，I的值为0.0015
-                Expect_D = 0.45;
+                Expect_D = 0.4;
 
-                Kdirection = 0.95;
+                Kdirection = 0.9;
 
-                TurnValue = 250;
+                TurnValue = 200;
             } 
             break;
             case 1: {
