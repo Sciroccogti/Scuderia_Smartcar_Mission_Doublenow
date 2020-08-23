@@ -166,7 +166,7 @@ void DirectionControl(void) {
             FreezingTime = FreezingTimeDuring;
             TurnFlag = ON;
         }
-    } else if (g_ValueOfAD[0] + g_ValueOfAD[1] > LeaveAD0 + LeaveAD1 &&
+    } else if ((g_ValueOfAD[0] > LeaveAD0 || g_ValueOfAD[1] > LeaveAD1) &&
                ((g_ValueOfAD[2] > LeaveAD2) || (g_ValueOfAD[3] > LeaveAD3)) &&
                FreezingTime <= 0) {
         if (Leave ==
@@ -211,7 +211,7 @@ void DirectionControl(void) {
             // gpio_set(E6, 0);
             // gpio_set(H0, 0);
             Flag_RoundSpeed = OFF;
-            gpio_set(D13, 0);
+            
         }
     }
 
@@ -237,8 +237,11 @@ void DirectionControl(void) {
             (g_fDirectionError[0] * g_dirControl_P +
              g_fDirectionError_dot[0] * g_dirControl_D
             );  //依据水平电感转向
-        gpio_set(D13, 0);
+        
     }
+
+    if(FreezingTime <= 0 && TurnTime <= 0) gpio_set(D13, 0);
+
 }
 
 /**

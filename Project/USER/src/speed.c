@@ -186,11 +186,9 @@ void CalSpeedError(void) {
     if (DownTime) {
         g_fExpectSpeed = DownSpeed;
         gpio_set(D13, 1);
-    } else if (TurnTime > 0)
-        g_fExpectSpeed = RoundExpectSpeed - 500;
-     else if (ON == Leave)
+    } else if (ON == Flag_RoundSpeed)
         g_fExpectSpeed = RoundExpectSpeed;
-     else if (ON == TurnFlag)
+     else if (ON == TurnFlag || ON == Leave)
         g_fExpectSpeed = TurnExpectSpeed;
     else
         g_fExpectSpeed = StraightExpectSpeed;
