@@ -49,6 +49,7 @@ void display() {
     char Sonic[20];
     char Garage[20];
     char Garagedirection[10];
+    char Turn[10];
 
     sprintf(Left, "L:%04d", g_ValueOfAD[0]);          //水平左电感
     sprintf(Right, "R:%04d", g_ValueOfAD[1]);         //水平右电感
@@ -88,6 +89,12 @@ void display() {
         sprintf(Garagedirection, "LEFT ");
     }
 
+    if (turnMode){
+        sprintf(Turn, "turn");
+    } else {
+        sprintf(Turn, "nope");
+    }
+
     lcd_showstr(0, 0, Left);
     lcd_showstr(80, 0, Right);
     lcd_showstr(0, 1, LeftMiddle);
@@ -102,8 +109,9 @@ void display() {
     lcd_showstr(0, 6, Garage);
     lcd_showstr(80, 6, Garagedirection);
     lcd_showint8(0, 7, mode);
-    lcd_showfloat(80, 7, TurnTime, 6, 0);
+    lcd_showstr(32, 7, Turn);
     lcd_showfloat(80, 7, Environment, 4, 4);
+
     // } else {
     //     if (scc8660_csi_finish_flag)  //图像采集完成
     //     {
@@ -173,6 +181,7 @@ int main(void) {
         display();
         BlueTooth();
         GarageDirection = gpio_get(C31);
+        turnMode = gpio_get(B11);
         TurnAD0 = 3950, TurnAD1 = 3950;  // 水平左右
         TurnAD2 = 3350, TurnAD3 = 3350;  // 垂直左右电感，判断是否到达环岛的阈值
         LeaveAD0 = 4000, LeaveAD1 = 4000, LeaveAD2 = 3700, LeaveAD3 = 3700;

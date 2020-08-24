@@ -25,12 +25,10 @@ uint8 Flag_RoundSpeed = OFF;
 uint8 Leave = OFF;       //出岛标志(出岛为ON)
 float TurnTime = 0;      //进岛转向时间
 float FreezingTime = 0;  //进岛判定冻结时间
-float DownTime = 0;    //下坡时间
+float DownTime = 0;      //下坡时间
 int DownFlagI = 0;
-
+uint8 turnMode = ON;     // 是否进环
 uint8 garage_count = 0;  // 出车库计数器
-
-
 
 //以下为可能需要调整的参数
 
@@ -38,7 +36,6 @@ float g_dirControl_P;     //方向控制P
 float g_dirControl_D;     //方向控制D
 float Turn_dirControl_P;  //进岛方向控制P
 float Turn_dirControl_D;  //进岛方向控制D
-
 
 float TurnTimeDuring;  //转向时间常量，若要修改转向时间，就修改这个
 float FreezingTimeDuring;  //冻结时间常量
@@ -80,7 +77,8 @@ void DirectionControl(void) {
 
     Read_ADC();  //获取电感值
 
-    if (g_ValueOfAD[0] < 100 && g_ValueOfAD[1] < 100 && garage_count >= GAR_TURN)
+    if (g_ValueOfAD[0] < 100 && g_ValueOfAD[1] < 100 &&
+        garage_count >= GAR_TURN)
         Flag_Stop = OFF;  //冲出赛道停车保护
 
     // 以下为出车库处理
@@ -150,56 +148,58 @@ void DirectionControl(void) {
         (g_fDirectionError_dot[1] < -0.7 ? -0.7 : g_fDirectionError_dot[1]);
 
     //以下为环岛处理
-    if ((g_ValueOfAD[0] + g_ValueOfAD[1] >
-         TurnAD0 + TurnAD1) &&  //(g_ValueOfAD[0] > TurnAD0) && (g_ValueOfAD[1]
-                                //> TurnAD1) &&
-        ((g_ValueOfAD[2] > TurnAD2) || (g_ValueOfAD[3] > TurnAD3)) &&
-        !FreezingTime)  //到达电感阈值且不与上一次判定重复
-    {
-        if (Leave == OFF)  //离岛标志为off，进岛，亮绿灯，冻结时间
+    if (turnMode) {
+        if ((g_ValueOfAD[0] + g_ValueOfAD[1] >
+             TurnAD0 + TurnAD1) &&  //(g_ValueOfAD[0] > TurnAD0) &&
+                                    //(g_ValueOfAD[1] > TurnAD1) &&
+            ((g_ValueOfAD[2] > TurnAD2) || (g_ValueOfAD[3] > TurnAD3)) &&
+            !FreezingTime)  //到达电感阈值且不与上一次判定重复
         {
-            Flag_Round = ON;
-            Flag_RoundSpeed = ON;
-            Leave = ON;
-            gpio_set(D13, 1);
-            TurnTime = TurnTimeDuring;
-            FreezingTime = FreezingTimeDuring;
-            TurnFlag = ON;
-        }
-    } else if ((g_ValueOfAD[0] > LeaveAD0 || g_ValueOfAD[1] > LeaveAD1) &&
-               ((g_ValueOfAD[2] > LeaveAD2) || (g_ValueOfAD[3] > LeaveAD3)) &&
-               FreezingTime <= 0) {
-        if (Leave ==
-            ON)  //离岛标志，亮红灯，不改变方向控制，冻结一次进岛判定时间
-        {
-            Leave = OFF;
-            Flag_RoundSpeed = ON;
-            // gpio_set(D13, 0);
-            FreezingTime = FreezingTimeDuring;
-            //TurnFlag = OFF;
-        }
-    }
-    
-
-    if (g_ValueOfAD[0] < DownAD0 && g_ValueOfAD[1] < DownAD1 &&
-        g_ValueOfAD[2] > DownAD2 && g_ValueOfAD[3] > DownAD3 && !DownTime &&
-        !FreezingTime && (OFF == Leave))  //下坡减速
-    {
-        DownTime = DownTimeDuring;
-    }
-
-    if (DownTime > 0) {
-        if (DownFlagI)
-            DownFlagI--;
-        else {
-            DownFlagI = 30;
-        }
-
-        DownTime--;
-        if (!DownTime) {
-            // gpio_set(H0, 0);
+            if (Leave == OFF)  //离岛标志为off，进岛，亮绿灯，冻结时间
+            {
+                Flag_Round = ON;
+                Flag_RoundSpeed = ON;
+                Leave = ON;
+                gpio_set(D13, 1);
+                TurnTime = TurnTimeDuring;
+                FreezingTime = FreezingTimeDuring;
+                TurnFlag = ON;
+            }
+        } else if ((g_ValueOfAD[0] > LeaveAD0 || g_ValueOfAD[1] > LeaveAD1) &&
+                   ((g_ValueOfAD[2] > LeaveAD2) ||
+                    (g_ValueOfAD[3] > LeaveAD3)) &&
+                   FreezingTime <= 0) {
+            if (Leave ==
+                ON)  //离岛标志，亮红灯，不改变方向控制，冻结一次进岛判定时间
+            {
+                Leave = OFF;
+                Flag_RoundSpeed = ON;
+                // gpio_set(D13, 0);
+                FreezingTime = FreezingTimeDuring;
+                // TurnFlag = OFF;
+            }
         }
     }
+
+    // if (g_ValueOfAD[0] < DownAD0 && g_ValueOfAD[1] < DownAD1 &&
+    //     g_ValueOfAD[2] > DownAD2 && g_ValueOfAD[3] > DownAD3 && !DownTime &&
+    //     !FreezingTime && (OFF == Leave))  //下坡减速
+    // {
+    //     DownTime = DownTimeDuring;
+    // }
+
+    // if (DownTime > 0) {
+    //     if (DownFlagI)
+    //         DownFlagI--;
+    //     else {
+    //         DownFlagI = 30;
+    //     }
+
+    //     DownTime--;
+    //     if (!DownTime) {
+    //         // gpio_set(H0, 0);
+    //     }
+    // }
 
     if (FreezingTime > 0)  //冻结时间倒数
     {
@@ -211,7 +211,6 @@ void DirectionControl(void) {
             // gpio_set(E6, 0);
             // gpio_set(H0, 0);
             Flag_RoundSpeed = OFF;
-            
         }
     }
 
@@ -227,21 +226,17 @@ void DirectionControl(void) {
 
     //方向算法（位置式PD）
     if (Flag_Round == ON) {  //&& Round_Countdown) {
-        g_fDirectionControlOut = 
+        g_fDirectionControlOut =
             (g_fDirectionError[1] * Turn_dirControl_P +
-             g_fDirectionError_dot[1] * Turn_dirControl_D
-             );  //依据垂直电感转向
+             g_fDirectionError_dot[1] * Turn_dirControl_D);  //依据垂直电感转向
         gpio_set(D13, 1);
     } else {
         g_fDirectionControlOut =
             (g_fDirectionError[0] * g_dirControl_P +
-             g_fDirectionError_dot[0] * g_dirControl_D
-            );  //依据水平电感转向
-        
+             g_fDirectionError_dot[0] * g_dirControl_D);  //依据水平电感转向
     }
 
-    if(FreezingTime <= 0 && TurnTime <= 0) gpio_set(D13, 0);
-
+    if (FreezingTime <= 0 && TurnTime <= 0) gpio_set(D13, 0);
 }
 
 /**

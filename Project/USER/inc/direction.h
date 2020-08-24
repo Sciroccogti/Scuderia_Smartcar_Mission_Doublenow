@@ -32,8 +32,7 @@ extern int16 GarageAD23; // 车库电感2,3之和
 extern int16 GarageAD0, GarageAD1; // 车库电感0,1
 extern uint8 Flag_RoundSpeed;
 extern uint8 garage_count;  // 出车库计数器
-
-
+extern uint8 turnMode; // 是否进环
 
 /***********函数声明***********/
 
