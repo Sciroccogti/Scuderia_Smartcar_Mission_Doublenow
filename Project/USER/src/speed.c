@@ -185,8 +185,8 @@ void CalSpeedError(void) {
     gpio_set(D13, 0);
     if (DownTime) {
         g_fExpectSpeed = DownSpeed;
-        gpio_set(D13, 1);
-    } else if (ON == Flag_RoundSpeed)
+        if(garage_count > TUNE_AD) gpio_set(D13, 1);
+    } else if (LeaveSpeedCount > 0 || Flag_Round == ON)
         g_fExpectSpeed = RoundExpectSpeed;
      else if (ON == TurnFlag || ON == Leave)
         g_fExpectSpeed = TurnExpectSpeed;
