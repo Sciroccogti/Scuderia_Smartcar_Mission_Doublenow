@@ -12,10 +12,12 @@ extern float g_fDirectionControlOut;
 extern int16 g_ValueOfAD[4];
 extern int16 g_ValueOfADFilter[4];
 extern float Environment;
+extern float Environmentv;
 extern float g_dirControl_P;		//方向控制P
 extern float g_dirControl_D;	//方向控制D
 extern float Turn_dirControl_P;		//进岛方向控制P
 extern float Turn_dirControl_D;	//进岛方向控制D
+extern uint8 Leave;
 
 extern float DownTime;
 extern float DownTimeDuring;
@@ -28,10 +30,9 @@ extern int16 LeaveAD0,LeaveAD1,LeaveAD2,LeaveAD3;//离开环岛的阈值放松
 extern int16 DownAD0 ,DownAD1,DownAD2,DownAD3;//下坡判定电感值
 extern int16 GarageAD23; // 车库电感2,3之和
 extern int16 GarageAD0, GarageAD1; // 车库电感0,1
-extern uint8 Flag_Round;
+extern uint8 Flag_RoundSpeed;
 extern uint8 garage_count;  // 出车库计数器
-
-
+extern uint8 turnMode; // 是否进环
 
 /***********函数声明***********/
 

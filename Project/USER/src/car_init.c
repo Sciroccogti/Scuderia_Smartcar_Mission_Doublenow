@@ -1,16 +1,14 @@
 #include "myheader.h"
 #define GPIO_PULLDOWN_CONFIG SPEED_100MHZ | DSE_R0 | PULLDOWN_100K | PULL_EN
 
-
-// TODO: 上电时序
 void car_init() {
     DisableGlobalIRQ();
 
     // 电磁铁
-    // gpio_init(C9, GPO, 1, SPEED_200MHZ | DSE_R0_7 | PULLUP_100K | PULL_EN);
+    gpio_init(D4, GPO, 1, SPEED_200MHZ | DSE_R0_7 | PULLUP_100K | PULL_EN);
     
     // PWM enable
-    gpio_init(D12, GPO, 1, GPIO_PIN_CONFIG);
+    gpio_init(D12, GPO, 0, GPIO_PIN_CONFIG);
 
     // ADC初始化
     // adc_init(AD1,ADC_12BIT);
@@ -40,19 +38,8 @@ void car_init() {
     //蜂鸣器初始化
     gpio_init(D13, GPO, 0, GPIO_PIN_CONFIG);
 
-    //停车干簧管初始化
-    // gpio_init(I0, GPI, 1, GPIO_PIN_CONFIG);
-    // gpio_init(H1, GPO, 0, GPIO_PIN_CONFIG);
-    //环岛指示灯初始化
-    // gpio_init(H0, GPO, 0, GPIO_PIN_CONFIG);
-    // gpio_init(E6, GPO, 0, GPIO_PIN_CONFIG);
-    // gpio_init(C14, GPO, 0, GPIO_PIN_CONFIG);
-
     // LED初始化
-    gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG);  // 核心板蓝色
-
-    //蓝牙串口初始化
-    // uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
+    // gpio_init(B9, GPO, 0, GPIO_PIN_CONFIG);  // 核心板蓝色
 
     //拨码开关或备用接口初始化(复用为拨码开关或备用接口);
     gpio_init(C31, GPI, 1, GPIO_PULLDOWN_CONFIG); // 1
@@ -79,27 +66,39 @@ void car_init() {
     // 摄像头初始化
     // scc8660_csi_init();
     //延时0.5s
-    systick_delay_ms(500);
+    // systick_delay_ms(500);
     gpio_set(B9, 1);
 
     //定时器初始化
     pit_init();                    //初始化pit外设
     pit_interrupt_ms(PIT_CH0, 5);  //初始化pit通道0 周期
-    NVIC_SetPriority(PIT_IRQn, 0);  ///设置中断优先级 范围0-15
+    NVIC_SetPriority(PIT_IRQn, 1);  ///设置中断优先级 范围0-15
     // 越小优先级越高 四路PIT共用一个PIT中断函数
 
     // 超声波串口   波特率为115200 TX为D16 RX为D17
     uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
-    NVIC_SetPriority(LPUART8_IRQn, 15);  //设置串口中断优先级
+    NVIC_SetPriority(LPUART8_IRQn, 0);  //设置串口中断优先级
     uart_rx_irq(USART_8, 1);
 
+    //配置串口接收的缓冲区及缓冲区长度
+    sonic_receivexfer.dataSize = 1;
+    sonic_receivexfer.data = &sonic_rx_buffer;
+
+    //设置中断函数及其参数
+    uart_set_handle(USART_8, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
+                    sonic_receivexfer.data, 1);
+
+    // // 超声波串口   波特率为115200
+    // uart_init(USART_4, 115200, UART4_TX_C16, UART4_RX_C17);
+    // NVIC_SetPriority(LPUART4_IRQn, 15);  //设置串口中断优先级
+    // uart_rx_irq(USART_4, 1);
 
     // //配置串口接收的缓冲区及缓冲区长度
     // sonic_receivexfer.dataSize = 1;
     // sonic_receivexfer.data = &sonic_rx_buffer;
 
     // //设置中断函数及其参数
-    // uart_set_handle(USART_1, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
+    // uart_set_handle(USART_4, &sonic_g_lpuartHandle, sonic_callback, NULL, 0,
     //                 sonic_receivexfer.data, 1);
 
     // 蓝牙串口   波特率为115200 TX为D16 RX为D17
@@ -115,5 +114,6 @@ void car_init() {
     // //设置中断函数及其参数
     // uart_set_handle(USART_8, &bluetooth_g_lpuartHandle, bluetooth_callback, NULL, 0,
     //                 bluetooth_receivexfer.data, 1);
+    // systick_delay_ms(500);
     EnableGlobalIRQ(0);  //使能中断
 }

@@ -42,19 +42,24 @@ int32 g_nLeftpulse = 0, g_nRighpulse = 0;
 int32 nLeftPWM = 0, nRighPWM = 0;
 int32 g_nLeftPWM = 0, g_nRighPWM = 0;
 float g_fSpeedControlOut = 100;  //速度输出
-int32 MaxPWM = 650;
+float g_fSpeedControlOut_I=0;
+
+int32 MaxPWM = 400;
 int8 TurnFlag = OFF; // 转向标志
 int8 StraightClk = 0;
 //以下为可能需要调整的参数
+int mode = 0;
 
 float StraightExpectSpeed;  //直行期望速度
 float TurnExpectSpeed;      //弯道期望速度
+float RoundExpectSpeed;     //环岛期望速度
 float SpeedUpSpeed;         //加速期望速度
 float DownSpeed;            //下坡期望速度
-int outPWM1 = 150;
+int outPWM1 = 150;//150
 int outPWM2 = 000, diffPWM = 300;  // 出车库直行速度 和 转向偏差
 
 float Expect_P;
+float Expect_I;
 float Expect_D;
 // float TurnExpect_P = 0.25;
 // float TurnExpect_D = 1.5;
@@ -64,11 +69,11 @@ int16 BasePWM = 0;
 int16 TurnBasePWM = 0;
 
 // 出车库方向，1为右转，0为左转
-uint8 GarageDirection = 1;
+uint8 GarageDirection = 0;
 
-float Kspeed = 1.2;
+float Kspeed = 1;//1.2
 //速度和方向控制的比例系数，要注意控制Kspeed，不然速度闭环控制会不平滑
-float Kdirection = 0.8;
+float Kdirection = 0.8;//0.8
 
 /**
  * @file		PWM输出
@@ -98,15 +103,15 @@ void PWMOut(void) {
         g_nLeftPWM += TurnBasePWM;
         g_nRighPWM += TurnBasePWM;
     }
-
+       
     if (Flag_Stop == OFF)  //如果Flag_Stop == OFF电机输出0
     {
         g_nLeftPWM = 0;
         g_nRighPWM = 0;
-    } else if (garage_count == 0)  // 未出车库
+    } else if (garage_count == IN_GAR)  // 未出车库
     {
         g_nLeftPWM = g_nRighPWM = outPWM1;
-    } else if (garage_count == 1)  // 车库口转向
+    } else if (garage_count == GAR_TURN)  // 车库口转向
     {
         g_nLeftPWM = outPWM2 + diffPWM * (-1 + 2 * GarageDirection);
         g_nRighPWM = outPWM2 - diffPWM * (-1 + 2 * GarageDirection);
@@ -153,10 +158,10 @@ void CalSpeedError(void) {
 
     g_fLeftRealSpeed = g_nLeftpulse * Ratio_Encoder_Left;
     g_fLeftRealSpeed =
-        (g_fLeftRealSpeed > 3400 ? 3400 : g_fLeftRealSpeed);  //滤左编码器的噪声
+        (g_fLeftRealSpeed > 4000 ? 4000 : g_fLeftRealSpeed);  //滤左编码器的噪声
     g_fRighRealSpeed = g_nRighpulse * Ratio_Encoder_Righ;
     g_fRighRealSpeed =
-        (g_fRighRealSpeed > 3400 ? 3400 : g_fRighRealSpeed);  //滤右编码器的噪声
+        (g_fRighRealSpeed > 4000 ? 4000 : g_fRighRealSpeed);  //滤右编码器的噪声
 
     g_fRealSpeed = (g_fLeftRealSpeed + g_fRighRealSpeed) * 0.5;  //真实速度
 
@@ -177,10 +182,13 @@ void CalSpeedError(void) {
     else {
         TurnFlag = OFF;
     }
-
+    gpio_set(D13, 0);
     if (DownTime) {
-        g_fExpectSpeed = DownSpeed;
-    } else if (ON == TurnFlag)
+        // g_fExpectSpeed = DownSpeed;
+        // gpio_set(D13, 1);
+    } else if (ON == Flag_RoundSpeed)
+        g_fExpectSpeed = RoundExpectSpeed;
+     else if (ON == TurnFlag || ON == Leave)
         g_fExpectSpeed = TurnExpectSpeed;
     else
         g_fExpectSpeed = StraightExpectSpeed;
@@ -200,14 +208,21 @@ void CalSpeedError(void) {
  */
 void SpeedControl(void) {
     CalSpeedError();  //计算速度偏差
-
     if (g_ValueOfAD[0] - g_ValueOfAD[1] > TurnValue ||
         g_ValueOfAD[1] - g_ValueOfAD[0] > TurnValue)
+    {
+        g_fSpeedControlOut_I += g_fSpeedErrorTemp[0];
         g_fSpeedControlOut =
             Expect_P * g_fSpeedError +
+            Expect_I * g_fSpeedControlOut_I+
             Expect_D * (g_fSpeedErrorTemp[0] - g_fSpeedErrorTemp[1]);
+    }
     else
+    {
+        g_fSpeedControlOut_I += g_fSpeedErrorTemp[0];
         g_fSpeedControlOut =
             Expect_P * g_fSpeedError +
+            Expect_I * g_fSpeedControlOut_I+
             Expect_D * (g_fSpeedErrorTemp[0] - g_fSpeedErrorTemp[1]);
+    }
 }

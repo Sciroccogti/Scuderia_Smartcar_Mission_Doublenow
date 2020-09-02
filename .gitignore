@@ -25,3 +25,6 @@
 *.sim
 *JLinkLog.txt
 *.tmp
+*.dnx
+Project/IAR/program/settings/RT106X.dnx
+Project/IAR/program/settings/RT106X.dnx
